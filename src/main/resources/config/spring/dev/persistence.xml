@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+    
+    
+    <bean id="TsuDataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close" >
+        <property name="url" value="${dataSource.url}" />
+        <property name="driverClassName" value="${dataSource.driverClassName}" />
+        <property name="username" value="${dataSource.username}" />
+        <property name="password" value="${dataSource.password}" />
+        <property name="initialSize" value="${dataSource.initialSize}" />
+        <property name="maxIdle" value="${dataSource.maxIdle}"/>
+        <property name="minIdle" value="${dataSource.minIdle}"/>
+        <property name="maxTotal" value="${dataSource.maxTotal}"/>
+    </bean>
+    <bean id="NamedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="TsuDataSource"/>
+    </bean>
+    <bean id="SimpleJdbcInsert" class="org.springframework.jdbc.core.simple.SimpleJdbcInsert" scope="prototype" >
+        <constructor-arg ref="TsuDataSource"/>
+    </bean>
+    <bean id="DataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <constructor-arg ref="TsuDataSource"/>
+    </bean>
+    
+   
+    
+
+    
+    <!--logger=Slf4JLogger&amp;profileSQL=true&amp;-->
+</beans>

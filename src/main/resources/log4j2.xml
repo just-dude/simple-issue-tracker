@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Properties>
+        <Property name="baseDir">/log/issue-tracker</Property>
+        <Property name="logEventsLevel">INFO</Property>
+    </Properties>
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) %marker - %m%n"/>
+        </Console>
+        <RollingFile name="ApplicationLog" fileName="${baseDir}/app/app.log"
+                 filePattern="${baseDir}/app/$${date:MM-yyyy}/app-%d{dd-MM-yyyy}.log">
+            <PatternLayout>
+                <Pattern>%d %p %c [%X,%t] %equals{[%marker]}{[]}{} %X %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+              <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="2"/>
+        </RollingFile>   
+    </Appenders>
+    <Loggers> 
+        <Logger name="com.opensymphony.xwork2" level="${logEventsLevel}"/>
+        <Logger name="org.apache.struts2" level="${logEventsLevel}"/>
+        <Logger name="org.springframework.jdbc" level="${logEventsLevel}"/>
+        <Logger name="org.dbunit" level="${logEventsLevel}"/>
+        <Logger name="org.apache.commons.dbcp.BasicDataSource" level="${logEventsLevel}"/>
+        <Logger name="org.apache.tiles" level="${logEventsLevel}"/>
+        <Logger name="org.apache.struts2.tiles" level="${logEventsLevel}"/>
+        <Logger name="ru.zabgu" level="DEBUG" additivity="false">
+            <AppenderRef ref="STDOUT"/>
+        </Logger>
+        <Logger name="org.apache.shiro" level="DEBUG" additivity="false">
+            <AppenderRef ref="STDOUT"/>
+        </Logger>
+        <Root level="${logEventsLevel}"> 
+            <AppenderRef ref="STDOUT"/> 
+            <AppenderRef ref="ApplicationLog"/>    
+        </Root>
+    </Loggers>
+</Configuration>

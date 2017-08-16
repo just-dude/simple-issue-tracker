@@ -1,0 +1,64 @@
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+    
+    <!--        -->
+    <!-- Common -->
+    <!--        -->
+
+    <definition name="main.fullPage" template="/WEB-INF/view/tiles/template/mainTemplate.jsp">
+        <put-attribute name="commonAssets" value="/WEB-INF/view/main/common/html/commonAssets.jsp"/>
+        <put-attribute name="customAssets" value="/WEB-INF/view/main/common/html/customDefaultAssets.jsp"/>
+        <put-attribute name="header" value="/WEB-INF/view/main/common/html/header.jsp"/>
+        <put-attribute name="menu" value="/WEB-INF/view/main/common/html/menu.jsp"/>
+        <put-attribute name="pressBar" value="/WEB-INF/view/main/common/html/pressBar.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/view/main/common/html/footer.jsp"/>
+    </definition>
+
+    <definition name="admin.fullPage" template="/WEB-INF/view/tiles/template/adminTemplate.jsp">
+        <put-attribute name="commonAssets" value="/WEB-INF/view/admin/common/html/commonAssets.jsp"/>
+        <put-attribute name="customAssets" value="/WEB-INF/view/admin/common/html/customDefaultAssets.jsp"/>
+        <put-attribute name="header" value="/WEB-INF/view/admin/common/html/header.jsp"/>
+        <put-attribute name="menu" value="/WEB-INF/view/admin/common/html/menu.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/view/admin/common/html/footer.jsp"/>
+    </definition>
+
+    <definition name="main.fullPage.defaultError" extends="main.fullPage">
+        <put-attribute name="title" value="/WEB-INF/view/main/common/html/defaultErrorTitle.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/view/main/common/html/defaultErrorContent.jsp"/>
+    </definition>
+
+    <definition name="admin.fullPage.defaultError" extends="admin.fullPage">
+        <put-attribute name="title" value="/WEB-INF/view/admin/common/html/defaultErrorTitle.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/view/admin/common/html/defaultErrorContent.jsp"/>
+    </definition>
+    <!--                                     -->
+    <!-- Site Management Panel (Admin panel) -->
+    <!--                                     -->
+    <definition name="admin.fullPage.adminMain" extends="admin.fullPage">
+        <put-attribute name="title" value="/WEB-INF/view/admin/admin/html/adminMainTitle.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/view/admin/admin/html/adminMainContent.jsp"/>
+    </definition>
+
+
+    <!--          -->
+    <!--Main Site -->
+    <!--          -->
+    
+    <definition name="main.fullPage.index" extends="main.fullPage">
+        <put-attribute name="title" value="/WEB-INF/view/main/main/html/indexTitle.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/view/main/main/html/indexContent.jsp"/>
+        <!--<put-attribute name="customAssets" value="/WEB-INF/view/admin/users/userGroups/html/editUserGroupFormAssets.jsp"/>-->
+    </definition>
+    
+    <definition name="main.fullPage.authorizationError" extends="main.fullPage">
+        <put-attribute name="title" value="/WEB-INF/view/main/common/html/authorizationErrorTitle.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/view/main/common/html/authorizationErrorContent.jsp"/>
+        <!--<put-attribute name="customAssets" value="/WEB-INF/view/admin/users/userGroups/html/editUserGroupFormAssets.jsp"/>-->
+    </definition>
+    
+
+
+</tiles-definitions>

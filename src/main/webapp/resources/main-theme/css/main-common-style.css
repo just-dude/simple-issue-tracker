@@ -1,0 +1,353 @@
+.min-height-1000{
+    min-height: 1000px;    
+}
+
+.main-bg-color{
+    background-color: #31529d;
+}
+
+.footer{
+    color: white;
+    height: 40px;
+    padding: 10px 0px;
+}
+
+
+/*################################################ Press-bar ##################################################*/
+#press_bar {
+	width: 170px;
+	/*border: 2px solid black;*/
+	float: right;
+}
+#society{
+	height: 30px;
+	background: rgba(57, 95, 182, 1);
+	margin-bottom: 16px;
+}
+div.society_icon{
+	width: 34px;
+	float: right;
+}
+a.rollover_vk {
+    background: url(/resources/main-theme/img/vk_m.png); /* ���� � ����� � �������� ��������  */
+    display: block; /*  ������� ��� ������� ������� */
+    width: 29px; /* ������ ������� */
+    height: 30px; /*  ������ ������� */
+}
+a.rollover_vk:hover {
+    background: url(/resources/main-theme/img/vk.png); /* ���� � ����� � ���������� ��������  */
+}
+a.rollover_facebook {
+    background: url(/resources/main-theme/img/facebook_m.png); /* ���� � ����� � �������� ��������  */
+    display: block; /*  ������� ��� ������� ������� */
+    width: 29px; /* ������ ������� */
+    height: 30px; /*  ������ ������� */
+}
+a.rollover_facebook:hover {
+    background: url(/resources/main-theme/img/facebook.png); /* ���� � ����� � ���������� ��������  */
+}
+a.rollover_twitter {
+    background: url(/resources/main-theme/img/twitter_m.png); /* ���� � ����� � �������� ��������  */
+    display: block; /*  ������� ��� ������� ������� */
+    width: 29px; /* ������ ������� */
+    height: 30px; /*  ������ ������� */
+}
+a.rollover_twitter:hover {
+    background: url(/resources/main-theme/img/twitter.png); /* ���� � ����� � ���������� ��������  */
+}
+a.rollover_rss {
+    background: url(/resources/main-theme/img/rss_m.png); /* ���� � ����� � �������� ��������  */
+    display: block; /*  ������� ��� ������� ������� */
+    width: 29px; /* ������ ������� */
+    height: 30px; /*  ������ ������� */
+}
+a.rollover_rss:hover {
+    background: url(/resources/main-theme/img/rss.png); /* ���� � ����� � ���������� ��������  */
+}
+a.rollover_mail {
+    background: url(/resources/main-theme/img/mail_m.png); /* ���� � ����� � �������� ��������  */
+    display: block; /*  ������� ��� ������� ������� */
+    width: 29px; /* ������ ������� */
+    height: 30px; /*  ������ ������� */
+}
+a.rollover_mail:hover {
+    background: url(/resources/main-theme/img/mail.png); /* ���� � ����� � ���������� ��������  */
+}
+
+a.rollover_odnoklassniki {
+    background: url(/resources/main-theme/img/odn_m.png); /* ���� � ����� � �������� ��������  */
+    display: block; /*  ������� ��� ������� ������� */
+    width: 29px; /* ������ ������� */
+    height: 30px; /*  ������ ������� */
+}
+a.rollover_odnoklassniki:hover {
+    background: url(/resources/main-theme/img/odn.png); /* ���� � ����� � ���������� ��������  */
+}
+#search{
+	height: 30px;
+	background: rgba(57, 95, 182, 1);
+	margin-bottom: 16px;
+}
+.info{
+	height: 30px;
+	background: rgba(57, 95, 182, 1);
+	margin-bottom: 16px;
+	display: inline-block;
+	width: 170px;
+}
+.info:hover{
+	background: rgba(112, 156, 215, 1);
+}	
+.info_text{
+	font-family: 'Trebuchet MS', 'Times New Roman', Times, serif;
+	font-size: 14px;
+	margin-top: 7px; 
+	color: white;
+	text-align: center;
+}
+.info_old{
+	height: 60px;
+	background: rgba(57, 95, 182, 1);
+	margin-bottom: 16px;
+	display: inline-block;
+	width: 170px;
+}
+.info_old:hover{
+	background: rgba(112, 156, 215, 1);
+}	
+.impaired_info{
+	width: 170px;
+	height: 132px;
+	/*height: 78px;*/
+	margin-bottom: 17px;
+	display: inline-block;
+	background: #ffffff;
+	
+	/*border: 3px solid #FF9845;
+	border: 3px solid #395FB6;*/
+	text-align: center;
+	font-weight: bold;
+	/*color: #395FB6;
+	color: #ffffff;*/
+	font-family: 'Trebuchet MS', 'Times New Roman', Times, serif;
+	font-size: 18px;
+}
+/*���������� ����������*/
+#countdown{
+	height: 135px;
+	background: url(/resources/main-theme/img/countdown.png);
+	/*background: rgba(255, 255, 255, 1);*/
+	margin-bottom: 16px;
+}
+.countdown_text{
+	font-family: 'Trebuchet MS', 'Times New Roman', Times, serif;
+	font-size: 18px;
+	font-weight:bold;
+	text-align: center;
+	color: #FFFFFF;
+	
+	padding-top: 15px;
+}
+/*���������� ���������� ���*/
+#contacts{
+	height: 159px;
+	background: rgba(255, 255, 255, 1);
+	margin-bottom: 16px;
+}
+.contacts{
+	font-family: 'Trebuchet MS', 'Times New Roman', Times, serif;
+	font-size: 18px;
+	font-weight:bold;
+	text-align: center;
+	color: rgba(125, 125, 125, 1); 
+	padding-top: 15px;
+}
+#dot{
+	margin: 5px 72px;
+}
+a.rollover_dot {
+    background: url(/resources/main-theme/img/dot_m.png); /* ���� � ����� � �������� ��������  */
+    display: block; /*  ������� ��� ������� ������� */
+    width: 36px; /* ������ ������� */
+    height: 46px; /*  ������ ������� */
+}
+a.rollover_dot:hover {
+    background: url(/resources/main-theme/img/dot.png); /* ���� � ����� � ���������� ��������  */
+}
+.address{
+	font-family: 'Trebuchet MS', 'Times New Roman', Times, serif;
+	font-size: 14px;
+	font-weight:bold;
+	text-align: center;
+	padding: 5px;
+	color: rgba(125, 125, 125, 1);
+}
+#press{
+	width: 170px;
+	height: 585px;
+	border: 3px solid rgba(255, 152, 69, 1);
+	background: rgba(255, 255, 255, 1);
+	margin-bottom: 16px;
+}
+.preview{
+	height: 178px;
+	margin: 4px 8px;
+	position:relative;
+	/*background: rgba(255, 152, 69, 1);*/
+}
+.one-news-preview{
+    color: black;
+    text-decoration: none; 
+    word-break: break-all;
+}
+.date{
+	width: 45px;
+	height: 59px;
+	display: block;
+	background: rgba(255, 152, 69, 1);
+	margin: 8px;
+	float: left;
+	z-index: 10;
+	position:absolute;
+	top: 8px;
+}
+.line{
+	margin-top: 5px;
+	margin-left: 4px;
+}
+.day{
+	margin-top: 8px;
+	font-family: 'Trebuchet MS', 'Times New Roman', Times, serif;
+	font-weight:bold;
+	text-align: center;
+	color: rgba(255, 255, 255, 1);
+	
+}
+.headline{
+	padding: 16px 3px 8px 64px; 
+	font-family: 'Trebuchet MS', 'Times New Roman', Times, serif;
+	font-size: 12px;
+	font-weight: bold;
+}
+.date_pre{
+	width: 45px;
+	height: 59px;
+	display: block;
+	background: rgba(255, 152, 69, 1);
+	margin: 0px 8px 8px 0px;
+	float: left;
+        line-height: 1;
+	/*z-index: 10;
+	position:absolute;
+	top: 8px;*/
+}
+.marker{
+    display: block;
+    padding: 3px 0px;
+    color: rgba(255, 152, 69, 1);
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.day_pre{
+	margin-top: 8px;
+	font-family: 'Trebuchet MS', 'Times New Roman', Times, serif;
+	font-weight:bold;
+	text-align: center;
+	color: rgba(255, 255, 255, 1);
+	
+}
+.headline_pre{
+	padding: 16px 3px 8px 5px; 
+	font-family: 'Trebuchet MS', 'Times New Roman', Times, serif;
+	font-size: 12px;
+	font-weight: bold;
+	word-wrap: break-word;
+}
+.headline_cont{
+	padding: 16px 3px 8px 5px; 
+	font-family: 'Trebuchet MS', 'Times New Roman', Times, serif;
+	font-size: 12px;
+	word-wrap: break-word;
+}
+.week_info{
+	height: 40px;
+	background: rgba(255, 152, 69, 1);
+        font-weight: bold;
+	margin-bottom: 16px;
+	display: inline-block;
+	width: 170px;
+}
+.week_info:hover{
+	background: rgba(255, 170, 80, 1);
+        cursor: pointer;
+}	
+.week_info_text{
+	font-family: 'Trebuchet MS', 'Times New Roman', Times, serif;
+	font-size: 16px;
+	margin-top: 10px; 
+	color: white;
+	text-align: center;
+}
+.terror_link{
+	width: 170px;
+	height: 170px;
+	
+}
+.incObrAndImairedContainer{
+	height: 78px;
+	margin-bottom: 16px;
+}
+/*################################################ Press-bar-end ##################################################*/
+
+
+/*################################################ Authentication ##################################################*/
+.inline-block{
+    display: inline-block;
+}
+
+.authentication-container{
+    
+}
+#auth-headline{
+    margin-bottom: 20px;
+}
+
+#login-form-container{
+    padding-right: 20px;
+    border-right: 1px solid rgba(112, 156, 215, 1);
+}
+
+#registration-container{
+    padding-left: 20px;
+}
+
+.auth-block{
+    width: 230px;
+    display: inline-grid;
+    
+}
+
+.registration-block-title{
+    margin-bottom: 72px
+}
+
+        
+
+.errors{
+    color:red;
+    padding: 5px 0px 10px 0px;
+}
+
+#success-login-container{
+    padding: 30px;
+}
+
+#logout-button{
+    margin: 30px auto;
+}
+
+
+
+
+/*################################################ Authentication-end ##################################################*/

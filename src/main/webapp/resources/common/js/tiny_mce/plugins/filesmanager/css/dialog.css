@@ -1,0 +1,42 @@
+#mtext, #mhref{
+    width: 282px;
+}
+
+#targ{
+	width: 150px;
+}
+#error{
+color: #FF3300;
+
+}
+#success{
+color: #0033FF;
+
+}
+#result{
+height: 80px;
+width: 100%;
+text-align: center;
+}
+#progress{
+position:relative; 
+border: 1px solid #ddd; 
+padding: 1px; 
+border-radius: 3px;
+width: 222px;
+height: 5px;
+margin: 10px 80px;
+}
+
+#bar{
+background: rgba(150,150,150, 1);
+width: 0%;
+border-radius: 1px;
+ /*rgba(57, 95, 182, 1)*/
+border-radius: 1px;
+height: 5px;
+}
+#progress_bar{
+display:none;
+height: 30px;
+}

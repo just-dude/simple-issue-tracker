@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="1" author="artem-suslov" >
+       <createTable tableName="UserAccounts" schemaName="tsu" >
+           <column name="userId" type="bigint" autoIncrement="true" >
+               <constraints primaryKey="true"  primaryKeyName="userAccountsPrimaryKey" nullable="false"/>
+           </column>
+           <column name="login" type="varchar(100)">
+               <constraints nullable="false"/>
+           </column>
+           <column name="hashedPassword" type="varchar(100)">
+               <constraints nullable="false"/>
+           </column>
+           <column name="salt" type="varchar(100)">
+               <constraints nullable="false"/>
+           </column>
+       </createTable>
+       <createTable tableName="UserProfiles" schemaName="tsu" >
+           <column name="userId" type="bigint">
+               <constraints nullable="false" foreignKeyName="userProfilesForeignKey" references="UserAccounts(userId)" primaryKey="true" primaryKeyName="userProfilesPrimaryKey" deleteCascade="true"/>
+           </column>
+           <column name="name" type="varchar(200)">
+               <constraints nullable="false"/>
+           </column>
+           <column name="surname" type="varchar(200)">
+               <constraints nullable="false"/>
+           </column>
+           <column name="patronymic" type="varchar(200)">
+               <constraints nullable="true"/>
+           </column>
+           <column name="dateOfBirth" type="date">
+               <constraints nullable="false"/>
+           </column>
+           <column name="sex" type="char(1)">
+               <constraints nullable="false"/>
+           </column>
+           <column name="email" type="varchar(100)">
+               <constraints nullable="false"/>
+           </column>
+           <column name="timezone" type="varchar(150)">
+               <constraints nullable="false"/>
+           </column>
+       </createTable>
+   </changeSet>
+   <changeSet id="2" author="artem-suslov" >
+       <createTable tableName="UserGroups" schemaName="tsu" >
+           <column name="id" type="bigint" autoIncrement="true" >
+               <constraints primaryKey="true"  primaryKeyName="userGroupssPrimaryKey" nullable="false"/>
+           </column>
+           <column name="name" type="varchar(255)">
+               <constraints nullable="false"/>
+           </column>
+       </createTable>
+   </changeSet>
+    <changeSet id="3" author="artem-suslov" >
+        <createTable tableName="UserGroupsAndAccountsRelationships" schemaName="tsu" >
+            <column name="userGroupId" type="bigint">
+                <constraints nullable="false" foreignKeyName="userGroupsAndAccountsRelationshipsToUserGroupsForeignKey" references="UserGroups(id)" deleteCascade="true"/>
+            </column>
+            <column name="userAccountId" type="bigint">
+                <constraints nullable="false" foreignKeyName="userGroupsAndAccountsRelationshipsToUserAccountsForeignKey" references="UserAccounts(userId)" primaryKey="true" primaryKeyName="userGroupsAndAccountsRelationshipsPrimaryKey" deleteCascade="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="4" author="artem-suslov">
+        <createView schemaName="tsu"  viewName="Users">
+            SELECT 
+            UA.userId as UserAccounts_userId,UA.login as UserAccounts_login,UA.hashedPassword as UserAccounts_hashedPassword, UA.salt as UserAccounts_salt,
+            UP.userId as UserProfiles_userId,UP.name as UserProfiles_name,UP.surname as UserProfiles_surname,UP.patronymic as UserProfiles_patronymic, UP.dateOfBirth as UserProfiles_dateOfBirth, UP.sex as UserProfiles_sex,UP.email as UserProfiles_email,UP.timezone as UserProfiles_timezone,
+            UG.id as UserGroups_id, UG.name as UserGroups_name
+            FROM UserAccounts AS UA
+            INNER JOIN UserProfiles AS UP ON UP.userId=UA.userId
+            INNER JOIN UserGroupsAndAccountsRelationships AS UGAAR ON UGAAR.userAccountId=UA.userId
+            INNER JOIN UserGroups AS UG ON UG.id=UGAAR.userGroupId
+        </createView>
+    </changeSet>
+    <changeSet id="insert-ststic-content" author="artem-suslov">
+        
+        <insert schemaName="tsu"  tableName="UserGroups">
+            <column name="id" value="1"/>
+            <column name="name" value="Admin"/>
+        </insert>
+        <insert schemaName="tsu"  tableName="UserGroups">
+            <column name="id" value="2"/>
+            <column name="name" value="Advanced editor"/>
+        </insert>
+        <insert schemaName="tsu"  tableName="UserGroups">
+            <column name="id" value="3"/>
+            <column name="name" value="Editor"/>
+        </insert>
+        <insert schemaName="tsu"  tableName="UserGroups">
+            <column name="id" value="4"/>
+            <column name="name" value="Visitor"/>
+        </insert>
+        
+        <insert schemaName="tsu"  tableName="UserAccounts"> <!-- A12345aqwerty -->
+            <column name="userId" value="1"/>
+            <column name="login" value="admin"/>
+            <column name="hashedPassword" value="Sdoq58CVvBteir7hT3PX+ZWjaCg7pugCRLAeTAV2JlM="/>
+            <column name="salt" value="/unhHbfn6N0F+p5MpeyZiQ=="/>
+        </insert>
+        <insert schemaName="tsu"  tableName="UserProfiles">
+            <column name="userId" value="1"/>
+            <column name="name" value="Admin"/>
+            <column name="surname" value="Admin"/>
+            <column name="patronymic" value="Admin"/>
+            <column name="dateOfBirth" value="1970-01-01"/>
+            <column name="email" value="admin@email.com"/>
+            <column name="sex" value="m"/>
+            <column name="timeZone" value="UTC"/>
+        </insert>
+        <insert schemaName="tsu"  tableName="UserGroupsAndAccountsRelationships">
+            <column name="userGroupId" value="1"/>
+            <column name="userAccountId" value="1"/>
+        </insert>
+        
+        <insert schemaName="tsu"  tableName="UserAccounts"> <!-- 1234567890 -->
+            <column name="userId" value="2"/>
+            <column name="login" value="advancedEditor"/>
+            <column name="hashedPassword" value="w+cBp1GhDwb8WcZncSI1IdMKrFIPS33LZf6D9dLHcaU="/>
+            <column name="salt" value="AkpL4XwsT+ouZs/I4MH/RA=="/>
+        </insert>
+        <insert schemaName="tsu"  tableName="UserProfiles">
+            <column name="userId" value="2"/>
+            <column name="name" value="Advanced Editor"/>
+            <column name="surname" value="Advanced Editor"/>
+            <column name="patronymic" value="Advanced Editor"/>
+            <column name="dateOfBirth" value="1970-01-01"/>
+            <column name="email" value="advancedEditor@email.com"/>
+            <column name="sex" value="m"/>
+            <column name="timeZone" value="UTC"/>
+        </insert>
+        <insert schemaName="tsu"  tableName="UserGroupsAndAccountsRelationships">
+            <column name="userGroupId" value="2"/>
+            <column name="userAccountId" value="2"/>
+        </insert>
+        
+        <insert schemaName="tsu"  tableName="UserAccounts"> <!-- 1234567890 -->
+            <column name="userId" value="3"/>
+            <column name="login" value="editor"/>
+            <column name="hashedPassword" value="w+cBp1GhDwb8WcZncSI1IdMKrFIPS33LZf6D9dLHcaU="/>
+            <column name="salt" value="AkpL4XwsT+ouZs/I4MH/RA=="/>
+        </insert>
+        <insert schemaName="tsu"  tableName="UserProfiles">
+            <column name="userId" value="3"/>
+            <column name="name" value="Editor"/>
+            <column name="surname" value="Editor"/>
+            <column name="patronymic" value="Editor"/>
+            <column name="dateOfBirth" value="1970-01-01"/>
+            <column name="email" value="editor@email.com"/>
+            <column name="sex" value="m"/>
+            <column name="timeZone" value="UTC"/>
+        </insert>
+        <insert schemaName="tsu"  tableName="UserGroupsAndAccountsRelationships">
+            <column name="userGroupId" value="3"/>
+            <column name="userAccountId" value="3"/>
+        </insert>
+        
+        <insert schemaName="tsu"  tableName="UserAccounts"> <!-- qwertyqwerty -->
+            <column name="userId" value="4"/>
+            <column name="login" value="visitor"/>
+            <column name="hashedPassword" value="0ytiYfMpO7Hx4oa5v0S9Ngt+YnNuSGmibgiSLupf5Rs="/>
+            <column name="salt" value="b+zdvi1gce3ezifwK3xwhg=="/>
+        </insert>
+        <insert schemaName="tsu"  tableName="UserProfiles">
+            <column name="userId" value="4"/>
+            <column name="name" value="Visitor"/>
+            <column name="surname" value="Visitor"/>
+            <column name="patronymic" value="Visitor"/>
+            <column name="dateOfBirth" value="1970-01-01"/>
+            <column name="email" value="visitor@email.com"/>
+            <column name="sex" value="m"/>
+            <column name="timeZone" value="UTC"/>
+        </insert>
+        <insert schemaName="tsu"  tableName="UserGroupsAndAccountsRelationships">
+            <column name="userGroupId" value="4"/>
+            <column name="userAccountId" value="4"/>
+        </insert>
+    </changeSet>
+    <changeSet id="createUserGroupsAndUserRolesR10psTable" author="artem-suslov" >
+        <createTable tableName="UserGroupsAndUserRolesRelationships" schemaName="tsu" >
+            <column name="userGroupId" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="userGroupsAndAccountsRelationshipsPrimaryKey" 
+                             foreignKeyName="userGroupsAndUserRolesRelationshipsToUserGroupsForeignKey" references="UserGroups(id)" deleteCascade="true"/>
+            </column>
+            <column name="userRoleId" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="userGroupsAndAccountsRelationshipsPrimaryKey"/>
+            </column>
+        </createTable>
+    </changeSet>
+     <changeSet id="insertUserGroupsAndUserRolesStaticR10ps" author="artem-suslov">        
+        <insert schemaName="tsu"  tableName="UserGroupsAndUserRolesRelationships">
+            <column name="userGroupId" value="1"/>
+            <column name="userRoleId" value="1"/>
+        </insert>
+        <insert schemaName="tsu"  tableName="UserGroupsAndUserRolesRelationships">
+            <column name="userGroupId" value="2"/>
+            <column name="userRoleId" value="2"/>
+        </insert>
+        <insert schemaName="tsu"  tableName="UserGroupsAndUserRolesRelationships">
+            <column name="userGroupId" value="3"/>
+            <column name="userRoleId" value="3"/>
+        </insert>
+        <insert schemaName="tsu"  tableName="UserGroupsAndUserRolesRelationships">
+            <column name="userGroupId" value="4"/>
+            <column name="userRoleId" value="5"/>
+        </insert>
+     </changeSet>
+    <changeSet id="createPagesTable" author="artem-suslov" >
+        <createTable tableName="MainPages" schemaName="tsu" >
+            <column name="id" type="bigint" autoIncrement="true">
+               <constraints primaryKey="true"  primaryKeyName="pagesPrimaryKey" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+               <constraints nullable="false"/>
+            </column>
+            <column name="title" type="varchar(255)">
+               <constraints nullable="false"/>
+            </column>
+            <column name="content" type="text">
+               <constraints nullable="false"/>
+            </column>
+            <column name="language" type="char(2)">
+               <constraints primaryKey="true"  primaryKeyName="pagesPrimaryKey" nullable="false"/>
+            </column>            
+            <column name="creationUTCDateTime" type="datetime">
+               <constraints nullable="false"/>
+            </column>
+            <column name="creatorId" type="bigint">
+               <constraints foreignKeyName="pageCreatorForeignKey" references="UserAccounts(userId)" nullable="false"/>
+            </column>
+            <column name="lastChangingUTCDateTime" type="datetime">
+               <constraints nullable="false"/>
+            </column>
+            <column name="lastChangerId" type="bigint">
+               <constraints foreignKeyName="pagelastChangerForeignKey" references="UserAccounts(userId)" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="createMainPagesHierarchicalR10psTable" author="artem-suslov" >
+        <createTable tableName="MainPagesHierarchicalR10ps" schemaName="tsu" >
+            <column name="parentId" type="bigint">
+                 <constraints nullable="false" primaryKey="true" primaryKeyName="mainPagesHierarchicalR10psPrimaryKey" 
+                             foreignKeyName="mainPagesHierarchicalR10psToMainPages1ForeignKey" references="MainPages(id)" 
+                             deleteCascade="true"/>
+            </column>
+            <column name="childId" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="mainPagesHierarchicalR10psPrimaryKey" 
+                             foreignKeyName="mainPagesHierarchicalR10psToMainPages2ForeignKey" references="MainPages(id)" 
+                             deleteCascade="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="insertToMainPages" author="artem-suslov">        
+        <insert schemaName="tsu"  tableName="MainPages">
+            <column name="id" value="1"/>
+            <column name="name" value="Root page"/>
+            <column name="title" value="Root page"/>
+            <column name="content" value="Root page content"/>
+            <column name="language" value="en"/>
+            <column name="creationUTCDateTime" value="2015-06-07 0:0:0"/>
+            <column name="lastChangingUTCDateTime" value="2015-06-07 0:0:0"/>
+            <column name="creatorId" value="1"/>
+            <column name="lastChangerId" value="1"/>
+        </insert>
+        <insert schemaName="tsu"  tableName="MainPages">
+            <column name="id" value="1"/>
+            <column name="name" value="Корневая страница"/>
+            <column name="title" value="Корневая страница"/>
+            <column name="content" value="Контент корневой страница"/>
+            <column name="language" value="ru"/>
+            <column name="creationUTCDateTime" value="2015-06-07 0:0:0"/>
+            <column name="lastChangingUTCDateTime" value="2015-06-07 0:0:0"/>
+            <column name="creatorId" value="1"/>
+            <column name="lastChangerId" value="1"/>
+        </insert>
+     </changeSet>
+     <changeSet id="insertMainPagesHierarchicalR10ps" author="artem-suslov">        
+        <insert schemaName="tsu"  tableName="MainPagesHierarchicalR10ps">
+            <column name="parentId" value="1"/>
+            <column name="childId" value="1"/>
+        </insert>
+     </changeSet>
+     <changeSet id="createTotalMainPagesView" author="artem-suslov">
+        <createView schemaName="tsu"  viewName="TotalMainPages">
+            SELECT 
+            mpParent.id as ParentMainPages_id, mpParent.name as ParentMainPages_name, mpParent.title as ParentMainPages_title, mpParent.content as ParentMainPages_content, mpParent.language as ParentMainPages_language, mpParent.creationUTCDateTime as ParentMainPages_creationUTCDateTime, mpParent.creatorId as ParentMainPages_creatorId, mpParent.lastChangingUTCDateTime as ParentMainPages_lastChangingUTCDateTime,mpParent.lastChangerId  as ParentMainPages_lastChangerId,
+            mpChild.id as ChildrenMainPages_id, mpChild.name as ChildrenMainPages_name, mpChild.title as ChildrenMainPages_title, mpChild.content as ChildrenMainPages_content, mpChild.language as ChildrenMainPages_language, mpChild.creationUTCDateTime as ChildrenMainPages_creationUTCDateTime, mpChild.creatorId as ChildrenMainPages_creatorId, mpChild.lastChangingUTCDateTime as ChildrenMainPages_lastChangingUTCDateTime,mpChild.lastChangerId  as ChildrenMainPages_lastChangerId
+            FROM `MainPages` as mpChild
+            INNER JOIN MainPagesHierarchicalR10ps as r10p ON childId=mpChild.id
+            INNER JOIN `MainPages` as mpParent ON mpParent.id=parentId AND mpParent.language=mpChild.language
+        </createView>
+    </changeSet>
+</databaseChangeLog>
