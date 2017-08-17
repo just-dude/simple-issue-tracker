@@ -15,7 +15,7 @@ public class ValidationFailedException extends BusinessException {
     private List<ConstraintViolation> constraintsViolations;
     
     public ValidationFailedException(List<ConstraintViolation> constraintsViolations) {
-        super("ValidationFailed. Constraints violations list: "+StringUtils.join(constraintsViolations.toArray(), ","));
+        super("Constraints violations list: "+StringUtils.join(constraintsViolations.toArray(), ","));
         this.constraintsViolations=constraintsViolations;
     }
 

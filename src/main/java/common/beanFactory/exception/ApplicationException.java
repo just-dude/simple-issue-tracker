@@ -15,6 +15,8 @@ public class ApplicationException extends RuntimeException{
 
     private Queue<ContextData> contextsDataQueue = Collections.asLifoQueue(new ArrayDeque<>());
 
+    public ApplicationException() {}
+
     public ApplicationException(String message) {
         super(message);
     }

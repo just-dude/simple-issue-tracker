@@ -2,15 +2,9 @@
 package controller.struts.action.common;
 
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.interceptor.ValidationWorkflowAware;
-import java.util.List;
-
 import domain.common.exception.AuthorizationFailedException;
 import domain.common.exception.BusinessException;
-import domain.common.exception.InvalidParametersBusinessException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import domain.common.exception.IllegalArgumentBusinessException;
 
 import controller.struts.action.common.util.ActionUtils;
 
@@ -24,7 +18,7 @@ public abstract class FormProviderHandlingExceptionsBaseAction extends HandlingE
         try {
             LOG.debug("FormProviderHandlingExceptionsBaseAction input start execute");
             return doInput();
-        } catch (InvalidParametersBusinessException e) {
+        } catch (IllegalArgumentBusinessException e) {
             LOG.debug("INVALID_PARAMETERS result");
             getActionErrors().add(getText(CustomResults.INVALID_PARAMETERS));
             return ActionUtils.getDecoratedByViewSettingsResult(CustomResults.INVALID_PARAMETERS);

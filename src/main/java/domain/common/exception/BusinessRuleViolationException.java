@@ -5,11 +5,10 @@ package domain.common.exception;
  */
 public class BusinessRuleViolationException extends BusinessException {
 
-    public BusinessRuleViolationException(String message) {
-        super(message);
+    public BusinessRuleViolationException() {
     }
 
-    public BusinessRuleViolationException(String message, Throwable cause) {
-        super(message, cause);
+    public BusinessRuleViolationException(String message) {
+        super(message);
     }
 }

@@ -16,8 +16,6 @@ import static common.beanFactory.BeanFactoryProvider.*;
 
 public class ValidationUtils {
     
-    private static final Logger LOG = LogManager.getLogger(ValidationUtils.class);
-    
     public static void ifInvalidThrowValidationFailedException(Object entity, String entityValidatorFactoryBeanName) throws BusinessException {
         try{
             EntityValidator validator =getValidatorFactory(entityValidatorFactoryBeanName).getValidator(entity);
@@ -25,8 +23,11 @@ public class ValidationUtils {
                 throw new ValidationFailedException(validator.getConstraintViolations());
             }
         } catch(Exception e){
-            throw BusinessExceptionHandleUtils.handleExceptionAndReturnBusinessException(e, LOG, entity, "on validation");
-        }        
+            BusinessException be = new BusinessException("On trying to validate entity has occured exception",e,"ValidationUtils.ifInvalidThrowValidationFailedException");
+            be.addContextData("entity",entity);
+            be.addContextData("entityValidatorFactoryBeanName",entityValidatorFactoryBeanName);
+            throw be;
+        }
     }
     
     private static EntityValidatorFactory getValidatorFactory(String entityValidatorFactoryBeanName) throws BusinessException {
