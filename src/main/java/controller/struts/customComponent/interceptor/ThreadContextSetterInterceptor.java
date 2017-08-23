@@ -28,7 +28,7 @@ public class ThreadContextSetterInterceptor extends AbstractInterceptor {
 //                if(SecurityUtils.getSubject().getPrincipals()!=null){
 //                    ThreadContext.put("subjectPrincipals",SecurityUtils.getSubject().getPrincipals().asList().toString());
 //                } else{
-//                    LOG.debug("User have not authenticated");
+//                    LOG.debug("UserAccount have not authenticated");
 //                }
 //            } catch(Exception e){
 //                LOG.error("ThreadContextSetterInterceptor SecurityUtils error",e);

@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-    <bean id="TsuDataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close" >
+    <bean id="DefaultDataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close" >
         <property name="url" value="${dataSource.url}" />
         <property name="driverClassName" value="${dataSource.driverClassName}" />
         <property name="username" value="${dataSource.username}" />
@@ -15,13 +15,13 @@
         <property name="maxTotal" value="${dataSource.maxTotal}"/>
     </bean>
     <bean id="NamedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
-        <constructor-arg ref="TsuDataSource"/>
+        <constructor-arg ref="DefaultDataSource"/>
     </bean>
     <bean id="SimpleJdbcInsert" class="org.springframework.jdbc.core.simple.SimpleJdbcInsert" scope="prototype" >
-        <constructor-arg ref="TsuDataSource"/>
+        <constructor-arg ref="DefaultDataSource"/>
     </bean>
     <bean id="DataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <constructor-arg ref="TsuDataSource"/>
+        <constructor-arg ref="DefaultDataSource"/>
     </bean>
 
     
