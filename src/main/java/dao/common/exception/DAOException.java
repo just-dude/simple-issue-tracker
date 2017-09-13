@@ -2,7 +2,7 @@
 package dao.common.exception;
 
 
-import common.beanFactory.exception.ApplicationException;
+import common.exception.ApplicationException;
 
 import java.util.Map;
 

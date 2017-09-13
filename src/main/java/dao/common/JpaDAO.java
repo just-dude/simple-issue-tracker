@@ -56,8 +56,8 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
 
     @Override
     public void delete(ID id) {
-        if (em.contains())
-            em.remove(em.find(getEntityTypeClass(), id));
+        T entity = em.find(getEntityTypeClass(), id);
+        em.remove(entity);
     }
 
     @Override

@@ -2,11 +2,11 @@
 package domain.common.exception;
 
 
-import common.beanFactory.exception.ApplicationException;
+import common.exception.ApplicationException;
 
 import java.util.Map;
 
-public class BusinessException extends ApplicationException{
+public class BusinessException extends ApplicationException {
 
     public BusinessException() {
     }

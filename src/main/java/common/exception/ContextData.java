@@ -1,4 +1,4 @@
-package common.beanFactory.exception;
+package common.exception;
 
 import java.util.*;
 
@@ -10,7 +10,7 @@ class ContextData {
     private static String DATA_WITHOUT_NAME = "dataWithoutName1";
 
     private String contextName;
-    private Map<String,Object> dataMap = new HashMap();
+    private Map<String, Object> dataMap = new HashMap();
     private List<Object> dataList = new ArrayList();
 
     public ContextData(String contextName) {
@@ -19,10 +19,10 @@ class ContextData {
 
     public ContextData(String contextName, List<Object> data) {
         this.contextName = contextName;
-        this.dataList=data;
+        this.dataList = data;
     }
 
-    public ContextData(String contextName, Map<String,Object> data) {
+    public ContextData(String contextName, Map<String, Object> data) {
         this.contextName = contextName;
         this.dataMap = data;
     }
@@ -65,10 +65,10 @@ class ContextData {
             dataStr = Arrays.toString(this.dataList.toArray());
         }
         if (!this.dataMap.isEmpty()) {
-            if(dataStr!=""){
+            if (dataStr != "") {
                 dataStr += ", ";
             }
-            dataStr +=this.dataMap.toString();
+            dataStr += this.dataMap.toString();
         }
         return String.format("Context '%s' data: { %s }", this.contextName, dataStr);
     }
