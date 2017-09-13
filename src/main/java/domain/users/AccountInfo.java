@@ -1,8 +1,6 @@
 package domain.users;
 
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * Created by SuslovAI on 17.08.2017.
@@ -48,5 +46,14 @@ public class AccountInfo {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    @Override
+    public String toString() {
+        return "AccountInfo{" +
+                "login='" + login + '\'' +
+                ", hashedPassword='" + hashedPassword + '\'' +
+                ", salt='" + salt + '\'' +
+                '}';
     }
 }

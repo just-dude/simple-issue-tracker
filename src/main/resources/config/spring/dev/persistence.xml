@@ -3,38 +3,40 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
-    
-    
-    <bean id="DefaultDataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close" >
-        <property name="url" value="${dataSource.url}" />
-        <property name="driverClassName" value="${dataSource.driverClassName}" />
-        <property name="username" value="${dataSource.username}" />
-        <property name="password" value="${dataSource.password}" />
-        <property name="initialSize" value="${dataSource.initialSize}" />
+
+
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="url" value="${dataSource.url}"/>
+        <property name="driverClassName" value="${dataSource.driverClassName}"/>
+        <property name="username" value="${dataSource.username}"/>
+        <property name="password" value="${dataSource.password}"/>
+        <property name="initialSize" value="${dataSource.initialSize}"/>
         <property name="maxIdle" value="${dataSource.maxIdle}"/>
         <property name="minIdle" value="${dataSource.minIdle}"/>
         <property name="maxTotal" value="${dataSource.maxTotal}"/>
     </bean>
 
-    <bean id="TransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="EntityManagerFactory" />
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
-    <bean id="EntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="persistenceUnitName" value="issue-tracker-unit" />
-        <property name="dataSource" ref="DefaultDataSource" />
-        <property name="packagesToScan" value="domain.*" />
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="issue-tracker-unit"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="domain.*"/>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="showSql" value="true" />
-                <property name="databasePlatform" value="org.hibernate.dialect.MySQL5Dialect" />
-                <property name="generateDdl" value="false" />
+                <property name="showSql" value="true"/>
+                <property name="databasePlatform" value="org.hibernate.dialect.MySQL5Dialect"/>
+                <property name="generateDdl" value="false"/>
             </bean>
         </property>
     </bean>
-   
-    
 
-    
+    <bean id="entityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+
     <!--logger=Slf4JLogger&amp;profileSQL=true&amp;-->
 </beans>

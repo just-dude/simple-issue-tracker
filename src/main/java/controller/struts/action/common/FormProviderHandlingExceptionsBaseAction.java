@@ -4,7 +4,6 @@ package controller.struts.action.common;
 
 import domain.common.exception.AuthorizationFailedException;
 import domain.common.exception.BusinessException;
-import domain.common.exception.IllegalArgumentBusinessException;
 
 import controller.struts.action.common.util.ActionUtils;
 

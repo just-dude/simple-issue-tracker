@@ -1,6 +1,5 @@
 package domain.users;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
@@ -8,7 +7,7 @@ import java.io.Serializable;
  * Created by SuslovAI on 17.08.2017.
  */
 @Embeddable
-public class Profile implements Serializable{
+public class Profile implements Serializable {
 
     private String name;
 
@@ -47,5 +46,14 @@ public class Profile implements Serializable{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
