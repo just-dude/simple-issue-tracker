@@ -10,6 +10,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +113,10 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
 
     @Override
     public void deleteAll() {
-
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaDelete<T> cd = cb.createCriteriaDelete(getEntityTypeClass());
+        cd.from(getEntityTypeClass());
+        em.createQuery(cd).executeUpdate();
     }
 
     @Override
@@ -119,7 +127,12 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
 
     @Override
     public List<T> findAll() {
-        return null;
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(getEntityTypeClass());
+        Root<T> entity = cq.from(getEntityTypeClass());
+        cq.select(entity);
+        TypedQuery<T> typedQuery = em.createQuery(cq);
+        return typedQuery.getResultList();
     }
 
     @Override
