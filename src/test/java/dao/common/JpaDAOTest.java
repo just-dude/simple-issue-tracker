@@ -18,7 +18,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 public class JpaDAOTest extends SpringContextTestCase {
     @Test
     public void save() throws Exception {
-        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository) BeanFactoryProvider.getBeanFactory().getBean("jpaDAO");
+        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDAO");
         PlatformTransactionManager tm = (PlatformTransactionManager) BeanFactoryProvider.getBeanFactory().getBean("transactionManager");
         UserAccount firstUA = new UserAccount(new AccountInfo("login1", "hashedPass1", "salt1")
                 , new Profile("name1", "surname1", "email1@email.ru")
@@ -56,4 +56,11 @@ public class JpaDAOTest extends SpringContextTestCase {
         }
     }
 
+    @Test
+    public void testGetEntityTypeClass() throws Exception {
+        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDAO");
+        UserAccount account = jpaDAO.getOne(10L);
+        System.out.println(account);
+
+    }
 }

@@ -1,6 +1,8 @@
 package dao.common;
 
 
+import common.argumentAssert.Assert;
+import dao.common.exception.EntityWithSuchIdDoesNotExistsDaoException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.EntityManager;
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,26 +19,50 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
 
     private EntityManager em;
 
-    public JpaDAO(EntityManager em) {
+    protected Class<T> entityClass;
+
+
+    public JpaDAO(EntityManager em, Class<T> entityClass) {
         this.em = em;
+        this.entityClass = entityClass;
     }
 
-    protected Class<T> getEntityTypeClass() {
-        return (Class<T>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[0];
+    public Class<T> getEntityTypeClass() {
+        return entityClass;
     }
 
     @Override
     public <S extends T> S save(S s) {
+        Assert.notNull(s, "entity");
         return em.merge(s);
     }
 
     @Override
     public <S extends T> List<S> save(Iterable<S> iterable) {
+        return saveLittle(iterable);
+    }
+
+    public <S extends T> List<S> saveLittle(Iterable<S> iterable) {
+        Assert.notNull(iterable, "iterable of entities");
         List<S> result = new ArrayList<S>();
         for (S element : iterable) {
-            this.save(element);
+            result.add(this.save(element));
         }
+        return result;
+    }
+
+    public <S extends T> List<S> saveLotsOf(Iterable<S> iterable) {
+        Assert.notNull(iterable, "iterable of entities");
+        List<S> result = new ArrayList<S>();
+        int i = 0;
+        for (S element : iterable) {
+            result.add(this.save(element));
+            if (++i % 50 == 0) {
+                em.flush();
+                em.clear();
+            }
+        }
+        em.clear();
         return result;
     }
 
@@ -56,24 +81,41 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
 
     @Override
     public void delete(ID id) {
-        T entity = em.find(getEntityTypeClass(), id);
+        Assert.notNull(id, "id");
+        T entity = findOne(id);
+        if (entity == null) {
+            throw new EntityWithSuchIdDoesNotExistsDaoException(id);
+        }
         em.remove(entity);
     }
 
     @Override
     public void delete(T t) {
-
+        Assert.notNull(t, "Entity %s to delete must not be null", t);
+        if (!em.contains(t)) {
+            t = em.merge(t);
+        }
+        em.remove(t);
     }
 
     @Override
     public void delete(Iterable<? extends T> iterable) {
-
+        Assert.notNull(iterable, "iterable of entities");
+        for (T entity : iterable) {
+            delete(entity);
+        }
     }
 
     @Override
     public void deleteAll() {
 
     }
+
+    @Override
+    public T getOne(ID id) {
+        return em.find(getEntityTypeClass(), id);
+    }
+
 
     @Override
     public List<T> findAll() {
@@ -100,10 +142,6 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
 
     }
 
-    @Override
-    public T getOne(ID id) {
-        return null;
-    }
 
     @Override
     public <S extends T> List<S> findAll(Example<S> example) {
@@ -156,4 +194,28 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
     public <S extends T> boolean exists(Example<S> example) {
         return false;
     }
+
+    /*@Override
+    public T getOne(ID id) {
+        Field[] fields = id.getClass().getDeclaredFields();
+        Map<String, Object> fieldNamesToValuesMap = new HashMap<>();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(getEntityTypeClass());
+        Root<T> entity = cq.from(getEntityTypeClass());
+        cq.select(entity);
+
+        for (Field field : fields) {
+            try {
+
+                String fieldValue = BeanUtils.getProperty(id, field.getName());
+                cq.where(cb.equal(entity.get(field.getName()), fieldValue));
+            } catch (Exception e) {
+                throw new DaoException("An exception has occured on build where clause", e);
+            }
+        }
+        TypedQuery<T> q = em.createQuery(cq);
+        List<T> resultList = q.getResultList();
+
+        return resultList.get(0);
+    }*/
 }

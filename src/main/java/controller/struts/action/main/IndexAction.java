@@ -1,33 +1,33 @@
 package controller.struts.action.main;
 
-import controller.struts.action.admin.*;
-import static com.mchange.v2.c3p0.impl.C3P0Defaults.user;
-import java.util.*;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import common.beanFactory.BeanFactoryProvider;
 import controller.struts.action.common.CustomResults;
 import controller.struts.action.common.HandlingExceptionsBaseAction;
 import controller.struts.action.common.util.ActionUtils;
+import domain.users.UserAccount;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import static common.beanFactory.BeanFactoryProvider.*;
 
+public class IndexAction extends HandlingExceptionsBaseAction {
 
-public class IndexAction extends HandlingExceptionsBaseAction{
-    
     private static final Logger LOG = LogManager.getLogger(IndexAction.class);
-        
+
     public IndexAction() {
         super();
     }
-    
+
     @Override
-    public String doExecute() throws Exception {        
+    public String doExecute() throws Exception {
+        LOG.info("IndexAction is executing");
+        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDAO");
+        LOG.info("IndexAction has executed");
         return ActionUtils.getDecoratedByViewSettingsResult(CustomResults.SUCCESS);
     }
-    
+
     @Override
-    protected void logException(Exception e, String message){
+    protected void logException(Exception e, String message) {
         ActionUtils.logException(LOG, e, message);
     }
 

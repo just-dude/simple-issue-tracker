@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
 
 @RunWith(BlockJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/testApplicationContext.xml"})
+@ContextConfiguration(classes = {javaConfig.spring.test.ApplicationConfig.class})
 public abstract class SpringContextTestCase {
 
     @ClassRule

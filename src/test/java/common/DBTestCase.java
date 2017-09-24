@@ -33,7 +33,7 @@ import java.io.InputStream;
       TransactionalTestExecutionListener.class,
        DbUnitTestExecutionListener.class })*/
 @RunWith(BlockJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/testApplicationContext.xml"})
+@ContextConfiguration(classes = {javaConfig.spring.test.ApplicationConfig.class})
 public abstract class DBTestCase extends DataSourceBasedDBTestCase {
 
     @ClassRule
