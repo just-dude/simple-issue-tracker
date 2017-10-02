@@ -1,12 +1,14 @@
 package domain.common;
 
+import domain.common.exception.EntityWithSuchIdDoesNotExistsBusinessException;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class HavingOneIdDomainObject extends DomainObject {
+public abstract class HavingOneIdDomainObject<T> extends DomainObject<T, Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +21,8 @@ public class HavingOneIdDomainObject extends DomainObject {
         this.id = id;
     }
 
+
+    @Override
     public Long getId() {
         return id;
     }
@@ -26,4 +30,17 @@ public class HavingOneIdDomainObject extends DomainObject {
     public void setId(Long id) {
         this.id = id;
     }
+
+
+    @Override
+    protected void ifUpdateNotExistsEntityThrowException() throws EntityWithSuchIdDoesNotExistsBusinessException {
+        if (!isNew() && !getDAO().exists(id)) {
+            throw new EntityWithSuchIdDoesNotExistsBusinessException(id);
+        }
+    }
+
+    protected boolean isNew() {
+        return id == null;
+    }
+
 }

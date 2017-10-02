@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity(name = "UserGroup")
 @Table(name = "UserGroups")
-public class UserGroup extends HavingNameAndOneIdDomainObject {
+public class UserGroup extends HavingNameAndOneIdDomainObject<UserGroup> {
 
     public UserGroup() {
     }

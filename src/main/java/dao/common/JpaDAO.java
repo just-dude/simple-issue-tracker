@@ -3,20 +3,17 @@ package dao.common;
 
 import common.argumentAssert.Assert;
 import dao.common.exception.EntityWithSuchIdDoesNotExistsDaoException;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import dao.common.exception.UnsupportedOperationDaoException;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> {
@@ -120,6 +117,16 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
     }
 
     @Override
+    public void deleteInBatch(Iterable<T> iterable) {
+        delete(iterable);
+    }
+
+    @Override
+    public void deleteAllInBatch() {
+        deleteAll();
+    }
+
+    @Override
     public T getOne(ID id) {
         return em.find(getEntityTypeClass(), id);
     }
@@ -129,46 +136,73 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
     public List<T> findAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(getEntityTypeClass());
-        Root<T> entity = cq.from(getEntityTypeClass());
-        cq.select(entity);
+        Root<T> root = cq.from(getEntityTypeClass());
+        cq.select(root);
         TypedQuery<T> typedQuery = em.createQuery(cq);
         return typedQuery.getResultList();
     }
 
     @Override
     public List<T> findAll(Sort sort) {
-        return null;
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(getEntityTypeClass());
+        Root<T> root = cq.from(getEntityTypeClass());
+        cq.select(root);
+        sort.forEach(order -> {
+            if (order.isAscending()) {
+                cq.orderBy(cb.asc(root.get(order.getProperty())));
+            } else {
+                cq.orderBy(cb.desc(root.get(order.getProperty())));
+            }
+        });
+        TypedQuery<T> typedQuery = em.createQuery(cq);
+        return typedQuery.getResultList();
     }
 
     @Override
     public List<T> findAll(Iterable<ID> iterable) {
-        return null;
-    }
-
-    @Override
-    public void deleteInBatch(Iterable<T> iterable) {
-
-    }
-
-    @Override
-    public void deleteAllInBatch() {
-
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(getEntityTypeClass());
+        Root<T> root = cq.from(getEntityTypeClass());
+        cq.select(root);
+        cq.where(root.in(iterable));
+        TypedQuery<T> typedQuery = em.createQuery(cq);
+        return typedQuery.getResultList();
     }
 
 
     @Override
     public <S extends T> List<S> findAll(Example<S> example) {
-        return null;
+        throw new UnsupportedOperationDaoException("findAll(Example<S> example)");
     }
 
     @Override
     public <S extends T> List<S> findAll(Example<S> example, Sort sort) {
-        return null;
+        throw new UnsupportedOperationDaoException("findAll(Example<S> example, Sort sort)");
     }
 
     @Override
     public Page<T> findAll(Pageable pageable) {
-        return null;
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(getEntityTypeClass());
+        Root<T> root = cq.from(getEntityTypeClass());
+        cq.select(root);
+        pageable.getSort().forEach(order -> {
+            Iterator<String> propertyPartsIterator = Arrays.asList(order.getProperty().split("\\.")).iterator();
+            Path path = root.get(propertyPartsIterator.next());
+            while (propertyPartsIterator.hasNext()) {
+                path = path.get(propertyPartsIterator.next());
+            }
+            if (order.isAscending()) {
+                cq.orderBy(cb.asc(path));
+            } else {
+                cq.orderBy(cb.desc(path));
+            }
+        });
+        TypedQuery<T> typedQuery = em.createQuery(cq);
+        typedQuery.setFirstResult(pageable.getOffset());
+        typedQuery.setMaxResults(pageable.getPageSize());
+        return new PageImpl<T>(typedQuery.getResultList(), pageable, count());
     }
 
 
@@ -179,33 +213,39 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
 
     @Override
     public boolean exists(ID id) {
-        return false;
+        return findOne(id) != null;
     }
 
     @Override
     public long count() {
-        return 0;
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<T> root = cq.from(getEntityTypeClass());
+        cq.select(cb.count(root));
+        TypedQuery<Long> typedQuery = em.createQuery(cq);
+        return typedQuery.getSingleResult();
     }
 
 
     @Override
     public <S extends T> S findOne(Example<S> example) {
-        return null;
+        throw new UnsupportedOperationDaoException("findOne(Example<S> example)");
     }
 
     @Override
     public <S extends T> Page<S> findAll(Example<S> example, Pageable pageable) {
-        return null;
+        throw new UnsupportedOperationDaoException("findAll(Example<S> example, Pageable pageable)");
     }
+
 
     @Override
     public <S extends T> long count(Example<S> example) {
-        return 0;
+        throw new UnsupportedOperationDaoException("count(Example<S> example)");
     }
 
     @Override
     public <S extends T> boolean exists(Example<S> example) {
-        return false;
+        throw new UnsupportedOperationDaoException("exists(Example<S> example)");
     }
 
     /*@Override

@@ -1,19 +1,20 @@
-package dao.common.exception;
+package domain.common.exception;
+
 
 /**
  * Created by suslovai on 15.09.2017.
  */
-public class EntityWithSuchIdDoesNotExistsDaoException extends DaoException {
+public class EntityWithSuchIdDoesNotExistsBusinessException extends BusinessException {
 
     private static final String MESSAGE_FORMAT = "Entity with such id - %s not exists";
 
     private Object id;
 
-    public EntityWithSuchIdDoesNotExistsDaoException(Object id) {
+    public EntityWithSuchIdDoesNotExistsBusinessException(Object id) {
         super(String.format(MESSAGE_FORMAT, id));
     }
 
-    public EntityWithSuchIdDoesNotExistsDaoException(Object id, Throwable cause) {
+    public EntityWithSuchIdDoesNotExistsBusinessException(Object id, Throwable cause) {
         super(String.format(MESSAGE_FORMAT, id), cause);
     }
 

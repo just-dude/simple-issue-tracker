@@ -3,7 +3,7 @@ package domain.common;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class HavingNameAndOneIdDomainObject extends HavingOneIdDomainObject {
+public abstract class HavingNameAndOneIdDomainObject<T> extends HavingOneIdDomainObject<T> {
 
     protected String name;
 

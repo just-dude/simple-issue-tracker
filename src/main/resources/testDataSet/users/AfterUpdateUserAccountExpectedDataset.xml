@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    <test_issue_tracker.UserGroups id="1" name="fisrtGroup"/>
+    <test_issue_tracker.UserGroups id="2" name="secondGroup"/>
+
+    <test_issue_tracker.UserAccounts login="newLogin" email="email1@mail.ml" name="newName" surname="surname1"
+                                     groupId="1"/>
+    <test_issue_tracker.UserAccounts login="login2" email="email2@mail.ml" name="name2" surname="surname2" groupId="1"/>
+    <test_issue_tracker.UserAccounts login="login3" email="email3@mail.ml" name="name3" surname="surname3" groupId="2"/>
+
+</dataset>
