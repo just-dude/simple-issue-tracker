@@ -12,6 +12,8 @@ import java.time.Instant;
 import java.time.ZoneId;
 
 @Configuration
+//@EnableTransactionManagement
+//@EnableAspectJAutoProxy
 @Import({javaConfig.spring.common.UsersConfig.class, PersistenceConfig.class})
 @PropertySource(value = "classpath:сonfig/spring/persistence-test.properties")
 public class ApplicationConfig {

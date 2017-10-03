@@ -2,12 +2,16 @@ package javaConfig.spring.common;
 
 import dao.common.JpaDAO;
 import domain.users.UserAccount;
+import domain.users.UserAccountValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.repository.JpaRepository;
+import smartvalidation.validator.entityValidator.ValidationContext;
 
 import javax.persistence.EntityManager;
+
 
 @Configuration
 public class UsersConfig {
@@ -20,5 +24,18 @@ public class UsersConfig {
     public JpaRepository<UserAccount, Long> userAccountsDAO() {
         return new JpaDAO<UserAccount, Long>(entityManager, UserAccount.class);
     }
+
+
+    @Bean
+    @Scope("prototype")
+    public UserAccount userAccount() {
+        return new UserAccount();
+    }
+
+    @Bean
+    public UserAccountValidatorFactory userAccountValidatorFactory() {
+        return new UserAccountValidatorFactory(new ValidationContext(""));
+    }
+
 
 }

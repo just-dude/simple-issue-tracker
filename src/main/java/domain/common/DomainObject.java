@@ -31,7 +31,7 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
         return getEntityValidatorFactory().getValidator((T) this).getConstraintViolations();
     }
 
-
+    //@Transactional
     @Override
     public void save() throws BusinessException {
         ifUpdateNotExistsEntityThrowException();
@@ -66,11 +66,11 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
 
 
     protected String getEntityValidatorFactoryName() {
-        return StringUtils.uncapitalize(this.getClass().getName()) + "ValidatorFactory";
+        return StringUtils.uncapitalize(this.getClass().getSimpleName()) + "ValidatorFactory";
     }
 
-    protected String getDAOName() {
-        return StringUtils.uncapitalize(this.getClass().getName()) + "s" + "DAO";
+    protected String getDaoName() {
+        return StringUtils.uncapitalize(this.getClass().getSimpleName()) + "s" + "DAO";
     }
 
     protected abstract void ifUpdateNotExistsEntityThrowException() throws EntityWithSuchIdDoesNotExistsBusinessException;
@@ -79,7 +79,7 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
 
     protected EntityValidatorFactory<T> getEntityValidatorFactory() {
         if (evf == null) {
-            EntityValidatorFactory evf = (EntityValidatorFactory<T>) BeanFactoryProvider.getBeanFactory().getBean(getEntityValidatorFactoryName());
+            evf = (EntityValidatorFactory<T>) BeanFactoryProvider.getBeanFactory().getBean(getEntityValidatorFactoryName());
             if (evf == null) {
                 throw new BusinessException("EntityValidatorFactory with name [" + getEntityValidatorFactoryName() + "] not define in spring context");
             }
@@ -89,9 +89,9 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
 
     protected JpaRepository<T, ID> getDAO() {
         if (dao == null) {
-            JpaRepository<T, ID> dao = (JpaRepository<T, ID>) BeanFactoryProvider.getBeanFactory().getBean(getEntityValidatorFactoryName());
+            dao = (JpaRepository<T, ID>) BeanFactoryProvider.getBeanFactory().getBean(getDaoName());
             if (dao == null) {
-                throw new BusinessException("DAO for [" + this.getClass().getName() + "] entity with name [" + getEntityValidatorFactoryName() + "] not define in spring context");
+                throw new BusinessException("DAO for [" + this.getClass().getName() + "] entity with name [" + getDaoName() + "] not define in spring context");
             }
         }
         return dao;
