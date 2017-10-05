@@ -27,11 +27,11 @@ import java.util.List;
 /**
  * Created by suslovai on 11.09.2017.
  */
-public class JpaDAOTest extends DBTestCase {
+public class JpaDAOOnUserAccountsTest extends DBTestCase {
 
 
-    public JpaDAOTest() {
-        super("JpaDAOTest");
+    public JpaDAOOnUserAccountsTest() {
+        super("JpaDAOOnUserAccountsTest");
     }
 
     @Override
@@ -51,7 +51,7 @@ public class JpaDAOTest extends DBTestCase {
     public void testInsert() throws Exception {
         JpaRepository<UserAccount, Long> jpaDAO = getDAO();
         PlatformTransactionManager tm = getTransactionManager();
-        UserAccount newUserAccount = new UserAccount(new AccountInfo("newUserLogin", "hashedPass", "salt")
+        UserAccount newUserAccount = new UserAccount(new AccountInfo("newUserLogin", "hashedPass", new byte[]{})
                 , new Profile("newUserName", "newUserSurname", "email@email.ru")
         );
         TransactionDefinition def = new DefaultTransactionDefinition();
@@ -86,7 +86,7 @@ public class JpaDAOTest extends DBTestCase {
 
         UserAccount userAccount = jpaDAO.findOne(1L);
         userAccount.getProfile().setName("newName");
-        userAccount.getAccountInfo().setLogin("newLogin");
+        userAccount.getAccountInfo().setLogin("login1");
         TransactionStatus ts = tm.getTransaction(def);
         jpaDAO.save(userAccount);
         jpaDAO.flush();

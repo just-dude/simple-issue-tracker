@@ -313,6 +313,12 @@
             <version>1.11.2.RELEASE</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>4.3.3.RELEASE</version>
+        </dependency>
+
 
     </dependencies>
 
@@ -362,7 +368,6 @@
                 <executions>
                     <execution>
                         <id>updateDevDatabase</id>
-                        <phase>compile</phase>
                         <goals>
                             <goal>update</goal>
                         </goals>
@@ -372,7 +377,6 @@
                     </execution>
                     <execution>
                         <id>updateTestDatabase</id>
-                        <phase>compile</phase>
                         <goals>
                             <goal>update</goal>
                         </goals>
@@ -382,12 +386,29 @@
                     </execution>
                     <execution>
                         <id>diffDatabase</id>
-                        <phase>none</phase>
                         <goals>
                             <goal>diff</goal>
                         </goals>
                         <configuration>
                             <propertyFile>src/main/resources/migrations/config/liquibase.properties</propertyFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>dropAllDevDatabase</id>
+                        <goals>
+                            <goal>dropAll</goal>
+                        </goals>
+                        <configuration>
+                            <propertyFile>src/main/resources/migrations/config/liquibase.properties</propertyFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>dropAllTestDatabase</id>
+                        <goals>
+                            <goal>dropAll</goal>
+                        </goals>
+                        <configuration>
+                            <propertyFile>src/main/resources/migrations/config/liquibase-test.properties</propertyFile>
                         </configuration>
                     </execution>
                 </executions>
@@ -416,6 +437,31 @@
                         <version>5.2.11.Final</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>1.8</version>
+                <configuration>
+                    <aspectLibraries>
+                        <aspectLibrary>
+                            <groupId>org.springframework</groupId>
+                            <artifactId>spring-aspects</artifactId>
+                        </aspectLibrary>
+                    </aspectLibraries>
+                    <complianceLevel>1.8</complianceLevel>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <showWeaveInfo>true</showWeaveInfo>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

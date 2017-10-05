@@ -10,6 +10,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.support.SharedEntityManagerBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.aspectj.AnnotationTransactionAspect;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -58,9 +59,15 @@ public class PersistenceConfig {
         return em;
     }
 
-    @Bean
+    @Bean()
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
+        //return AnnotationTransactionAspect.aspectOf();
+    }
+
+    @Bean
+    public AnnotationTransactionAspect transactionAspect() {
+        return AnnotationTransactionAspect.aspectOf();
     }
 
 

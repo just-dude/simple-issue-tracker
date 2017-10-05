@@ -1,6 +1,8 @@
 package domain.users;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Lob;
 
 /**
  * Created by SuslovAI on 17.08.2017.
@@ -13,12 +15,14 @@ public class AccountInfo {
 
     private String hashedPassword;
 
-    private String salt;
+    @Lob
+    @Column(length = 1000)
+    private byte[] salt;
 
     public AccountInfo() {
     }
 
-    public AccountInfo(String login, String hashedPassword, String salt) {
+    public AccountInfo(String login, String hashedPassword, byte[] salt) {
         this.login = login;
         this.hashedPassword = hashedPassword;
         this.salt = salt;
@@ -40,11 +44,11 @@ public class AccountInfo {
         this.hashedPassword = hashedPassword;
     }
 
-    public String getSalt() {
+    public byte[] getSalt() {
         return salt;
     }
 
-    public void setSalt(String salt) {
+    public void setSalt(byte[] salt) {
         this.salt = salt;
     }
 

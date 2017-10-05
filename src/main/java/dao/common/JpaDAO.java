@@ -11,10 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> {
 
@@ -161,11 +158,14 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
 
     @Override
     public List<T> findAll(Iterable<ID> iterable) {
+        if (!(iterable instanceof Collection)) {
+            throw new IllegalArgumentException("Argument 'iterable' in 'JpaDao.findAll(Iterable<ID> iterable)' must be instanceof Collection");
+        }
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(getEntityTypeClass());
         Root<T> root = cq.from(getEntityTypeClass());
         cq.select(root);
-        cq.where(root.in(iterable));
+        cq.where(root.in((Collection<ID>) iterable));
         TypedQuery<T> typedQuery = em.createQuery(cq);
         return typedQuery.getResultList();
     }

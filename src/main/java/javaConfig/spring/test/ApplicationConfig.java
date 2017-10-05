@@ -1,20 +1,19 @@
 package javaConfig.spring.test;
 
 import common.beanFactory.BeanFactoryProvider;
+import domain.users.UserAccount;
 import javaConfig.spring.common.PersistenceConfig;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
 
 @Configuration
-//@EnableTransactionManagement
-//@EnableAspectJAutoProxy
-@Import({javaConfig.spring.common.UsersConfig.class, PersistenceConfig.class})
+@EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
+@EnableAspectJAutoProxy
+@Import({javaConfig.spring.common.UsersConfig.class, PersistenceConfig.class, UserAccount.class})
 @PropertySource(value = "classpath:сonfig/spring/persistence-test.properties")
 public class ApplicationConfig {
 

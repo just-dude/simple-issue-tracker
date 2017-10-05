@@ -44,6 +44,15 @@
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/webapp/META-INF/persistence.xml" />
       </configuration>
     </facet>
+    <facet type="AspectJ" name="AspectJ">
+      <configuration>
+        <option name="aspectPath">
+          <projectLibrary>
+            <option name="name" value="Maven: org.springframework:spring-aspects:4.3.3.RELEASE" />
+          </projectLibrary>
+        </option>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
@@ -196,5 +205,7 @@
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:1.13.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.8.10" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.7.24" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aspects:4.3.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.8.9" level="project" />
   </component>
 </module>
