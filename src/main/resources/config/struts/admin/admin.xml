@@ -10,8 +10,7 @@
     <package name="admin-main" namespace="/admin" extends="issue-tracker-default">
         <action name="index" class="controller.struts.action.admin.AdminMainAction">
             <result name="success-html-full-page" type="tiles">admin.fullPage.adminMain</result>
-            <result name="success-html-main-content">/WEB-INF/view/admin/admin/html/adminMainContent.jsp</result>
-            <result name="unexpected-error" type="tiles">admin.fullPage.defaultError</result>
+            <result name="error-html-full-page" type="tiles">admin.fullPage.defaultError</result>
         </action>
     </package>
 </struts>

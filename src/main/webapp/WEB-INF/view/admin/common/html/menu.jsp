@@ -1,53 +1,35 @@
-<%@ taglib prefix="s" uri="/struts-tags" %> 
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
-          
+
 <s:i18n name="controller.struts.action.common.pages.admin.package">
     <div class="sidebar">
 
         <nav class="sidebar-nav">
             <ul class="nav">
                 <li class="nav-item nav-dropdown">
-                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-puzzle"></i><s:text name="usersMenuItemText"/></a>
+                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-puzzle"></i><s:text
+                            name="usersMenuItemText"/></a>
                     <ul class="nav-dropdown-items">
-                        <s:url namespace="/admin/users" action="users-management" var="usersManagementLink" >
+                        <s:url namespace="/admin/users" action="users-management-input" var="usersManagementLink">
                             <s:param name="locale"><s:property value="#request.locale"/></s:param>
                         </s:url>
                         <li class="nav-item">
-                            <s:a href="%{usersManagementLink}" class="nav-link"><i class="icon-puzzle"></i><s:text name="usersManagementMenuItemText"/></s:a>
+                            <s:a href="%{usersManagementLink}" class="nav-link"><i class="icon-puzzle"></i><s:text
+                                    name="usersManagementMenuItemText"/></s:a>
                         </li>
                     </ul>
                     <ul class="nav-dropdown-items">
-                        <s:url namespace="/admin/users" action="usergroups-management" var="userGroupsManagementLink" >
+                        <s:url namespace="/admin/users" action="usergroups-management-input"
+                               var="userGroupsManagementLink">
                             <s:param name="locale"><s:property value="#request.locale"/></s:param>
                         </s:url>
                         <li class="nav-item">
-                            <s:a href="%{userGroupsManagementLink}" class="nav-link"><i class="icon-puzzle"></i><s:text name="userGroupsManagementMenuItemText"/></s:a>
+                            <s:a href="%{userGroupsManagementLink}" class="nav-link"><i class="icon-puzzle"></i><s:text
+                                    name="userGroupsManagementMenuItemText"/></s:a>
                         </li>
                     </ul>
-                    
-                    
-                    <ul class="nav-dropdown-items">
-                        <s:url namespace="/admin/users" action="usergroup-and-userrole-r10p-management" var="userGroupAndUserRoleR10psManagementLink" >
-                            <s:param name="locale"><s:property value="#request.locale"/></s:param>
-                        </s:url>
-                        <li class="nav-item">
-                            <s:a href="%{userGroupAndUserRoleR10psManagementLink}" class="nav-link"><i class="icon-puzzle"></i><s:text name="userGroupAndUserRoleRelationshipManagement"/></s:a>
-                        </li>
-                    </ul>
-                    
-                </li>
-                
-                <li class="nav-item nav-dropdown">
-                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-puzzle"></i><s:text name="mainPagesManagementMenuItemText"/></a>
-                    
-                    <ul class="nav-dropdown-items">
-                        <s:url namespace="/admin/main-pages" action="pages-management" var="mainPagesManagementLink" >
-                            <s:param name="locale"><s:property value="#request.locale"/></s:param>
-                        </s:url>
-                        <li class="nav-item">
-                            <s:a href="%{mainPagesManagementLink}" class="nav-link"><i class="icon-puzzle"></i><s:text name="mainPagesManagementMenuItemText"/></s:a>
-                        </li>
-                    </ul>
+
+
                 </li>
                 <!--<li class="nav-item nav-dropdown">
                     <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-star"></i> Icons</a>

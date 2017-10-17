@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="insert-ststic-content" author="SuslovAI">
+
+        <insert tableName="UserGroups">
+            <column name="id" value="1"/>
+            <column name="name" value="Admin"/>
+        </insert>
+        <insert tableName="UserGroups">
+            <column name="id" value="2"/>
+            <column name="name" value="CommonUser"/>
+        </insert>
+
+        <insert tableName="UserAccounts"> <!-- A12345aqwerty -->
+            <column name="id" value="1"/>
+            <column name="login" value="admin"/>
+            <column name="hashedPassword" value="Sdoq58CVvBteir7hT3PX+ZWjaCg7pugCRLAeTAV2JlM="/>
+            <column name="salt" value="/unhHbfn6N0F+p5MpeyZiQ=="/>
+            <column name="name" value="Admin"/>
+            <column name="surname" value="Admin"/>
+            <column name="email" value="admin@email.com"/>
+            <column name="groupId" value="1"/>
+        </insert>
+
+        <insert tableName="UserAccounts"> <!-- A12345aqwerty -->
+            <column name="id" value="2"/>
+            <column name="login" value="firstCommonUser"/>
+            <column name="hashedPassword" value="Sdoq58CVvBteir7hT3PX+ZWjaCg7pugCRLAeTAV2JlM="/>
+            <column name="salt" value="/unhHbfn6N0F+p5MpeyZiQ=="/>
+            <column name="name" value="First"/>
+            <column name="surname" value="CommonUser"/>
+            <column name="email" value="firstCommonUser@email.com"/>
+            <column name="groupId" value="2"/>
+        </insert>
+
+        <insert tableName="UserAccounts"> <!-- A12345aqwerty -->
+            <column name="id" value="3"/>
+            <column name="login" value="secondCommonUser"/>
+            <column name="hashedPassword" value="Sdoq58CVvBteir7hT3PX+ZWjaCg7pugCRLAeTAV2JlM="/>
+            <column name="salt" value="/unhHbfn6N0F+p5MpeyZiQ=="/>
+            <column name="name" value="Second"/>
+            <column name="surname" value="CommonUser"/>
+            <column name="email" value="secondCommonUser@email.com"/>
+            <column name="groupId" value="2"/>
+        </insert>
+
+        <insert tableName="UserAccounts"> <!-- A12345aqwerty -->
+            <column name="id" value="4"/>
+            <column name="login" value="thirdCommonUser"/>
+            <column name="hashedPassword" value="Sdoq58CVvBteir7hT3PX+ZWjaCg7pugCRLAeTAV2JlM="/>
+            <column name="salt" value="/unhHbfn6N0F+p5MpeyZiQ=="/>
+            <column name="name" value="Third"/>
+            <column name="surname" value="CommonUser"/>
+            <column name="email" value="thirdCommonUser@email.com"/>
+            <column name="groupId" value="2"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

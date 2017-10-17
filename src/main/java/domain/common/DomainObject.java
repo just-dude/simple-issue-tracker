@@ -1,11 +1,9 @@
 package domain.common;
 
 import common.beanFactory.BeanFactoryProvider;
+import dao.common.exception.DataIntegrityViolationDaoException;
 import dao.common.exception.EntityWithSuchIdDoesNotExistsDaoException;
-import domain.common.exception.BusinessException;
-import domain.common.exception.DataAccessFailedBuisnessException;
-import domain.common.exception.EntityWithSuchIdDoesNotExistsBusinessException;
-import domain.common.exception.ValidationFailedException;
+import domain.common.exception.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,6 +64,8 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
             getDAO().delete(getId());
         } catch (EntityWithSuchIdDoesNotExistsDaoException e) {
             throw new EntityWithSuchIdDoesNotExistsBusinessException(e.getId());
+        } catch (DataIntegrityViolationDaoException e) {
+            throw new DataIntegrityViolationBusinessException(e);
         } catch (Exception e) {
             throw new DataAccessFailedBuisnessException("An error has occured on remove entity", e, this.getClass().getName() + ".remove", this);
         }
@@ -77,13 +77,15 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
             if (!validator.isValid()) {
                 throw new ValidationFailedException(validator.getConstraintViolations());
             }
+        } catch (ValidationFailedException e) {
+            throw e;
         } catch (Exception e) {
             throw new BusinessException("An error has occured on validation entity", e, this.getClass().getName() + ".ifInvalidThrowValidationFailedException", this);
         }
     }
 
     protected <S extends T> S doSave() {
-        return (S) getDAO().save((T) this);
+        return (S) getDAO().saveAndFlush((T) this);
     }
 
 

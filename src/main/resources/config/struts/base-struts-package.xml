@@ -4,13 +4,15 @@
         "http://struts.apache.org/dtds/struts-2.5.dtd">
 <struts>
     <package name="issue-tracker-default" extends="struts-default">
-        <result-types> 
+        <result-types>
             <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
-        </result-types> 
+        </result-types>
         <interceptors>
-            <interceptor name="threadContextSetter" class="controller.struts.customComponent.interceptor.ThreadContextSetterInterceptor"/>
-            <interceptor name="conversionErrorsToFieldErrors" class="controller.struts.customComponent.interceptor.ConversionErrorsToFieldErrorsInterceptor"/>
-            <interceptor-stack name="universityCorporateWebsiteStack">
+            <interceptor name="threadContextSetter"
+                         class="controller.struts.customComponent.interceptor.ThreadContextSetterInterceptor"/>
+            <interceptor name="conversionErrorsToFieldErrors"
+                         class="controller.struts.customComponent.interceptor.ConversionErrorsToFieldErrorsInterceptor"/>
+            <interceptor-stack name="issueTrackerInterceptorsStack">
                 <interceptor-ref name="exception">
                     <param name="logEnabled">true</param>
                     <param name="logLevel">DEBUG</param>
@@ -37,17 +39,17 @@
                 <interceptor-ref name="conversionErrorsToFieldErrors"/>
                 <interceptor-ref name="workflow">
                     <param name="excludeMethods">input,back,cancel,browse</param>
-                </interceptor-ref>            
-            </interceptor-stack> 
-        </interceptors> 
-        <default-interceptor-ref name="universityCorporateWebsiteStack"/>
-        <global-exception-mappings>
+                </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="issueTrackerInterceptorsStack"/>
+        <!--<global-exception-mappings>
             <exception-mapping exception="java.lang.Exception" result="unexpected-error"/>
-        </global-exception-mappings>
-        
-    
+        </global-exception-mappings>-->
+
+
         <!--<default-interceptor-ref name="paramsPrepareParamsStack">-->
-            
+
     </package>
     <!--<package name="issue-tracker-default" namespace="/" extends="struts-default">
         

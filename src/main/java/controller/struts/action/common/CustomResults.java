@@ -5,21 +5,18 @@
  */
 package controller.struts.action.common;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
- *
  * @author SuslovAI
  */
 public class CustomResults {
-    
-    public static final String SUCCESS="success";
-    public static final String INPUT="input";
-    public static final String INVALID_USER_INPUT="invalid-user-input";
-    public static final String INVALID_PARAMETERS="invalid-parameters";
-    public static final String ERROR="error";
-    public static final String UNCHANGING_CONTENT_CONSTRAINT_VIOLATION="unchanging-content-constraint-violation";
-    public static final String AUTHORIZATION_ERROR="authorization-error";
-    public static final String BUSINESS_RULE_VIOLATION="business-rule-violation";
-    
+
+    public static final String SUCCESS = "success";
+    public static final String INPUT = "input";
+    public static final String RESOURCE_WITH_SUCH_ID_NOT_EXISTS = "resource-not-exists";
+    public static final String DATA_INTEGRITY_VIOLATION = "data-integrity-violation";
+    public static final String INVALID_USER_INPUT = "invalid-user-input";
+    public static final String ERROR = "error";
+    public static final String UNCHANGING_CONTENT_CONSTRAINT_VIOLATION = "unchanging-content-constraint-violation";
+    public static final String AUTHORIZATION_ERROR = "authorization-error";
+
 }

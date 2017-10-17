@@ -5,6 +5,7 @@ import common.beanFactory.BeanFactoryProvider;
 import domain.users.AccountInfo;
 import domain.users.Profile;
 import domain.users.UserAccount;
+import domain.users.UserGroup;
 import org.dbunit.Assertion;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
@@ -52,7 +53,8 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
         JpaRepository<UserAccount, Long> jpaDAO = getDAO();
         PlatformTransactionManager tm = getTransactionManager();
         UserAccount newUserAccount = new UserAccount(new AccountInfo("newUserLogin", "hashedPass", new byte[]{})
-                , new Profile("newUserName", "newUserSurname", "email@email.ru")
+                , new Profile("newUserName", "newUserSurname", "email@email.ru"),
+                new UserGroup(1L, null)
         );
         TransactionDefinition def = new DefaultTransactionDefinition();
         TransactionStatus ts = tm.getTransaction(def);
@@ -179,7 +181,7 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
         JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDAO");
         UserAccount account = jpaDAO.getOne(1L);
         assertEquals(1L, (long) account.getId());
-        assertEquals("name1", account.getProfile().getName());
+        assertEquals("name", account.getProfile().getName());
         assertEquals("login1", account.getAccountInfo().getLogin());
     }
 

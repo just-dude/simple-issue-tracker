@@ -2,6 +2,7 @@ package domain.common;
 
 import com.google.common.collect.Iterables;
 import domain.common.exception.DataAccessFailedBuisnessException;
+import domain.common.exception.EntityWithSuchIdDoesNotExistsBusinessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,9 +24,15 @@ public class SimpleFinder<T, ID extends Serializable> implements Finder<T, ID> {
     }
 
     @Override
-    public T getOne(ID id) throws DataAccessFailedBuisnessException {
+    public T getOne(ID id) throws EntityWithSuchIdDoesNotExistsBusinessException, DataAccessFailedBuisnessException {
         try {
-            return dao.getOne(id);
+            T result = dao.getOne(id);
+            if (result == null) {
+                throw new EntityWithSuchIdDoesNotExistsBusinessException(id);
+            }
+            return result;
+        } catch (EntityWithSuchIdDoesNotExistsBusinessException e) {
+            throw e;
         } catch (Exception e) {
             throw new DataAccessFailedBuisnessException("An error has occured on read from data storage", e, this.getClass().getSimpleName() + ".getOne(Id id)", id);
         }

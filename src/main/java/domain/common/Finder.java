@@ -1,6 +1,7 @@
 package domain.common;
 
 import domain.common.exception.DataAccessFailedBuisnessException;
+import domain.common.exception.EntityWithSuchIdDoesNotExistsBusinessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public interface Finder<T, ID extends Serializable> {
 
-    T getOne(ID id) throws DataAccessFailedBuisnessException;
+    T getOne(ID id) throws EntityWithSuchIdDoesNotExistsBusinessException, DataAccessFailedBuisnessException;
 
     List<T> findAll(Iterable<ID> ids) throws DataAccessFailedBuisnessException;
 

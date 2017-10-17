@@ -31,7 +31,8 @@ public class UserAccountTest extends DBTestCase {
     public void isValidAndGetConstraintsViolations() throws Exception {
         UserAccount validUserAccount = new UserAccount(
                 new AccountInfo("login", "passswordWithBigLength", null),
-                new Profile("name", "surname", "email@mail.ru")
+                new Profile("name", "surname", "email@mail.ru"),
+                new UserGroup(1L, null)
         );
         assertTrue(validUserAccount.isValid());
         try {
@@ -41,7 +42,8 @@ public class UserAccountTest extends DBTestCase {
         }
         UserAccount invalidUserAccount = new UserAccount(
                 new AccountInfo("", "/.", null),
-                new Profile(",.", "!sadf", "mail.ru")
+                new Profile(",.", "!sadf", "mail.ru"),
+                new UserGroup(1L, null)
         );
         assertFalse(invalidUserAccount.isValid());
         System.out.println(invalidUserAccount.getConstraintsViolations());
@@ -52,7 +54,8 @@ public class UserAccountTest extends DBTestCase {
     public void insert() throws Exception {
         UserAccount userAccount = new UserAccount(
                 new AccountInfo("newUserLogin", "passswordWithBigLength", null),
-                new Profile("newUserName", "newUserSurname", "email@email.ru")
+                new Profile("newUserName", "newUserSurname", "email@email.ru"),
+                new UserGroup(1L, null)
         );
         UserAccount savedAccount = userAccount.save();
         assertNotNull(savedAccount.getId());
@@ -63,7 +66,6 @@ public class UserAccountTest extends DBTestCase {
 
         InputStream expectedDataSetInputStream = getDataSetAsInputStream("testDataSet/users/AfterInsertUserAccountExpectedDataset.xml");
         ReplacementDataSet expectedDataSet = new ReplacementDataSet(new FlatXmlDataSetBuilder().build(expectedDataSetInputStream));
-        expectedDataSet.addReplacementObject("[null]", null);
         ITable expectedTable = expectedDataSet.getTable("test_issue_tracker.UserAccounts");
 
         Assertion.assertEquals(expectedTable, filteredActualTable);
@@ -74,7 +76,7 @@ public class UserAccountTest extends DBTestCase {
         UserAccount userAccount = new UserAccount(
                 1L,
                 null,
-                new Profile("newName", "surname1", "email1@mail.ml"),
+                new Profile("newName", "surname", "email1@mail.ml"),
                 new UserGroup(1L, null)
         );
         UserAccount savedAccount = userAccount.save();
@@ -97,7 +99,7 @@ public class UserAccountTest extends DBTestCase {
         UserAccount userAccount = new UserAccount(
                 10L,
                 null,
-                new Profile("newName", "surname1", "email1@mail.ml"),
+                new Profile("newName", "surname", "email1@mail.ml"),
                 new UserGroup(1L, null)
         );
         try {

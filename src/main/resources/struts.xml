@@ -5,20 +5,20 @@
 <struts>
     <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
     <constant name="struts.devMode" value="true"/>
-    <constant name="struts.i18n.reload" value="true" />
-    <constant name="struts.configuration.xml.reload" value="false" />
-    
-    <constant name="struts.action.extension" value="html,json" />
-    <constant name="struts.serve.static" value="true" />
-    <constant name="struts.serve.static.browserCache" value="false" />
-    <constant name="struts.multipart.maxSize" value="2000000" /> <!--500MB - 524288000 bytes-->
-    <constant name="struts.multipart.saveDir" value="/files/uploaded" />
-    
-    <constant name="struts.objectFactory" value="spring" />
-    <constant name="struts.objectFactory.spring.autoWire" value="no" />
-    
-    
+    <constant name="struts.i18n.reload" value="true"/>
+    <constant name="struts.configuration.xml.reload" value="true"/>
+
+    <constant name="struts.action.extension" value="html,json"/>
+    <constant name="struts.serve.static" value="true"/>
+    <constant name="struts.serve.static.browserCache" value="false"/>
+    <constant name="struts.multipart.maxSize" value="2000000"/> <!--500MB - 524288000 bytes-->
+    <constant name="struts.multipart.saveDir" value="/files/uploaded"/>
+    <constant name="struts.custom.i18n.resources"
+              value="controller.struts.action.common.validationError.package,controller.struts.action.common.message.package"/>
+
+
     <include file="/config/struts/base-struts-package.xml"/>
     <include file="/config/struts/admin/admin.xml"/>
-    <include file="/config/struts/main/main.xml" />
+    <include file="/config/struts/admin/users.xml"/>
+    <include file="/config/struts/main/main.xml"/>
 </struts>

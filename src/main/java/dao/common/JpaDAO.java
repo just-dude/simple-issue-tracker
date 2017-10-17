@@ -2,8 +2,10 @@ package dao.common;
 
 
 import common.argumentAssert.Assert;
+import dao.common.exception.DataIntegrityViolationDaoException;
 import dao.common.exception.EntityWithSuchIdDoesNotExistsDaoException;
 import dao.common.exception.UnsupportedOperationDaoException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -73,9 +75,9 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
 
     @Override
     public <S extends T> S saveAndFlush(S s) {
-        this.save(s);
+        S result = this.save(s);
         this.flush();
-        return s;
+        return result;
     }
 
     @Override
@@ -85,7 +87,14 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
         if (entity == null) {
             throw new EntityWithSuchIdDoesNotExistsDaoException(id);
         }
-        em.remove(entity);
+        try {
+            em.remove(entity);
+            em.flush();
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationDaoException(e);
+        } catch (Exception e) {
+            throw new DataIntegrityViolationDaoException(e);
+        }
     }
 
     @Override
@@ -94,7 +103,12 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
         if (!em.contains(t)) {
             t = em.merge(t);
         }
-        em.remove(t);
+        try {
+            em.remove(t);
+            em.flush();
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationDaoException(e);
+        }
     }
 
     @Override
@@ -187,18 +201,20 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
         CriteriaQuery<T> cq = cb.createQuery(getEntityTypeClass());
         Root<T> root = cq.from(getEntityTypeClass());
         cq.select(root);
-        pageable.getSort().forEach(order -> {
-            Iterator<String> propertyPartsIterator = Arrays.asList(order.getProperty().split("\\.")).iterator();
-            Path path = root.get(propertyPartsIterator.next());
-            while (propertyPartsIterator.hasNext()) {
-                path = path.get(propertyPartsIterator.next());
-            }
-            if (order.isAscending()) {
-                cq.orderBy(cb.asc(path));
-            } else {
-                cq.orderBy(cb.desc(path));
-            }
-        });
+        if (pageable.getSort() != null) {
+            pageable.getSort().forEach(order -> {
+                Iterator<String> propertyPartsIterator = Arrays.asList(order.getProperty().split("\\.")).iterator();
+                Path path = root.get(propertyPartsIterator.next());
+                while (propertyPartsIterator.hasNext()) {
+                    path = path.get(propertyPartsIterator.next());
+                }
+                if (order.isAscending()) {
+                    cq.orderBy(cb.asc(path));
+                } else {
+                    cq.orderBy(cb.desc(path));
+                }
+            });
+        }
         TypedQuery<T> typedQuery = em.createQuery(cq);
         typedQuery.setFirstResult(pageable.getOffset());
         typedQuery.setMaxResults(pageable.getPageSize());

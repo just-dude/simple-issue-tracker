@@ -19,4 +19,9 @@ public class UserGroup extends HavingNameAndOneIdDomainObject<UserGroup> {
     public UserGroup(Long id, String name) {
         super(id, name);
     }
+
+    @Override
+    public String toString() {
+        return "UserGroup{ id=" + id + ", name=" + name + " }";
+    }
 }

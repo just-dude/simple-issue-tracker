@@ -44,11 +44,12 @@ public class UserAccountValidatorFactory {
                 Pattern commonNamesRexpPattern = Pattern.compile("^[а-яёЁА-ЯA-Za-z\\-\\s]+$", Pattern.UNICODE_CHARACTER_CLASS);
                 ConstraintValidator commonNamesConstraintValidators = CommonValidators.getSimpleNameConstraintValidator();
 
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".login", entity.getAccountInfo().getLogin(), loginValidator));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".password", entity.getAccountInfo().getHashedPassword(), passwordValidator));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".name", entity.getProfile().getName(), commonNamesConstraintValidators));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".surname", entity.getProfile().getSurname(), commonNamesConstraintValidators));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".email", entity.getProfile().getEmail(), CommonValidators.getEmailConstraintValidator()));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".accountInfo.login", entity.getAccountInfo().getLogin(), loginValidator));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".accountInfo.hashedPassword", entity.getAccountInfo().getHashedPassword(), passwordValidator));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".profile.name", entity.getProfile().getName(), commonNamesConstraintValidators));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".profile.surname", entity.getProfile().getSurname(), commonNamesConstraintValidators));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".profile.email", entity.getProfile().getEmail(), CommonValidators.getEmailConstraintValidator()));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".group.id", entity.getGroup().getId(), not(isNull())));
 
                 return entityValidationRules;
             } catch (Exception e) {
@@ -81,10 +82,11 @@ public class UserAccountValidatorFactory {
                 Pattern commonNamesRexpPattern = Pattern.compile("^[а-яёЁА-ЯA-Za-z\\-\\s]+$", Pattern.UNICODE_CHARACTER_CLASS);
                 ConstraintValidator commonNamesConstraintValidators = CommonValidators.getSimpleNameConstraintValidator();
 
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".userId", entity.getId(), not(isNull())));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".name", entity.getProfile().getName(), commonNamesConstraintValidators));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".surname", entity.getProfile().getSurname(), commonNamesConstraintValidators));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".email", entity.getProfile().getEmail(), CommonValidators.getEmailConstraintValidator()));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".id", entity.getId(), not(isNull())));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".profile.name", entity.getProfile().getName(), commonNamesConstraintValidators));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".profile.surname", entity.getProfile().getSurname(), commonNamesConstraintValidators));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".profile.email", entity.getProfile().getEmail(), CommonValidators.getEmailConstraintValidator()));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".group.id", entity.getGroup().getId(), not(isNull())));
 
                 return entityValidationRules;
             } catch (Exception e) {

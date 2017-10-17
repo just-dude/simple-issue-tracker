@@ -3,7 +3,7 @@
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
-    
+
     <!--        -->
     <!-- Common -->
     <!--        -->
@@ -21,7 +21,9 @@
         <put-attribute name="commonAssets" value="/WEB-INF/view/admin/common/html/commonAssets.jsp"/>
         <put-attribute name="customAssets" value="/WEB-INF/view/admin/common/html/customDefaultAssets.jsp"/>
         <put-attribute name="header" value="/WEB-INF/view/admin/common/html/header.jsp"/>
-        <put-attribute name="menu" value="/WEB-INF/view/admin/common/html/menu.jsp" />
+        <put-attribute name="prevActionStatusMessage"
+                       value="/WEB-INF/view/admin/common/html/prevActionStatusMessage.jsp"/>
+        <put-attribute name="menu" value="/WEB-INF/view/admin/common/html/menu.jsp"/>
         <put-attribute name="footer" value="/WEB-INF/view/admin/common/html/footer.jsp"/>
     </definition>
 
@@ -34,31 +36,81 @@
         <put-attribute name="title" value="/WEB-INF/view/admin/common/html/defaultErrorTitle.jsp"/>
         <put-attribute name="content" value="/WEB-INF/view/admin/common/html/defaultErrorContent.jsp"/>
     </definition>
+
+    <definition name="admin.fullPage.resourceNotExistsError" extends="admin.fullPage">
+        <put-attribute name="title" value="/WEB-INF/view/admin/common/html/resourceNotExistsErrorTitle.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/view/admin/common/html/resourceNotExistsErrorContent.jsp"/>
+    </definition>
+
+    <definition name="admin.fullPage.authorizationError" extends="admin.fullPage">
+        <put-attribute name="title" value="/WEB-INF/view/admin/common/html/authorizationErrorTitle.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/view/admin/common/html/authorizationErrorContent.jsp"/>
+    </definition>
     <!--                                     -->
     <!-- Site Management Panel (Admin panel) -->
     <!--                                     -->
     <definition name="admin.fullPage.adminMain" extends="admin.fullPage">
         <put-attribute name="title" value="/WEB-INF/view/admin/admin/html/adminMainTitle.jsp"/>
+        <put-attribute name="breadCrumbs" value="/WEB-INF/view/admin/admin/html/adminBreadCrumbs.jsp"/>
         <put-attribute name="content" value="/WEB-INF/view/admin/admin/html/adminMainContent.jsp"/>
+    </definition>
+
+    <!-- Users -->
+
+    <definition name="admin.fullPage.addUser" extends="admin.fullPage">
+        <put-attribute name="title" value="/WEB-INF/view/admin/users/userAccounts/html/addFormTitle.jsp"/>
+        <put-attribute name="breadCrumbs" value="/WEB-INF/view/admin/users/userAccounts/html/addFormBreadCrumbs.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/view/admin/users/userAccounts/html/addFormContent.jsp"/>
+    </definition>
+
+    <definition name="admin.fullPage.editUser" extends="admin.fullPage">
+        <put-attribute name="title" value="/WEB-INF/view/admin/users/userAccounts/html/editFormTitle.jsp"/>
+        <put-attribute name="breadCrumbs" value="/WEB-INF/view/admin/users/userAccounts/html/editFormBreadCrumbs.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/view/admin/users/userAccounts/html/editFormContent.jsp"/>
+    </definition>
+
+    <definition name="admin.fullPage.usersManagement" extends="admin.fullPage">
+        <put-attribute name="title" value="/WEB-INF/view/admin/users/userAccounts/html/managementTitle.jsp"/>
+        <put-attribute name="breadCrumbs"
+                       value="/WEB-INF/view/admin/users/userAccounts/html/managementBreadCrumbs.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/view/admin/users/userAccounts/html/managementContent.jsp"/>
+    </definition>
+
+    <definition name="admin.fullPage.addUserGroup" extends="admin.fullPage">
+        <put-attribute name="title" value="/WEB-INF/view/admin/users/userGroups/html/addFormTitle.jsp"/>
+        <put-attribute name="breadCrumbs" value="/WEB-INF/view/admin/users/userGroups/html/addFormBreadCrumbs.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/view/admin/users/userGroups/html/addFormContent.jsp"/>
+    </definition>
+
+    <definition name="admin.fullPage.editUserGroup" extends="admin.fullPage">
+        <put-attribute name="title" value="/WEB-INF/view/admin/users/userGroups/html/editFormTitle.jsp"/>
+        <put-attribute name="breadCrumbs" value="/WEB-INF/view/admin/users/userGroups/html/editFormBreadCrumbs.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/view/admin/users/userGroups/html/editFormContent.jsp"/>
+    </definition>
+
+    <definition name="admin.fullPage.userGroupsManagement" extends="admin.fullPage">
+        <put-attribute name="title" value="/WEB-INF/view/admin/users/userGroups/html/managementTitle.jsp"/>
+        <put-attribute name="breadCrumbs"
+                       value="/WEB-INF/view/admin/users/userGroups/html/managementBreadCrumbs.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/view/admin/users/userGroups/html/managementContent.jsp"/>
     </definition>
 
 
     <!--          -->
     <!--Main Site -->
     <!--          -->
-    
+
     <definition name="main.fullPage.index" extends="main.fullPage">
         <put-attribute name="title" value="/WEB-INF/view/main/main/html/indexTitle.jsp"/>
         <put-attribute name="content" value="/WEB-INF/view/main/main/html/indexContent.jsp"/>
-        <!--<put-attribute name="customAssets" value="/WEB-INF/view/admin/users/userGroups/html/editUserGroupFormAssets.jsp"/>-->
+        <!--<put-attribute name="customAssets" value="/WEB-INF/view/admin/users/userGroups/html/editFormAssets.jsp"/>-->
     </definition>
-    
+
     <definition name="main.fullPage.authorizationError" extends="main.fullPage">
         <put-attribute name="title" value="/WEB-INF/view/main/common/html/authorizationErrorTitle.jsp"/>
         <put-attribute name="content" value="/WEB-INF/view/main/common/html/authorizationErrorContent.jsp"/>
-        <!--<put-attribute name="customAssets" value="/WEB-INF/view/admin/users/userGroups/html/editUserGroupFormAssets.jsp"/>-->
+        <!--<put-attribute name="customAssets" value="/WEB-INF/view/admin/users/userGroups/html/editFormAssets.jsp"/>-->
     </definition>
-    
 
 
 </tiles-definitions>

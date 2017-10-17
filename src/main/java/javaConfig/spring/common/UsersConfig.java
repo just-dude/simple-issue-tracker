@@ -5,6 +5,8 @@ import domain.common.Finder;
 import domain.common.SimpleFinder;
 import domain.users.UserAccount;
 import domain.users.UserAccountValidatorFactory;
+import domain.users.UserGroup;
+import domain.users.UserGroupValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +24,7 @@ public class UsersConfig {
     EntityManager entityManager;
 
 
-    @Bean(name = "userAccountsDAO")
+    @Bean
     public JpaRepository<UserAccount, Long> userAccountsDAO() {
         return new JpaDAO<UserAccount, Long>(entityManager, UserAccount.class);
     }
@@ -32,21 +34,36 @@ public class UsersConfig {
         return new SimpleFinder<UserAccount, Long>(userAccountsDAO);
     }
 
-
-//    @Bean
-//    @Scope("prototype")
-//    public UserAccount userAccount() {
-//        return new UserAccount();
-//    }
-
     @Bean
     public EntityValidatorFactory<UserAccount> userAccountOnCreateValidatorFactory() {
-        return new UserAccountValidatorFactory.OnCreate(new ValidationContext(""));
+        return new UserAccountValidatorFactory.OnCreate(new ValidationContext("userAccount"));
     }
 
     @Bean
     public EntityValidatorFactory<UserAccount> userAccountOnUpdateValidatorFactory() {
-        return new UserAccountValidatorFactory.OnUpdate(new ValidationContext(""));
+        return new UserAccountValidatorFactory.OnUpdate(new ValidationContext("userAccount"));
+    }
+
+
+    @Bean
+    public JpaRepository<UserGroup, Long> userGroupsDAO() {
+        return new JpaDAO<UserGroup, Long>(entityManager, UserGroup.class);
+    }
+
+    @Bean
+    public Finder<UserGroup, Long> userGroupsFinder(JpaRepository<UserGroup, Long> userGroupsDAO) {
+        return new SimpleFinder<UserGroup, Long>(userGroupsDAO);
+    }
+
+
+    @Bean
+    public EntityValidatorFactory<UserGroup> userGroupOnCreateValidatorFactory() {
+        return new UserGroupValidatorFactory.OnCreate(new ValidationContext("userGroup"));
+    }
+
+    @Bean
+    public EntityValidatorFactory<UserGroup> userGroupOnUpdateValidatorFactory() {
+        return new UserGroupValidatorFactory.OnUpdate(new ValidationContext("userGroup"));
     }
 
 
