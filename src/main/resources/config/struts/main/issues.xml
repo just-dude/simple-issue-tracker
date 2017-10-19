@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<!-- 
+  - This file is included by the struts.xml file as an example
+  - of how to break up the configuration file into multiple files.
+-->
+<struts>
+    <package name="main-issues" namespace="/issues" extends="issue-tracker-default">
+        <action name="add-issue-*" method="{1}" class="controller.struts.action.main.issues.AddIssueAction">
+            <result name="success-html-full-page" type="tiles">main.fullPage.addIssue</result>
+            <result name="input-html-full-page" type="tiles">main.fullPage.addIssue</result>
+            <result name="invalid-issue-input-html-full-page" type="tiles">main.fullPage.addIssue</result>
+            <result name="error-html-full-page" type="tiles">main.fullPage.addIssue</result>
+            <result name="resource-not-exists-html-full-page" type="tiles">
+                main.fullPage.addIssue
+            </result>
+            <result name="data-integrity-violation-html-full-page" type="tiles">
+                main.fullPage.addIssue
+            </result>
+
+            <result name="unchanging-content-constraint-violation-html-full-page" type="tiles">
+                main.fullPage.addIssue
+            </result>
+
+            <result name="authorization-error-html-full-page" type="tiles">main.fullPage.authorizationError</result>
+            <result name="unexpected-error" type="tiles">main.fullPage.defaultError</result>
+        </action>
+
+        <action name="edit-issue-*" method="{1}" class="controller.struts.action.main.issues.EditIssueAction">
+            <result name="success-html-full-page" type="tiles">main.fullPage.editIssue</result>
+            <result name="input-html-full-page" type="tiles">main.fullPage.editIssue</result>
+            <result name="invalid-issue-input-html-full-page" type="tiles">main.fullPage.editIssue</result>
+            <result name="error-html-full-page" type="tiles">main.fullPage.editIssue</result>
+            <result name="resource-not-exists-html-full-page" type="tiles">
+                main.fullPage.editIssue
+            </result>
+            <result name="data-integrity-violation-html-full-page" type="tiles">
+                main.fullPage.editIssue
+            </result>
+            <result name="unchanging-content-constraint-violation-html-full-page" type="tiles">
+                main.fullPage.editIssue
+            </result>
+
+            <result name="authorization-error-html-full-page" type="tiles">main.fullPage.authorizationError</result>
+            <result name="unexpected-error" type="tiles">main.fullPage.defaultError</result>
+        </action>
+
+        <action name="issues-management-*" method="{1}"
+                class="controller.struts.action.main.issues.IssuesManagementAction">
+            <result name="success-html-full-page" type="tiles">main.fullPage.issuesManagement</result>
+            <result name="input-html-full-page" type="tiles">main.fullPage.issuesManagement</result>
+            <result name="invalid-issue-input-html-full-page" type="tiles">main.fullPage.issuesManagement</result>
+            <result name="error-html-full-page" type="tiles">main.fullPage.issuesManagement</result>
+            <result name="resource-not-exists-html-full-page" type="tiles">
+                main.fullPage.issuesManagement
+            </result>
+            <result name="data-integrity-violation-html-full-page" type="tiles">
+                main.fullPage.issuesManagement
+            </result>
+            <result name="unchanging-content-constraint-violation-html-full-page" type="tiles">
+                main.fullPage.issuesManagement
+            </result>
+
+            <result name="authorization-error-html-full-page" type="tiles">main.fullPage.authorizationError</result>
+            <result name="unexpected-error" type="tiles">main.fullPage.defaultError</result>
+        </action>
+
+        <!-- Issue Groups -->
+
+        <action name="add-issuetype-*" method="{1}" class="controller.struts.action.main.issues.AddIssueGroupAction">
+            <result name="success-html-full-page" type="tiles">main.fullPage.addIssueGroup</result>
+            <result name="input-html-full-page" type="tiles">main.fullPage.addIssueGroup</result>
+            <result name="invalid-issue-input-html-full-page" type="tiles">main.fullPage.addIssueGroup</result>
+            <result name="error-html-full-page" type="tiles">main.fullPage.addIssueGroup</result>
+            <result name="resource-not-exists-html-full-page" type="tiles">
+                main.fullPage.addIssueGroup
+            </result>
+            <result name="data-integrity-violation-html-full-page" type="tiles">
+                main.fullPage.addIssueGroup
+            </result>
+            <result name="unchanging-content-constraint-violation-html-full-page" type="tiles">
+                main.fullPage.addIssueGroup
+            </result>
+
+            <result name="authorization-error-html-full-page" type="tiles">main.fullPage.authorizationError</result>
+            <result name="unexpected-error" type="tiles">main.fullPage.defaultError</result>
+        </action>
+
+        <action name="edit-issuetype-*" method="{1}" class="controller.struts.action.main.issues.EditIssueGroupAction">
+            <result name="success-html-full-page" type="tiles">main.fullPage.editIssueGroup</result>
+            <result name="input-html-full-page" type="tiles">main.fullPage.editIssueGroup</result>
+            <result name="invalid-issue-input-html-full-page" type="tiles">main.fullPage.editIssueGroup</result>
+            <result name="error-html-full-page" type="tiles">main.fullPage.editIssueGroup</result>
+            <result name="resource-not-exists-html-full-page" type="tiles">
+                main.fullPage.editIssueGroup
+            </result>
+            <result name="data-integrity-violation-html-full-page" type="tiles">
+                main.fullPage.editIssueGroup
+            </result>
+            <result name="unchanging-content-constraint-violation-html-full-page" type="tiles">
+                main.fullPage.editIssueGroup
+            </result>
+
+            <result name="authorization-error-html-full-page" type="tiles">main.fullPage.authorizationError</result>
+            <result name="unexpected-error" type="tiles">main.fullPage.defaultError</result>
+        </action>
+
+        <action name="issuetypes-management-*" method="{1}"
+                class="controller.struts.action.main.issues.IssueGroupsManagementAction">
+            <result name="success-html-full-page" type="tiles">main.fullPage.issueGroupsManagement</result>
+            <result name="input-html-full-page" type="tiles">main.fullPage.issueGroupsManagement</result>
+            <result name="invalid-issue-input-html-full-page" type="tiles">main.fullPage.issueGroupsManagement</result>
+            <result name="error-html-full-page" type="tiles">main.fullPage.issueGroupsManagement</result>
+            <result name="resource-not-exists-html-full-page" type="tiles">
+                main.fullPage.issueGroupsManagement
+            </result>
+            <result name="data-integrity-violation-html-full-page" type="tiles">
+                main.fullPage.issueGroupsManagement
+            </result>
+            <result name="unchanging-content-constraint-violation-html-full-page" type="tiles">
+                main.fullPage.issueGroupsManagement
+            </result>
+
+            <result name="authorization-error-html-full-page" type="tiles">main.fullPage.authorizationError</result>
+            <result name="unexpected-error" type="tiles">main.fullPage.defaultError</result>
+        </action>
+
+    </package>
+</struts>

@@ -21,6 +21,7 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
     protected EntityValidator currentValidator;
 
     protected JpaRepository<T, ID> dao;
+    protected Finder<T, ID> finder;
 
 
     @Override
@@ -98,6 +99,10 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
         return StringUtils.uncapitalize(this.getClass().getSimpleName()) + "s" + "DAO";
     }
 
+    protected String getFinderName() {
+        return StringUtils.uncapitalize(this.getClass().getSimpleName()) + "s" + "Finder";
+    }
+
     protected abstract void ifUpdateNotExistsEntityThrowException() throws EntityWithSuchIdDoesNotExistsBusinessException;
 
     protected abstract ID getId();
@@ -119,11 +124,19 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
         if (dao == null) {
             dao = (JpaRepository<T, ID>) BeanFactoryProvider.getBeanFactory().getBean(getDaoName());
             if (dao == null) {
-                throw new BusinessException("DAO for [" + this.getClass().getName() + "] entity with name [" + getDaoName() + "] not define in spring context");
+                throw new BusinessException("DAO for [" + this.getClass().getSimpleName() + "] entity with name [" + getDaoName() + "] not define in spring context");
             }
         }
         return dao;
     }
 
-
+    protected Finder<T, ID> getFinder() {
+        if (finder == null) {
+            finder = (Finder<T, ID>) BeanFactoryProvider.getBeanFactory().getBean(getFinderName());
+            if (finder == null) {
+                throw new BusinessException("Finder for [" + this.getClass().getSimpleName() + "] entity with name [" + getDaoName() + "] not define in spring context");
+            }
+        }
+        return finder;
+    }
 }

@@ -21,4 +21,6 @@
     <include file="/config/struts/admin/admin.xml"/>
     <include file="/config/struts/admin/users.xml"/>
     <include file="/config/struts/main/main.xml"/>
+    <include file="/config/struts/main/issues.xml"/>
+    <include file="/config/struts/authentication.xml"/>
 </struts>

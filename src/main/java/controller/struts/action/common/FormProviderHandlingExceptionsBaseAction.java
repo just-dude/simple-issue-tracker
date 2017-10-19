@@ -3,7 +3,16 @@ package controller.struts.action.common;
 
 
 import controller.struts.action.common.util.ActionUtils;
+import domain.common.Finder;
+import domain.common.HavingNameAndOneIdDomainObject;
 import domain.common.exception.*;
+import org.springframework.data.domain.Sort;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import static common.beanFactory.BeanFactoryProvider.getBeanFactory;
 
 
 public abstract class FormProviderHandlingExceptionsBaseAction extends HandlingExceptionsBaseAction {
@@ -72,6 +81,22 @@ public abstract class FormProviderHandlingExceptionsBaseAction extends HandlingE
     }
 
     protected void doInput() throws Exception {
+    }
+
+    public Map<String, String> getEntitiesIdWithNamesMapByFinderName(String finderName) {
+        Map<String, String> entitiesIdWithNamesMap = null;
+        try {
+            Finder entitiesFinder = (Finder) getBeanFactory().getBean(finderName);
+            List allEntities = entitiesFinder.findAll(new Sort(Sort.Direction.ASC, "name"));
+            entitiesIdWithNamesMap = new LinkedHashMap(allEntities.size());
+            for (Object entity : allEntities) {
+                entitiesIdWithNamesMap.put(((HavingNameAndOneIdDomainObject) entity).getId().toString(), ((HavingNameAndOneIdDomainObject) entity).getName());
+            }
+        } catch (Exception e) {
+            entitiesIdWithNamesMap = new LinkedHashMap(0);
+            getLogger().debug("Exception has occured on FormProviderHandlingExceptionsBaseAction.getEntitiesIdWithNamesMapByFinderName", e);
+        }
+        return entitiesIdWithNamesMap;
     }
 
 

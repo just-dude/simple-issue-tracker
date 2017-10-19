@@ -48,6 +48,11 @@ public class Profile implements Serializable {
         this.email = email;
     }
 
+    public String getFullName() {
+        return getSurname() + " " + getName();
+    }
+
+
     @Override
     public String toString() {
         return "Profile{" +

@@ -13,6 +13,14 @@ import javax.persistence.Table;
 @Table(name = "UserGroups")
 public class UserGroup extends HavingNameAndOneIdDomainObject<UserGroup> {
 
+    public enum StaticGroups {
+
+
+        public void StaticGroups(Long id, String name) {
+
+        }
+    }
+
     public UserGroup() {
     }
 

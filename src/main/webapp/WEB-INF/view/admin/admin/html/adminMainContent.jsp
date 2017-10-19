@@ -1,8 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<s:url var="addUserUrl" namespace="/admin/users" action="add-user-input">
-    <s:param name="locale" value="%{#request.locale}"/>
-</s:url>
 
 <div class="row">
     <div class="col-sm-12">

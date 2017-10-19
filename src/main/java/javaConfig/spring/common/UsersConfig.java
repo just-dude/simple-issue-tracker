@@ -66,5 +66,19 @@ public class UsersConfig {
         return new UserGroupValidatorFactory.OnUpdate(new ValidationContext("userGroup"));
     }
 
+    /*
+    <bean id="UsersServiceBasedAuthenticatingRealm" class="ru.zabgu.service.concreteService.security.realm.UsersServiceBasedAuthenticatingRealm">
+        <property name="credentialsMatcher">
+            <!-- The 'bootstrapDataPopulator' Sha256 hashes the password
+                 (using the username as the salt) then base64 encodes it: -->
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <property name="hashAlgorithmName" value="SHA-256"/>
+                <property name="hashIterations" value="256"/>
+                <!-- true means hex encoded, false means base64 encoded -->
+                <property name="storedCredentialsHexEncoded" value="false"/>
+            </bean>
+        </property>
+    </bean>*/
+
 
 }

@@ -1,9 +1,7 @@
 
 
 $(document).ready(function($){
-    $("#navigation").menu();
-    console.log($("#menu").attr("class"));
-    //navigationComponents.initNavigationComponents();
+    navigationComponents.initNavigationComponents();
 });
 
 var navigationComponents = {
