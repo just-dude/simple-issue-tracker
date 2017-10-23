@@ -18,7 +18,7 @@ import java.util.*;
 public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> {
 
 
-    private EntityManager em;
+    protected EntityManager em;
 
     protected Class<T> entityClass;
 

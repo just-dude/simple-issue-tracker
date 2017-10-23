@@ -79,25 +79,6 @@
         <put-attribute name="content" value="/WEB-INF/view/admin/users/userAccounts/html/managementContent.jsp"/>
     </definition>
 
-    <definition name="admin.fullPage.addUserGroup" extends="admin.fullPage">
-        <put-attribute name="title" value="/WEB-INF/view/admin/users/userGroups/html/addFormTitle.jsp"/>
-        <put-attribute name="breadCrumbs" value="/WEB-INF/view/admin/users/userGroups/html/addFormBreadCrumbs.jsp"/>
-        <put-attribute name="content" value="/WEB-INF/view/admin/users/userGroups/html/addFormContent.jsp"/>
-    </definition>
-
-    <definition name="admin.fullPage.editUserGroup" extends="admin.fullPage">
-        <put-attribute name="title" value="/WEB-INF/view/admin/users/userGroups/html/editFormTitle.jsp"/>
-        <put-attribute name="breadCrumbs" value="/WEB-INF/view/admin/users/userGroups/html/editFormBreadCrumbs.jsp"/>
-        <put-attribute name="content" value="/WEB-INF/view/admin/users/userGroups/html/editFormContent.jsp"/>
-    </definition>
-
-    <definition name="admin.fullPage.userGroupsManagement" extends="admin.fullPage">
-        <put-attribute name="title" value="/WEB-INF/view/admin/users/userGroups/html/managementTitle.jsp"/>
-        <put-attribute name="breadCrumbs"
-                       value="/WEB-INF/view/admin/users/userGroups/html/managementBreadCrumbs.jsp"/>
-        <put-attribute name="content" value="/WEB-INF/view/admin/users/userGroups/html/managementContent.jsp"/>
-    </definition>
-
     <!--               -->
     <!--Authentication -->
     <!--               -->

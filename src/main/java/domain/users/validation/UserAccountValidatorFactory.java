@@ -1,6 +1,7 @@
-package domain.users;
+package domain.users.validation;
 
 import domain.common.CommonValidators;
+import domain.users.UserAccount;
 import smartvalidation.entityValidationRule.EntityValidationRule;
 import smartvalidation.exception.EntityValidationException;
 import smartvalidation.validator.entityValidator.EntityValidator;
@@ -49,7 +50,7 @@ public class UserAccountValidatorFactory {
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".profile.name", entity.getProfile().getName(), commonNamesConstraintValidators));
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".profile.surname", entity.getProfile().getSurname(), commonNamesConstraintValidators));
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".profile.email", entity.getProfile().getEmail(), CommonValidators.getEmailConstraintValidator()));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".group.id", entity.getGroup().getId(), not(isNull())));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".group", entity.getGroup(), not(isNull())));
 
                 return entityValidationRules;
             } catch (Exception e) {
@@ -86,7 +87,7 @@ public class UserAccountValidatorFactory {
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".profile.name", entity.getProfile().getName(), commonNamesConstraintValidators));
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".profile.surname", entity.getProfile().getSurname(), commonNamesConstraintValidators));
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".profile.email", entity.getProfile().getEmail(), CommonValidators.getEmailConstraintValidator()));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".group.id", entity.getGroup().getId(), not(isNull())));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".group", entity.getGroup(), not(isNull())));
 
                 return entityValidationRules;
             } catch (Exception e) {

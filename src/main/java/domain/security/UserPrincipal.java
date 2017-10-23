@@ -5,6 +5,8 @@
  */
 package domain.security;
 
+import domain.users.UserGroup;
+
 /**
  * @author SuslovAI
  */
@@ -12,15 +14,15 @@ public class UserPrincipal {
 
     private String login;
     private Long userId;
-    private Long userGroupId;
+    private UserGroup userGroup;
 
     public UserPrincipal() {
     }
 
-    public UserPrincipal(String login, Long userId, Long userGroupId) {
+    public UserPrincipal(String login, Long userId, UserGroup userGroup) {
         this.login = login;
         this.userId = userId;
-        this.userGroupId = userGroupId;
+        this.userGroup = userGroup;
     }
 
     public String getLogin() {
@@ -39,13 +41,11 @@ public class UserPrincipal {
         this.userId = userId;
     }
 
-    public Long getUserGroupId() {
-        return userGroupId;
+    public UserGroup getUserGroup() {
+        return userGroup;
     }
 
-    public void setUserGroupId(Long userGroupId) {
-        this.userGroupId = userGroupId;
+    public void setUserGroup(UserGroup userGroup) {
+        this.userGroup = userGroup;
     }
-
-
 }

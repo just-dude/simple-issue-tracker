@@ -67,65 +67,6 @@
             <result name="unexpected-error" type="tiles">admin.fullPage.defaultError</result>
         </action>
 
-        <!-- User Groups -->
-
-        <action name="add-usergroup-*" method="{1}" class="controller.struts.action.admin.users.AddUserGroupAction">
-            <result name="success-html-full-page" type="tiles">admin.fullPage.addUserGroup</result>
-            <result name="input-html-full-page" type="tiles">admin.fullPage.addUserGroup</result>
-            <result name="invalid-user-input-html-full-page" type="tiles">admin.fullPage.addUserGroup</result>
-            <result name="error-html-full-page" type="tiles">admin.fullPage.addUserGroup</result>
-            <result name="resource-not-exists-html-full-page" type="tiles">
-                admin.fullPage.addUserGroup
-            </result>
-            <result name="data-integrity-violation-html-full-page" type="tiles">
-                admin.fullPage.addUserGroup
-            </result>
-            <result name="unchanging-content-constraint-violation-html-full-page" type="tiles">
-                admin.fullPage.addUserGroup
-            </result>
-
-            <result name="authorization-error-html-full-page" type="tiles">admin.fullPage.authorizationError</result>
-            <result name="unexpected-error" type="tiles">admin.fullPage.defaultError</result>
-        </action>
-
-        <action name="edit-usergroup-*" method="{1}" class="controller.struts.action.admin.users.EditUserGroupAction">
-            <result name="success-html-full-page" type="tiles">admin.fullPage.editUserGroup</result>
-            <result name="input-html-full-page" type="tiles">admin.fullPage.editUserGroup</result>
-            <result name="invalid-user-input-html-full-page" type="tiles">admin.fullPage.editUserGroup</result>
-            <result name="error-html-full-page" type="tiles">admin.fullPage.editUserGroup</result>
-            <result name="resource-not-exists-html-full-page" type="tiles">
-                admin.fullPage.editUserGroup
-            </result>
-            <result name="data-integrity-violation-html-full-page" type="tiles">
-                admin.fullPage.editUserGroup
-            </result>
-            <result name="unchanging-content-constraint-violation-html-full-page" type="tiles">
-                admin.fullPage.editUserGroup
-            </result>
-
-            <result name="authorization-error-html-full-page" type="tiles">admin.fullPage.authorizationError</result>
-            <result name="unexpected-error" type="tiles">admin.fullPage.defaultError</result>
-        </action>
-
-        <action name="usergroups-management-*" method="{1}"
-                class="controller.struts.action.admin.users.UserGroupsManagementAction">
-            <result name="success-html-full-page" type="tiles">admin.fullPage.userGroupsManagement</result>
-            <result name="input-html-full-page" type="tiles">admin.fullPage.userGroupsManagement</result>
-            <result name="invalid-user-input-html-full-page" type="tiles">admin.fullPage.userGroupsManagement</result>
-            <result name="error-html-full-page" type="tiles">admin.fullPage.userGroupsManagement</result>
-            <result name="resource-not-exists-html-full-page" type="tiles">
-                admin.fullPage.userGroupsManagement
-            </result>
-            <result name="data-integrity-violation-html-full-page" type="tiles">
-                admin.fullPage.userGroupsManagement
-            </result>
-            <result name="unchanging-content-constraint-violation-html-full-page" type="tiles">
-                admin.fullPage.userGroupsManagement
-            </result>
-
-            <result name="authorization-error-html-full-page" type="tiles">admin.fullPage.authorizationError</result>
-            <result name="unexpected-error" type="tiles">admin.fullPage.defaultError</result>
-        </action>
 
     </package>
 </struts>

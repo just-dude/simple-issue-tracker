@@ -1,16 +1,17 @@
 package javaConfig.spring.common;
 
-import domain.security.ModuleSpecificWildcardPermissionResolver;
-import domain.security.NamedModularRealmAuthorizer;
-import domain.security.SimpleAuthorizingService;
-import domain.security.UsersServiceBasedAuthenticatingRealm;
+import domain.security.SecuritySubject;
+import domain.security.authentication.UserAccountsBasedAuthenticatingRealm;
+import domain.security.authorization.DomainObjectSpecificWildcardPermissionResolver;
+import domain.security.authorization.DomainObjectSpecificatedRealmAuthorizer;
+import domain.users.authorization.UserAccountsAuthorizingRealm;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
@@ -21,9 +22,6 @@ import java.util.Map;
  * Created by SuslovAI on 19.10.2017.
  */
 public class SecurityConfig {
-
-    @Autowired
-    public UsersServiceBasedAuthenticatingRealm usersServiceBasedAuthenticatingRealm;
 
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
@@ -36,11 +34,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityManager securityManager(NamedModularRealmAuthorizer namedModularRealmAuthorizer, SessionManager sessionManager) {
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager(Arrays.asList(namedModularRealmAuthorizer));
+    public SecurityManager securityManager(DomainObjectSpecificatedRealmAuthorizer domainObjectSpecificatedRealmAuthorizer, SessionManager sessionManager,
+                                           UserAccountsBasedAuthenticatingRealm userAccountsBasedAuthenticatingRealm) {
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager(Arrays.asList(domainObjectSpecificatedRealmAuthorizer));
         securityManager.setSessionManager(sessionManager);
-        securityManager.getRealms().add(usersServiceBasedAuthenticatingRealm);
-        // add new realms here!
+        securityManager.getRealms().add(userAccountsBasedAuthenticatingRealm);
+        // add new authentication realms here!
         return securityManager;
     }
 
@@ -53,16 +52,29 @@ public class SecurityConfig {
     }
 
     @Bean
-    public NamedModularRealmAuthorizer namedModularRealmAuthorizer() {
+    public DomainObjectSpecificatedRealmAuthorizer domainObjectSpecificatedRealmAuthorizer() {
         Map<String, Realm> realmsMap = new HashMap();
-        //realmsMap.put("users", new UsersAuthorizingRealm());
-        NamedModularRealmAuthorizer namedModularRealmAuthorizer = new NamedModularRealmAuthorizer(realmsMap);
-        namedModularRealmAuthorizer.setPermissionResolver(new ModuleSpecificWildcardPermissionResolver());
-        return namedModularRealmAuthorizer;
+        realmsMap.put("userAccount", new UserAccountsAuthorizingRealm());
+        // add new authorizing realms here!
+        DomainObjectSpecificatedRealmAuthorizer domainObjectSpecificatedRealmAuthorizer = new DomainObjectSpecificatedRealmAuthorizer(realmsMap);
+        domainObjectSpecificatedRealmAuthorizer.setPermissionResolver(new DomainObjectSpecificWildcardPermissionResolver());
+        return domainObjectSpecificatedRealmAuthorizer;
     }
 
     @Bean
-    public SimpleAuthorizingService simpleAuthorizingService() {
-        return new SimpleAuthorizingService();
+    public SecuritySubject securitySubject() {
+        return new SecuritySubject();
     }
+
+    @Bean
+    public UserAccountsBasedAuthenticatingRealm userAccountsBasedAuthenticatingRealm() {
+        UserAccountsBasedAuthenticatingRealm realm = new UserAccountsBasedAuthenticatingRealm();
+        HashedCredentialsMatcher hcm = new HashedCredentialsMatcher();
+        hcm.setHashAlgorithmName("SHA-256");
+        hcm.setHashIterations(256);
+        hcm.setStoredCredentialsHexEncoded(false);
+        realm.setCredentialsMatcher(hcm);
+        return realm;
+    }
+
 }

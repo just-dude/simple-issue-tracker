@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.security;
+package domain.security.authorization;
 
 import domain.common.exception.AuthorizationFailedException;
 import org.apache.logging.log4j.LogManager;
@@ -25,11 +25,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class NamedModularRealmAuthorizer implements Authorizer, PermissionResolverAware, RolePermissionResolverAware, Realm {
+public class DomainObjectSpecificatedRealmAuthorizer implements Authorizer, PermissionResolverAware, RolePermissionResolverAware, Realm {
 
-    private static final String realmName = NamedModularRealmAuthorizer.class.getName();
+    private static final String realmName = DomainObjectSpecificatedRealmAuthorizer.class.getName();
 
-    protected static final Logger LOG = LogManager.getLogger(NamedModularRealmAuthorizer.class.getName());
+    protected static final Logger LOG = LogManager.getLogger(DomainObjectSpecificatedRealmAuthorizer.class.getName());
 
     protected Map<String, Realm> realms;
 
@@ -37,10 +37,10 @@ public class NamedModularRealmAuthorizer implements Authorizer, PermissionResolv
 
     protected RolePermissionResolver rolePermissionResolver;
 
-    public NamedModularRealmAuthorizer() {
+    public DomainObjectSpecificatedRealmAuthorizer() {
     }
 
-    public NamedModularRealmAuthorizer(Map<String, Realm> realms) {
+    public DomainObjectSpecificatedRealmAuthorizer(Map<String, Realm> realms) {
         setRealms(realms);
     }
 
@@ -106,8 +106,8 @@ public class NamedModularRealmAuthorizer implements Authorizer, PermissionResolv
     }
 
     protected void assertPermissionIsModuleSpecific(Permission permission) throws IllegalArgumentException {
-        if (!(permission instanceof ModuleSpecificPermission)) {
-            throw new IllegalArgumentException("Permission must be instance of ModuleSpecificPermission");
+        if (!(permission instanceof DomainObjectSpecificPermission)) {
+            throw new IllegalArgumentException("Permission must be instance of DomainObjectSpecificPermission");
         }
     }
 
@@ -120,11 +120,11 @@ public class NamedModularRealmAuthorizer implements Authorizer, PermissionResolv
         LOG.debug("permission: " + permission);
         assertRealmsConfigured();
         assertPermissionIsModuleSpecific(permission);
-        ModuleSpecificPermission msp = (ModuleSpecificPermission) permission;
-        if (getRealms().containsKey(msp.getModuleSpecificName())) {
-            LOG.debug("isPermitted getModuleSpecificName: " + msp.getModuleSpecificName());
+        DomainObjectSpecificPermission msp = (DomainObjectSpecificPermission) permission;
+        if (getRealms().containsKey(msp.getDomainObjectSpecificName())) {
+            LOG.debug("isPermitted getDomainObjectSpecificName: " + msp.getDomainObjectSpecificName());
             LOG.debug("permission: " + permission);
-            Realm realm = getRealms().get(msp.getModuleSpecificName());
+            Realm realm = getRealms().get(msp.getDomainObjectSpecificName());
             if (!(realm instanceof Authorizer)) {
                 throw new IllegalStateException("Realm specific to module is not support Authorizer interface");
             }

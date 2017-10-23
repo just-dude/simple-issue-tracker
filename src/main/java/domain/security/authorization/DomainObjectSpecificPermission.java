@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.security;
+package domain.security.authorization;
 
 import org.apache.shiro.authz.Permission;
 
 /**
  * @author SuslovAI
  */
-public interface ModuleSpecificPermission extends Permission {
+public interface DomainObjectSpecificPermission extends Permission {
 
-    String getModuleSpecificName();
+    String getDomainObjectSpecificName();
 }

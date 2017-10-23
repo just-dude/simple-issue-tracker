@@ -32,7 +32,7 @@ public class UserAccountTest extends DBTestCase {
         UserAccount validUserAccount = new UserAccount(
                 new AccountInfo("login", "passswordWithBigLength", null),
                 new Profile("name", "surname", "email@mail.ru"),
-                new UserGroup(1L, null)
+                UserGroup.CommonUser
         );
         assertTrue(validUserAccount.isValid());
         try {
@@ -43,7 +43,7 @@ public class UserAccountTest extends DBTestCase {
         UserAccount invalidUserAccount = new UserAccount(
                 new AccountInfo("", "/.", null),
                 new Profile(",.", "!sadf", "mail.ru"),
-                new UserGroup(1L, null)
+                UserGroup.CommonUser
         );
         assertFalse(invalidUserAccount.isValid());
         System.out.println(invalidUserAccount.getConstraintsViolations());
@@ -55,7 +55,7 @@ public class UserAccountTest extends DBTestCase {
         UserAccount userAccount = new UserAccount(
                 new AccountInfo("newUserLogin", "passswordWithBigLength", null),
                 new Profile("newUserName", "newUserSurname", "email@email.ru"),
-                new UserGroup(1L, null)
+                UserGroup.CommonUser
         );
         UserAccount savedAccount = userAccount.save();
         assertNotNull(savedAccount.getId());
@@ -77,7 +77,7 @@ public class UserAccountTest extends DBTestCase {
                 1L,
                 null,
                 new Profile("newName", "surname", "email1@mail.ml"),
-                new UserGroup(1L, null)
+                UserGroup.CommonUser
         );
         UserAccount savedAccount = userAccount.save();
         assertNotNull(savedAccount.getId());
@@ -100,7 +100,7 @@ public class UserAccountTest extends DBTestCase {
                 10L,
                 null,
                 new Profile("newName", "surname", "email1@mail.ml"),
-                new UserGroup(1L, null)
+                UserGroup.CommonUser
         );
         try {
             UserAccount savedAccount = userAccount.save();

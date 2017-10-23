@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.users;
+package domain.users.authorization;
 
 /**
  * @author SuslovAI
  */
-public class UsersAuthorizingPermissions {
+public class UserAccountsAuthorizingPermissions {
 
-    public static final String CHANGE_USER_ACCOUNT_AND_PROFILE_USERS_PERMISSION = "users:users:changeUserAccountAndProfile:*";
+    public static final String CHANGE_USER_ACCOUNT_AND_PROFILE_USERS_PERMISSION = "userAccount:users:changeUserAccountAndProfile:*";
     public static final String CHANGE_USER_GROUP_RELATIONSHIP_USERS_PERMISSION = "users:users:changeUserGroupRelationship:*";
     public static final String REMOVE_USERS_PERMISSION = "users:users:remove:*";
     public static final String ADD_VISITOR_USERS_PERMISSION = "users:users:addVisitor:*";

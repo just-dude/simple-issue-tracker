@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class SimpleFinder<T, ID extends Serializable> implements Finder<T, ID> {
 
-    private JpaRepository<T, ID> dao;
+    protected JpaRepository<T, ID> dao;
 
 
     public SimpleFinder(JpaRepository dao) {

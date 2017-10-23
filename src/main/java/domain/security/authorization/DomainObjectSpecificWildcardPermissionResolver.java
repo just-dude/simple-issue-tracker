@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.security;
+package domain.security.authorization;
 
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.permission.PermissionResolver;
@@ -11,12 +11,12 @@ import org.apache.shiro.authz.permission.PermissionResolver;
 /**
  * @author SuslovAI
  */
-public class ModuleSpecificWildcardPermissionResolver implements PermissionResolver {
+public class DomainObjectSpecificWildcardPermissionResolver implements PermissionResolver {
 
 
     @Override
     public Permission resolvePermission(String permissionString) {
-        return new ModuleSpecificWildcardPermission(permissionString);
+        return new DomainObjectSpecificWildcardPermission(permissionString);
     }
 
 

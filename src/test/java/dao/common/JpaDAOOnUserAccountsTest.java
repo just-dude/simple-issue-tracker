@@ -54,7 +54,7 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
         PlatformTransactionManager tm = getTransactionManager();
         UserAccount newUserAccount = new UserAccount(new AccountInfo("newUserLogin", "hashedPass", new byte[]{})
                 , new Profile("newUserName", "newUserSurname", "email@email.ru"),
-                new UserGroup(1L, null)
+                UserGroup.CommonUser
         );
         TransactionDefinition def = new DefaultTransactionDefinition();
         TransactionStatus ts = tm.getTransaction(def);

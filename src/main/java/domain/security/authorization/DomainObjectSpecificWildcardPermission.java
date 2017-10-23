@@ -3,29 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.security;
+package domain.security.authorization;
 
 import org.apache.shiro.authz.permission.WildcardPermission;
 
 /**
  * @author SuslovAI
  */
-public class ModuleSpecificWildcardPermission extends WildcardPermission implements ModuleSpecificPermission {
+public class DomainObjectSpecificWildcardPermission extends WildcardPermission implements DomainObjectSpecificPermission {
 
-    public ModuleSpecificWildcardPermission() {
+    public DomainObjectSpecificWildcardPermission() {
     }
 
-    public ModuleSpecificWildcardPermission(String wildcardString) {
+    public DomainObjectSpecificWildcardPermission(String wildcardString) {
         super(wildcardString);
     }
 
-    public ModuleSpecificWildcardPermission(String wildcardString, boolean caseSensitive) {
+    public DomainObjectSpecificWildcardPermission(String wildcardString, boolean caseSensitive) {
         super(wildcardString, caseSensitive);
     }
 
 
     @Override
-    public String getModuleSpecificName() {
+    public String getDomainObjectSpecificName() {
         return this.getParts().get(0).iterator().next();
     }
 

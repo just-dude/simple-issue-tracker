@@ -2,9 +2,11 @@ package controller.struts.action.admin.users;
 
 import controller.struts.action.common.FormProviderHandlingExceptionsBaseAction;
 import domain.users.UserAccount;
+import domain.users.UserGroup;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -23,7 +25,11 @@ public class AddUserAccountAction extends FormProviderHandlingExceptionsBaseActi
     }
 
     public Map<String, String> findAllUserGroups() {
-        return getEntitiesIdWithNamesMapByFinderName("userGroupsFinder");
+        HashMap<String, String> result = new HashMap<>();
+        for (UserGroup priority : UserGroup.values()) {
+            result.put(priority.name(), priority.name());
+        }
+        return result;
     }
 
     public UserAccount getUserAccount() {
