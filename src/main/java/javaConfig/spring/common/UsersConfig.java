@@ -21,13 +21,13 @@ public class UsersConfig {
 
 
     @Bean
-    public UserAccountsJpaDao userAccountsJpaDao() {
+    public UserAccountsJpaDao userAccountsDao() {
         return new UserAccountsJpaDao(entityManager);
     }
 
     @Bean
-    public UserAccountsFinder userAccountsFinder(UserAccountsJpaDao userAccountsJpaDao) {
-        return new UserAccountsFinder(userAccountsJpaDao);
+    public UserAccountsFinder userAccountsFinder(UserAccountsJpaDao userAccountsDao) {
+        return new UserAccountsFinder(userAccountsDao);
     }
 
     @Bean

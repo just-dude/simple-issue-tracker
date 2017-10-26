@@ -41,7 +41,7 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
     }
 
     protected JpaRepository<UserAccount, Long> getDAO() {
-        return (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDAO");
+        return (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDao");
     }
 
     protected PlatformTransactionManager getTransactionManager() {
@@ -89,6 +89,7 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
         UserAccount userAccount = jpaDAO.findOne(1L);
         userAccount.getProfile().setName("newName");
         userAccount.getAccountInfo().setLogin("login1");
+        userAccount.setUserGroup(UserGroup.CommonUser);
         TransactionStatus ts = tm.getTransaction(def);
         jpaDAO.save(userAccount);
         jpaDAO.flush();
@@ -178,7 +179,7 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
 
     @Test
     public void testGetOne() throws Exception {
-        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDAO");
+        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDao");
         UserAccount account = jpaDAO.getOne(1L);
         assertEquals(1L, (long) account.getId());
         assertEquals("name", account.getProfile().getName());
@@ -187,14 +188,14 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
 
     @Test
     public void testCount() throws Exception {
-        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDAO");
+        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDao");
         long countOfAccounts = jpaDAO.count();
         assertEquals(3L, countOfAccounts);
     }
 
     @Test
     public void testFindAll() throws Exception {
-        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDAO");
+        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDao");
         List<UserAccount> accountsList = jpaDAO.findAll();
         assertEquals(3L, accountsList.size());
         assertEquals(1L, (long) accountsList.get(0).getId());
@@ -204,7 +205,7 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
 
     @Test
     public void testFindAllWithPageRequest() throws Exception {
-        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDAO");
+        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDao");
         Page<UserAccount> accountsPage = jpaDAO.findAll(new PageRequest(0, 2, Sort.Direction.DESC, "id"));
         List<UserAccount> userAccountList = accountsPage.getContent();
         assertEquals(3L, accountsPage.getTotalElements());

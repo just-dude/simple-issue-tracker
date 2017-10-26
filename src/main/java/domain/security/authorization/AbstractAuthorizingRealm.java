@@ -31,21 +31,22 @@ public abstract class AbstractAuthorizingRealm extends AuthorizingRealm {
     private static final Logger LOG = LogManager.getLogger(AbstractAuthorizingRealm.class.getName());
 
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection pc) {
-        LOG.debug(String.format("Principals: %s ", pc.asList()));
+        LOG.debug(String.format("doGetAuthorizationInfo principals: %s ", pc.asList()));
         UserPrincipal userPrincipal = null;
         SimpleRole currentUserRole = getUnauthenticatedUserRole();
         if (!pc.isEmpty()) {
             userPrincipal = pc.oneByType(UserPrincipal.class);
             currentUserRole = getRoleByUserGroup(userPrincipal);
         }
+        LOG.debug(String.format("Current user role is %s ", currentUserRole.getName()));
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(new HashSet(Arrays.asList(currentUserRole.getName())));
         info.addObjectPermissions(currentUserRole.getPermissions());
-        LOG.debug(String.format("Result info: roles %s, permissions %s; by principals: %s ", info.getRoles(), info.getObjectPermissions(), pc.asList()));
+        LOG.debug(String.format("SimpleAuthorizationInfo: roles %s, permissions %s; by principals: %s ", info.getRoles(), info.getObjectPermissions(), pc.asList()));
         return info;
     }
 
     protected SimpleRole getUnauthenticatedUserRole() {
-        return new SimpleRole("UnauthenticatedUser", new HashSet(Arrays.asList(new WildcardPermission(""))));
+        return new SimpleRole("UnauthenticatedUser", new HashSet(Arrays.asList(new NotOnePermission())));
     }
 
     protected SimpleRole getRoleByUserGroup(UserPrincipal userPrincipal) {
@@ -53,7 +54,7 @@ public abstract class AbstractAuthorizingRealm extends AuthorizingRealm {
         if (userGroupSimpleRoleMap.containsKey(userPrincipal.getUserGroup())) {
             return userGroupSimpleRoleMap.get(userPrincipal.getUserGroup());
         } else {
-            return new SimpleRole("UnknownUserGroupWithoutPermissions", new HashSet(Arrays.asList(new WildcardPermission(""))));
+            return new SimpleRole("UnknownUserGroupWithoutPermissions", new HashSet(Arrays.asList(new NotOnePermission())));
         }
     }
 

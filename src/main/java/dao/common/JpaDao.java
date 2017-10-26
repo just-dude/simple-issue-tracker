@@ -15,7 +15,7 @@ import javax.persistence.criteria.*;
 import java.io.Serializable;
 import java.util.*;
 
-public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> {
+public class JpaDao<T, ID extends Serializable> implements JpaRepository<T, ID> {
 
 
     protected EntityManager em;
@@ -23,7 +23,7 @@ public class JpaDAO<T, ID extends Serializable> implements JpaRepository<T, ID> 
     protected Class<T> entityClass;
 
 
-    public JpaDAO(EntityManager em, Class<T> entityClass) {
+    public JpaDao(EntityManager em, Class<T> entityClass) {
         this.em = em;
         this.entityClass = entityClass;
     }

@@ -42,7 +42,7 @@ public class UserAccountsBasedAuthenticatingRealm extends AuthenticatingRealm {
             if (userAccount != null) {
                 SimpleAuthenticationInfo saInfo = new SimpleAuthenticationInfo(
                         new SimplePrincipalCollection(
-                                new UserPrincipal(userAccount.getAccountInfo().getLogin(), userAccount.getId(), userAccount.getGroup()), realmName),
+                                new UserPrincipal(userAccount.getAccountInfo().getLogin(), userAccount.getId(), userAccount.getUserGroup()), realmName),
                         userAccount.getAccountInfo().getHashedPassword(),
                         ByteSource.Util.bytes(Base64.decode(userAccount.getAccountInfo().getSalt()))
                 );

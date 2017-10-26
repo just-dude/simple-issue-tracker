@@ -18,16 +18,16 @@ import java.util.Collections;
 /**
  * Created by SuslovAI on 23.10.2017.
  */
-public class SecuritySubject {
+public class SecuritySubjectUtils {
 
     private static String CURRENT_USER_ACCOUNT_SESSION_KEY = "currentUserAccount";
 
-    public void login(String login, String password) throws BusinessException {
+    public static void login(String login, String password) throws BusinessException {
         UsernamePasswordToken token = new UsernamePasswordToken(login, password);
         try {
             SecurityUtils.getSubject().login(token);
             UserAccountsFinder finder = (UserAccountsFinder) BeanFactoryProvider.getBeanFactory().getBean("userAccountsFinder");
-            Long currentUserId = ((UserPrincipal) SecurityUtils.getSubject().getPrincipals().byType(UserPrincipal.class)).getUserId();
+            Long currentUserId = SecurityUtils.getSubject().getPrincipals().byType(UserPrincipal.class).iterator().next().getUserId();
             UserAccount currentUserAccount = finder.getOne(currentUserId);
             SecurityUtils.getSubject().getSession().setAttribute(CURRENT_USER_ACCOUNT_SESSION_KEY, currentUserAccount);
         } catch (AuthenticationException e) {
@@ -39,7 +39,7 @@ public class SecuritySubject {
         }
     }
 
-    public void logout() {
+    public static void logout() {
         try {
             SecurityUtils.getSubject().logout();
             SecurityUtils.getSubject().getSession().removeAttribute(CURRENT_USER_ACCOUNT_SESSION_KEY);
@@ -48,12 +48,12 @@ public class SecuritySubject {
         }
     }
 
-    public UserAccount getCurrentUserAccount() {
+    public static UserAccount getCurrentUserAccount() {
         UserAccount currentUserAccount = (UserAccount) SecurityUtils.getSubject().getSession().getAttribute(CURRENT_USER_ACCOUNT_SESSION_KEY);
         return currentUserAccount;
     }
 
-    public boolean isPermitted(String permission) throws BusinessException {
+    public static boolean isPermitted(String permission) throws BusinessException {
         try {
             return SecurityUtils.getSubject().isPermitted(permission);
         } catch (Exception e) {
@@ -61,7 +61,7 @@ public class SecuritySubject {
         }
     }
 
-    public boolean[] isPermitted(String... permissions) throws BusinessException {
+    public static boolean[] isPermitted(String... permissions) throws BusinessException {
         try {
             return SecurityUtils.getSubject().isPermitted(permissions);
         } catch (Exception e) {
@@ -69,7 +69,7 @@ public class SecuritySubject {
         }
     }
 
-    public boolean isPermittedAll(String... permissions) throws BusinessException {
+    public static boolean isPermittedAll(String... permissions) throws BusinessException {
         try {
             return SecurityUtils.getSubject().isPermittedAll(permissions);
         } catch (Exception e) {
@@ -77,7 +77,7 @@ public class SecuritySubject {
         }
     }
 
-    public void checkPermission(String permission) throws AuthorizationFailedException, BusinessException {
+    public static void checkPermission(String permission) throws AuthorizationFailedException, BusinessException {
         try {
             SecurityUtils.getSubject().checkPermission(permission);
         } catch (AuthorizationException e) {
@@ -87,7 +87,7 @@ public class SecuritySubject {
         }
     }
 
-    public void checkPermissions(String... permissions) throws AuthorizationFailedException, BusinessException {
+    public static void checkPermissions(String... permissions) throws AuthorizationFailedException, BusinessException {
         try {
             SecurityUtils.getSubject().checkPermissions(permissions);
         } catch (AuthorizationException e) {
@@ -97,7 +97,7 @@ public class SecuritySubject {
         }
     }
 
-    public boolean hasRole(String roleName) throws BusinessException {
+    public static boolean hasRole(String roleName) throws BusinessException {
         try {
             return SecurityUtils.getSubject().hasRole(roleName);
         } catch (Exception e) {

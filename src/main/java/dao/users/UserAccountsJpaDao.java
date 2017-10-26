@@ -1,10 +1,8 @@
 package dao.users;
 
-import dao.common.JpaDAO;
+import dao.common.JpaDao;
 import dao.common.exception.DaoException;
-import domain.users.AccountInfo_;
 import domain.users.UserAccount;
-import domain.users.UserAccount_;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -16,7 +14,7 @@ import java.util.List;
 /**
  * Created by SuslovAI on 23.10.2017.
  */
-public class UserAccountsJpaDao extends JpaDAO<UserAccount, Long> {
+public class UserAccountsJpaDao extends JpaDao<UserAccount, Long> {
 
     public UserAccountsJpaDao(EntityManager em) {
         super(em, UserAccount.class);
@@ -27,7 +25,8 @@ public class UserAccountsJpaDao extends JpaDAO<UserAccount, Long> {
         CriteriaQuery<UserAccount> cq = cb.createQuery(getEntityTypeClass());
         Root<UserAccount> root = cq.from(getEntityTypeClass());
         cq.select(root);
-        cq.where(cb.equal(root.get(UserAccount_.accountInfo).get(AccountInfo_.login), login));
+        //cq.where(cb.equal(root.get(UserAccount_.accountInfo).get(AccountInfo_.login), login));
+        cq.where(cb.equal(root.get("accountInfo").get("login"), login));
         TypedQuery<UserAccount> typedQuery = em.createQuery(cq);
         List<UserAccount> userAccountList = typedQuery.getResultList();
         if (userAccountList.size() > 1) {

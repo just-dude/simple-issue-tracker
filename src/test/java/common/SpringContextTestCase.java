@@ -4,6 +4,11 @@ package common;/*
  * and open the template in the editor.
  */
 
+import common.beanFactory.BeanFactoryProvider;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.mgt.SecurityManager;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
@@ -23,4 +28,9 @@ public abstract class SpringContextTestCase {
     @Rule
     public final SpringMethodRule springMethodRule = new SpringMethodRule();
 
+    @Before
+    public void setUp() throws Exception {
+        SecurityUtils.setSecurityManager((SecurityManager) BeanFactoryProvider.getBeanFactory().getBean("securityManager"));
+        SecurityUtils.getSubject().login(new UsernamePasswordToken("admin", "123"));
+    }
 }

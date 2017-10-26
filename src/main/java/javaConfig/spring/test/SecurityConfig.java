@@ -1,17 +1,29 @@
-package javaConfig.spring.common;
+package javaConfig.spring.test;
 
-import domain.security.SecuritySubject;
+import common.beanFactory.BeanFactoryProvider;
+import domain.common.exception.BusinessException;
+import domain.security.SecuritySubjectUtils;
+import domain.security.UserPrincipal;
 import domain.security.authentication.UserAccountsBasedAuthenticatingRealm;
 import domain.security.authorization.DomainObjectSpecificWildcardPermissionResolver;
 import domain.security.authorization.DomainObjectSpecificatedRealmAuthorizer;
+import domain.users.UserAccount;
+import domain.users.UserAccountsFinder;
+import domain.users.UserGroup;
 import domain.users.authorization.UserAccountsAuthorizingRealm;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.AuthenticatingRealm;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
@@ -36,10 +48,14 @@ public class SecurityConfig {
     @Bean
     public SecurityManager securityManager(DomainObjectSpecificatedRealmAuthorizer domainObjectSpecificatedRealmAuthorizer, SessionManager sessionManager,
                                            UserAccountsBasedAuthenticatingRealm userAccountsBasedAuthenticatingRealm) {
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager(Arrays.asList(domainObjectSpecificatedRealmAuthorizer));
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager(
+                Arrays.asList(
+                        domainObjectSpecificatedRealmAuthorizer,
+                        new AuthenticatingRealmStub()
+                        // add new authentication realms here
+                )
+        );
         securityManager.setSessionManager(sessionManager);
-        securityManager.getRealms().add(userAccountsBasedAuthenticatingRealm);
-        // add new authentication realms here!
         return securityManager;
     }
 
@@ -54,7 +70,8 @@ public class SecurityConfig {
     @Bean
     public DomainObjectSpecificatedRealmAuthorizer domainObjectSpecificatedRealmAuthorizer() {
         Map<String, Realm> realmsMap = new HashMap();
-        realmsMap.put("userAccount", new UserAccountsAuthorizingRealm());
+        // write realm keys in lower case!
+        realmsMap.put("useraccount", new UserAccountsAuthorizingRealm());
         // add new authorizing realms here!
         DomainObjectSpecificatedRealmAuthorizer domainObjectSpecificatedRealmAuthorizer = new DomainObjectSpecificatedRealmAuthorizer(realmsMap);
         domainObjectSpecificatedRealmAuthorizer.setPermissionResolver(new DomainObjectSpecificWildcardPermissionResolver());
@@ -62,19 +79,46 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecuritySubject securitySubject() {
-        return new SecuritySubject();
+    public SecuritySubjectUtils securitySubject() {
+        return new SecuritySubjectUtils();
     }
 
     @Bean
     public UserAccountsBasedAuthenticatingRealm userAccountsBasedAuthenticatingRealm() {
         UserAccountsBasedAuthenticatingRealm realm = new UserAccountsBasedAuthenticatingRealm();
-        HashedCredentialsMatcher hcm = new HashedCredentialsMatcher();
-        hcm.setHashAlgorithmName("SHA-256");
-        hcm.setHashIterations(256);
-        hcm.setStoredCredentialsHexEncoded(false);
-        realm.setCredentialsMatcher(hcm);
+        realm.setCredentialsMatcher(new SimpleCredentialsMatcher());
         return realm;
     }
 
+    public static class AuthenticatingRealmStub extends AuthenticatingRealm {
+
+        private static final Logger LOG = LoggerFactory.getLogger(AuthenticatingRealmStub.class);
+        private static final String realmName = "UserAccountsBasedRealm";
+
+        @Override
+        protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+            UsernamePasswordToken upToken = (UsernamePasswordToken) token;
+            String username = upToken.getUsername();
+
+            // Null username is invalid
+            if (username == null) {
+                throw new AccountException("Null usernames are not allowed by this realm.");
+            }
+
+            AuthenticationInfo info = null;
+            try {
+                return new SimpleAuthenticationInfo(
+                    new SimplePrincipalCollection(
+                            new UserPrincipal("admin", 1L, UserGroup.Admin), realmName
+                    ),
+                    "123"
+                );
+
+            } catch (BusinessException e) {
+                LOG.error("Exception has occured on getting user info", e);
+                throw new AuthenticationException("Exception has occured on getting user info", e);
+            }
+        }
+
+    }
 }

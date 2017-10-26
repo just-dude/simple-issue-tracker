@@ -30,7 +30,7 @@ public class UserAccountsAuthorizingRealm extends AbstractAuthorizingRealm {
                         new HashSet(
                                 Arrays.asList(
                                         new WildcardPermission(
-                                                "userAccount:*:*")
+                                                "userAccount:*:*:*")
                                 )
                         )
                 )
@@ -40,7 +40,9 @@ public class UserAccountsAuthorizingRealm extends AbstractAuthorizingRealm {
                         new HashSet(
                                 Arrays.asList(
                                         new WildcardPermission(
-                                                "userAccount:id:" + userPrincipal.getUserId())
+                                                UserAccountsPermissions.INSTANCE.
+                                                        getFindOneByIdPermission(userPrincipal.getUserId())
+                                        )
                                 )
                         )
                 )

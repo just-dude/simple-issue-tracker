@@ -48,4 +48,13 @@ public class UserPrincipal {
     public void setUserGroup(UserGroup userGroup) {
         this.userGroup = userGroup;
     }
+
+    @Override
+    public String toString() {
+        return "UserPrincipal{" +
+                "login='" + login + '\'' +
+                ", userId=" + userId +
+                ", userGroup=" + userGroup +
+                '}';
+    }
 }

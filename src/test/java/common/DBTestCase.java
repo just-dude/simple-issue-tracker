@@ -5,6 +5,10 @@ package common;/*
  */
 
 import common.beanFactory.BeanFactoryProvider;
+import domain.security.SecuritySubjectUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.mgt.SecurityManager;
 import org.dbunit.DataSourceBasedDBTestCase;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.ext.mysql.MySqlDataTypeFactory;
@@ -47,8 +51,8 @@ public abstract class DBTestCase extends DataSourceBasedDBTestCase {
     @Before
     public void setUp() throws Exception {
         super.setUp(); //To change body of generated methods, choose Tools | Templates.
-        //SecurityUtils.setSecurityManager((SecurityManager) BeanFactoryProvider.getBeanFactory().getBean("securityManager"));
-        // SecurityUtils.getSubject().login(new UsernamePasswordToken("admin", "123"));
+        SecurityUtils.setSecurityManager((SecurityManager) BeanFactoryProvider.getBeanFactory().getBean("securityManager"));
+        SecurityUtils.getSubject().login(new UsernamePasswordToken("admin", "123"));
     }
 
     @After

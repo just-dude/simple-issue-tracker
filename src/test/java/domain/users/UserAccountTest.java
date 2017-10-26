@@ -16,7 +16,7 @@ import java.io.InputStream;
 /**
  * Created by SuslovAI on 04.10.2017.
  */
-public class UserAccountTest extends DBTestCase {
+    public class UserAccountTest extends DBTestCase {
 
     public UserAccountTest() {
         super("UserAccountTest");

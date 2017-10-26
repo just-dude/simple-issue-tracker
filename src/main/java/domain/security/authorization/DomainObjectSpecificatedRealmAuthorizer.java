@@ -117,13 +117,13 @@ public class DomainObjectSpecificatedRealmAuthorizer implements Authorizer, Perm
 
     public boolean isPermitted(PrincipalCollection principals, Permission permission) {
         LOG.debug("principals: " + principals);
-        LOG.debug("permission: " + permission);
+        LOG.debug("permissions: " + permission);
         assertRealmsConfigured();
         assertPermissionIsModuleSpecific(permission);
         DomainObjectSpecificPermission msp = (DomainObjectSpecificPermission) permission;
         if (getRealms().containsKey(msp.getDomainObjectSpecificName())) {
             LOG.debug("isPermitted getDomainObjectSpecificName: " + msp.getDomainObjectSpecificName());
-            LOG.debug("permission: " + permission);
+            LOG.debug("permissions: " + permission);
             Realm realm = getRealms().get(msp.getDomainObjectSpecificName());
             if (!(realm instanceof Authorizer)) {
                 throw new IllegalStateException("Realm specific to module is not support Authorizer interface");
@@ -202,29 +202,29 @@ public class DomainObjectSpecificatedRealmAuthorizer implements Authorizer, Perm
     }
 
     /**
-     * If !{@link #isPermitted(PrincipalCollection, String) isPermitted(permission)}, throws
+     * If !{@link #isPermitted(PrincipalCollection, String) isPermitted(permissions)}, throws
      * an <code>UnauthorizedException</code> otherwise returns quietly.
      */
     public void checkPermission(PrincipalCollection principals, String permission) throws AuthorizationFailedException {
         assertRealmsConfigured();
         if (!isPermitted(principals, permission)) {
-            throw new UnauthorizedException("Subject does not have permission [" + permission + "]");
+            throw new UnauthorizedException("Subject does not have permissions [" + permission + "]");
         }
     }
 
     /**
-     * If !{@link #isPermitted(PrincipalCollection, Permission) isPermitted(permission)}, throws
+     * If !{@link #isPermitted(PrincipalCollection, Permission) isPermitted(permissions)}, throws
      * an <code>UnauthorizedException</code> otherwise returns quietly.
      */
     public void checkPermission(PrincipalCollection principals, Permission permission) throws AuthorizationFailedException {
         assertRealmsConfigured();
         if (!isPermitted(principals, permission)) {
-            throw new UnauthorizedException("Subject does not have permission [" + permission + "]");
+            throw new UnauthorizedException("Subject does not have permissions [" + permission + "]");
         }
     }
 
     /**
-     * If !{@link #isPermitted(PrincipalCollection, String...) isPermitted(permission)},
+     * If !{@link #isPermitted(PrincipalCollection, String...) isPermitted(permissions)},
      * throws an <code>UnauthorizedException</code> otherwise returns quietly.
      */
     public void checkPermissions(PrincipalCollection principals, String... permissions) throws AuthorizationFailedException {
@@ -237,7 +237,7 @@ public class DomainObjectSpecificatedRealmAuthorizer implements Authorizer, Perm
     }
 
     /**
-     * If !{@link #isPermitted(PrincipalCollection, Permission) isPermitted(permission)} for
+     * If !{@link #isPermitted(PrincipalCollection, Permission) isPermitted(permissions)} for
      * <em>all</em> the given Permissions, throws
      * an <code>UnauthorizedException</code> otherwise returns quietly.
      */

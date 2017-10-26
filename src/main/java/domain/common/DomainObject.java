@@ -4,6 +4,8 @@ import common.beanFactory.BeanFactoryProvider;
 import dao.common.exception.DataIntegrityViolationDaoException;
 import dao.common.exception.EntityWithSuchIdDoesNotExistsDaoException;
 import domain.common.exception.*;
+import domain.security.SecuritySubjectUtils;
+import domain.security.authorization.AuthorizingPermissions;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
     protected JpaRepository<T, ID> dao;
     protected Finder<T, ID> finder;
 
+    protected AuthorizingPermissions permissions = new AuthorizingPermissions(this.getClass().getSimpleName().toLowerCase());
 
     @Override
     public boolean isValid() throws BusinessException {
@@ -49,6 +52,8 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
     @Transactional
     @Override
     public <S extends T> S save() throws DataAccessFailedBuisnessException {
+        checkSavePermission();
+        ifInvalidThrowValidationFailedException();
         ifUpdateNotExistsEntityThrowException();
         try {
             return doSave();
@@ -61,8 +66,9 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
     @Transactional
     @Override
     public void remove() throws DataAccessFailedBuisnessException, EntityWithSuchIdDoesNotExistsBusinessException {
+        checkRemovePermission();
         try {
-            getDAO().delete(getId());
+            doRemove();
         } catch (EntityWithSuchIdDoesNotExistsDaoException e) {
             throw new EntityWithSuchIdDoesNotExistsBusinessException(e.getId());
         } catch (DataIntegrityViolationDaoException e) {
@@ -71,6 +77,12 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
             throw new DataAccessFailedBuisnessException("An error has occured on remove entity", e, this.getClass().getName() + ".remove", this);
         }
     }
+
+    public void doRemove(){
+        getDAO().delete(getId());
+    }
+
+
 
     protected void ifInvalidThrowValidationFailedException() throws ValidationFailedException, BusinessException {
         try {
@@ -96,7 +108,7 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
     }
 
     protected String getDaoName() {
-        return StringUtils.uncapitalize(this.getClass().getSimpleName()) + "s" + "DAO";
+        return StringUtils.uncapitalize(this.getClass().getSimpleName()) + "s" + "Dao";
     }
 
     protected String getFinderName() {
@@ -109,6 +121,13 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
 
     protected abstract boolean isNew();
 
+    protected void checkSavePermission(){
+        SecuritySubjectUtils.checkPermission(permissions.getSavePermission());
+    }
+
+    protected void checkRemovePermission(){
+        SecuritySubjectUtils.checkPermission(permissions.getRemovePermission());
+    }
 
     protected EntityValidatorFactory<T> getEntityValidatorFactory() {
         if (evf == null) {

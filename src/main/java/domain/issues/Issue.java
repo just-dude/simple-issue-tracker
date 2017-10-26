@@ -39,7 +39,12 @@ public class Issue extends HavingNameAndOneIdDomainObject<Issue> {
     @JoinColumn(name = "assigneeId", foreignKey = @ForeignKey(name = "id"))
     private UserAccount assignee;
 
+    @OneToOne
+    @JoinColumn(name = "parentId", foreignKey = @ForeignKey(name = "id"))
+    private Issue parent;
+
     @OneToMany
+    @JoinColumn(foreignKey = @ForeignKey(name = "id"))
     private List<Issue> subIssues;
 
     @OneToOne

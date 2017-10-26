@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="insert-ststic-content" author="SuslovAI">
+
+        <insert tableName="UserAccounts"> <!-- A12345aqwerty -->
+            <column name="id" value="1"/>
+            <column name="login" value="admin"/>
+            <column name="hashedPassword" value="Sdoq58CVvBteir7hT3PX+ZWjaCg7pugCRLAeTAV2JlM="/>
+            <column name="salt" value="/unhHbfn6N0F+p5MpeyZiQ=="/>
+            <column name="name" value="Admin"/>
+            <column name="surname" value="Admin"/>
+            <column name="email" value="admin@email.com"/>
+            <column name="userGroup" value="Admin"/>
+        </insert>
+
+        <insert tableName="UserAccounts"> <!-- A12345aqwerty -->
+            <column name="id" value="2"/>
+            <column name="login" value="сommonUser"/>
+            <column name="hashedPassword" value="Sdoq58CVvBteir7hT3PX+ZWjaCg7pugCRLAeTAV2JlM="/>
+            <column name="salt" value="/unhHbfn6N0F+p5MpeyZiQ=="/>
+            <column name="name" value="First"/>
+            <column name="surname" value="CommonUser"/>
+            <column name="email" value="firstCommonUser@email.com"/>
+            <column name="userGroup" value="CommonUser"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
