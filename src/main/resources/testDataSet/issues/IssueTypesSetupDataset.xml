@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<dataset>
-
-    <test_issue_tracker.IssueTypes id="1" name="name"/>
-    <test_issue_tracker.IssueTypes id="2" name="name"/>
-    <test_issue_tracker.IssueTypes id="3" name="name"/>
-
-</dataset>

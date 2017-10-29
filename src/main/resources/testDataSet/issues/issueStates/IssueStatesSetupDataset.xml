@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+
+    <test_issue_tracker.IssueTypes id="1" name="firstIssueTypeName"/>
+    <test_issue_tracker.IssueTypes id="2" name="secondIssueTypeName"/>
+
+    <test_issue_tracker.IssueStates id="1" name="initialIssueState" isInitialState="true" isFinishState="false" issueTypeId="1"/>
+    <test_issue_tracker.IssueStates id="2" name="transitionIssueState" isInitialState="false" isFinishState="false" issueTypeId="1"/>
+    <test_issue_tracker.IssueStates id="3" name="finishIssueState" isInitialState="false" isFinishState="true" issueTypeId="1"/>
+
+    <test_issue_tracker.IssueStates_IssueStates IssueState_id="1" issueStatesToTransition_id="2"/>
+    <test_issue_tracker.IssueStates_IssueStates IssueState_id="2" issueStatesToTransition_id="3"/>
+
+</dataset>

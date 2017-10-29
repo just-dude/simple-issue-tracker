@@ -42,7 +42,7 @@ public class IssueStateValidatorFactory {
                 ConstraintValidator commonNamesConstraintValidators = CommonValidators.getSimpleNameConstraintValidator();
 
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".name", entity.getName(), commonNamesConstraintValidators));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".issueType", entity.getIssueType(), not(isNull())));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".issueTypes", entity.getIssueType(), not(isNull())));
                 return entityValidationRules;
             } catch (Exception e) {
                 throw new EntityValidationException("Entity validator initialization exception have occured", e);
@@ -70,7 +70,7 @@ public class IssueStateValidatorFactory {
 
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".id", entity.getId(), not(isNull())));
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".name", entity.getName(), commonNamesConstraintValidators));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".issueType", entity.getIssueType(), not(isNull())));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".issueTypes", entity.getIssueType(), not(isNull())));
 
                 return entityValidationRules;
             } catch (Exception e) {

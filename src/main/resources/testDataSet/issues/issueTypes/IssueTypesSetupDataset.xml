@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+
+    <test_issue_tracker.IssueTypes id="1" name="firstName"/>
+    <test_issue_tracker.IssueTypes id="2" name="secondName"/>
+    <test_issue_tracker.IssueTypes id="3" name="thirdName"/>
+
+</dataset>

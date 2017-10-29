@@ -1,5 +1,6 @@
 package domain.users;
 
+import common.argumentAssert.Assert;
 import dao.users.UserAccountsJpaDao;
 import domain.common.SimpleFinder;
 import domain.common.exception.BusinessException;
@@ -15,6 +16,7 @@ public class UserAccountsFinder extends SimpleFinder<UserAccount, Long> {
 
     public UserAccount findByLogin(String login) {
         try {
+            Assert.notNull(login,"login");
             return ((UserAccountsJpaDao) dao).findByLogin(login);
         } catch (Exception e) {
             throw new BusinessException("Exception has occured", e);

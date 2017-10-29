@@ -1,6 +1,9 @@
 package domain.issues;
 
 import domain.common.HavingNameAndOneIdDomainObject;
+import domain.common.exception.DataAccessFailedBuisnessException;
+import domain.common.exception.DataIntegrityViolationBusinessException;
+import domain.common.exception.EntityWithSuchIdDoesNotExistsBusinessException;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,8 +15,8 @@ public class IssueState extends HavingNameAndOneIdDomainObject<IssueState> {
     private Boolean isInitialState = false;
     private Boolean isFinishState = false;
 
-    @OneToMany
-    private List<IssueState> issueStatesToTransfer;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<IssueState> issueStatesToTransition;
 
     @ManyToOne
     @JoinColumn(name = "issueTypeId", foreignKey = @ForeignKey(name = "id"))
@@ -22,11 +25,15 @@ public class IssueState extends HavingNameAndOneIdDomainObject<IssueState> {
     public IssueState() {
     }
 
-    public IssueState(Long id, String name, Boolean isInitialState, Boolean isFinishState, List<IssueState> issueStatesToTransfer, IssueType issueType) {
+    public IssueState(Long id) {
+        super(id,null);
+    }
+
+    public IssueState(Long id, String name, Boolean isInitialState, Boolean isFinishState, List<IssueState> issueStatesToTransition, IssueType issueType) {
         super(id, name);
         this.isInitialState = isInitialState;
         this.isFinishState = isFinishState;
-        this.issueStatesToTransfer = issueStatesToTransfer;
+        this.issueStatesToTransition = issueStatesToTransition;
         this.issueType = issueType;
     }
 
@@ -38,7 +45,7 @@ public class IssueState extends HavingNameAndOneIdDomainObject<IssueState> {
         this.issueType = issueType;
     }
 
-    public Boolean getInitialState() {
+    public Boolean isInitialState() {
         return isInitialState;
     }
 
@@ -46,7 +53,7 @@ public class IssueState extends HavingNameAndOneIdDomainObject<IssueState> {
         isInitialState = initialState;
     }
 
-    public Boolean getFinishState() {
+    public Boolean isFinishState() {
         return isFinishState;
     }
 
@@ -54,11 +61,27 @@ public class IssueState extends HavingNameAndOneIdDomainObject<IssueState> {
         isFinishState = finishState;
     }
 
-    public List<IssueState> getIssueStatesToTransfer() {
-        return issueStatesToTransfer;
+    public List<IssueState> getIssueStatesToTransition() {
+        return issueStatesToTransition;
     }
 
-    public void setIssueStatesToTransfer(List<IssueState> issueStatesToTransfer) {
-        this.issueStatesToTransfer = issueStatesToTransfer;
+    public void setIssueStatesToTransition(List<IssueState> issueStatesToTransition) {
+        this.issueStatesToTransition = issueStatesToTransition;
+    }
+
+    public boolean equalsById(IssueState anotherIssueState){
+        return (getId()==anotherIssueState.getId());
+    }
+
+    @Override
+    public String toString() {
+        return "IssueState{" +
+                "id="+id+
+                ", name="+name+
+                ", isInitialState=" + isInitialState +
+                ", isFinishState=" + isFinishState +
+                ", issueStatesToTransition=" + issueStatesToTransition +
+                ", issueType=" + issueType +
+                '}';
     }
 }

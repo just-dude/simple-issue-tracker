@@ -2,7 +2,9 @@ package dao.users;
 
 import dao.common.JpaDao;
 import dao.common.exception.DaoException;
+import domain.users.AccountInfo_;
 import domain.users.UserAccount;
+import domain.users.UserAccount_;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -25,8 +27,8 @@ public class UserAccountsJpaDao extends JpaDao<UserAccount, Long> {
         CriteriaQuery<UserAccount> cq = cb.createQuery(getEntityTypeClass());
         Root<UserAccount> root = cq.from(getEntityTypeClass());
         cq.select(root);
-        //cq.where(cb.equal(root.get(UserAccount_.accountInfo).get(AccountInfo_.login), login));
-        cq.where(cb.equal(root.get("accountInfo").get("login"), login));
+        cq.where(cb.equal(root.get(UserAccount_.accountInfo).get(AccountInfo_.login), login));
+        //cq.where(cb.equal(root.get("accountInfo").get("login"), login));
         TypedQuery<UserAccount> typedQuery = em.createQuery(cq);
         List<UserAccount> userAccountList = typedQuery.getResultList();
         if (userAccountList.size() > 1) {

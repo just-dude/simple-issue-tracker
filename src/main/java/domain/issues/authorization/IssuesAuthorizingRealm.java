@@ -40,6 +40,15 @@ public class IssuesAuthorizingRealm extends AbstractAuthorizingRealm {
                         new HashSet(
                                 Arrays.asList(
                                         new WildcardPermission(
+                                        IssuesPermissions.INSTANCE.getSavePermission()
+                                        ),
+                                        new WildcardPermission(
+                                                IssuesPermissions.INSTANCE.getGoIntoStatePermission(userPrincipal.getUserId())
+                                        ),
+                                        new WildcardPermission(
+                                                IssuesPermissions.INSTANCE.getChangeRequiredResolvedDateTimePermission(userPrincipal.getUserId())
+                                        ),
+                                        new WildcardPermission(
                                                 "issue:findOneById,findAllByAuthorId,findAllByAssigneeId:authorId,assigneeId:"
                                                         + userPrincipal.getUserId())
                                 )

@@ -1,7 +1,6 @@
 package domain.issues;
 
 import common.DBTestCase;
-import domain.common.exception.EntityWithSuchIdDoesNotExistsBusinessException;
 import org.dbunit.Assertion;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
@@ -21,7 +20,7 @@ public class IssueTypeTest extends DBTestCase {
 
     @Override
     protected IDataSet getDataSet() throws Exception {
-        return new FlatXmlDataSetBuilder().build(getDataSetAsInputStream("testDataSet/issues/IssueTypesSetupDataset.xml"));
+        return new FlatXmlDataSetBuilder().build(getDataSetAsInputStream("testDataSet/issues/issueTypes/IssueTypesSetupDataset.xml"));
     }
 
     @Test
@@ -39,83 +38,56 @@ public class IssueTypeTest extends DBTestCase {
         assertEquals(1, invalidIssueType.getConstraintsViolations().size());
     }
 
-    /*@Test
+    @Test
     public void insert() throws Exception {
-        UserAccount issueAccount = new UserAccount(
-                new AccountInfo("newUserLogin", "passswordWithBigLength", null),
-                new Profile("newUserName", "newUserSurname", "email@email.ru"),
-                UserGroup.CommonUser
-        );
-        UserAccount savedAccount = issueAccount.save();
-        assertNotNull(savedAccount.getId());
+        IssueType issueType = new IssueType(null,"newIssueTypeName",null);
+        IssueType savedIssueTYpe = issueType.save();
+        assertNotNull(savedIssueTYpe.getId());
 
-        IDataSet databaseDataSet = getConnection().createDataSet(new String[]{"test_issue_tracker.UserAccounts"});
-        ITable actualTable = databaseDataSet.getTable("test_issue_tracker.UserAccounts");
-        ITable filteredActualTable = DefaultColumnFilter.excludedColumnsTable(actualTable, new String[]{"id", "hashedPassword", "salt"});
-
-        InputStream expectedDataSetInputStream = getDataSetAsInputStream("testDataSet/issues/AfterInsertUserAccountExpectedDataset.xml");
+        IDataSet databaseDataSet = getConnection().createDataSet(new String[]{"test_issue_tracker.IssueTypes"});
+        ITable actualTable = databaseDataSet.getTable("test_issue_tracker.IssueTypes");
+        ITable filteredActualTable = DefaultColumnFilter.excludedColumnsTable(actualTable, new String[]{"id"});
+        InputStream expectedDataSetInputStream = getDataSetAsInputStream("testDataSet/issues/issueTypes/AfterInsertIssueTypeExpectedDataset.xml");
         ReplacementDataSet expectedDataSet = new ReplacementDataSet(new FlatXmlDataSetBuilder().build(expectedDataSetInputStream));
-        ITable expectedTable = expectedDataSet.getTable("test_issue_tracker.UserAccounts");
+        ITable expectedTable = expectedDataSet.getTable("test_issue_tracker.IssueTypes");
 
         Assertion.assertEquals(expectedTable, filteredActualTable);
     }
 
     @Test
     public void update() throws Exception {
-        UserAccount issueAccount = new UserAccount(
-                1L,
-                null,
-                new Profile("newName", "surname", "email1@mail.ml"),
-                UserGroup.CommonUser
-        );
-        UserAccount savedAccount = issueAccount.save();
-        assertNotNull(savedAccount.getId());
+        IssueType issueType = new IssueType(1L,"updatedIssueTypeName",null);
+        issueType.save();
 
-        IDataSet databaseDataSet = getConnection().createDataSet(new String[]{"test_issue_tracker.UserAccounts"});
-        ITable actualTable = databaseDataSet.getTable("test_issue_tracker.UserAccounts");
-        ITable filteredActualTable = DefaultColumnFilter.excludedColumnsTable(actualTable, new String[]{"id", "hashedPassword", "salt"});
+        IDataSet databaseDataSet = getConnection().createDataSet(new String[]{"test_issue_tracker.IssueTypes"});
+        ITable actualTable = databaseDataSet.getTable("test_issue_tracker.IssueTypes");
+        ITable filteredActualTable = DefaultColumnFilter.excludedColumnsTable(actualTable, new String[]{"id"});
 
-        InputStream expectedDataSetInputStream = getDataSetAsInputStream("testDataSet/issues/AfterUpdateUserAccountExpectedDataset.xml");
+        InputStream expectedDataSetInputStream = getDataSetAsInputStream("testDataSet/issues/issueTypes/AfterUpdateIssueTypeExpectedDataset.xml");
         ReplacementDataSet expectedDataSet = new ReplacementDataSet(new FlatXmlDataSetBuilder().build(expectedDataSetInputStream));
         expectedDataSet.addReplacementObject("[null]", null);
-        ITable expectedTable = expectedDataSet.getTable("test_issue_tracker.UserAccounts");
+        ITable expectedTable = expectedDataSet.getTable("test_issue_tracker.IssueTypes");
 
         Assertion.assertEquals(expectedTable, filteredActualTable);
-    }
-
-    @Test
-    public void updateNotExistEntity() throws Exception {
-        UserAccount issueAccount = new UserAccount(
-                10L,
-                null,
-                new Profile("newName", "surname", "email1@mail.ml"),
-                UserGroup.CommonUser
-        );
-        try {
-            UserAccount savedAccount = issueAccount.save();
-            fail();
-        } catch (EntityWithSuchIdDoesNotExistsBusinessException e) {
-            System.out.println(e);
-        }
     }
 
     @Test
     public void remove() throws Exception {
-        UserAccount issueAccount = new UserAccount();
-        issueAccount.setId(1L);
-        issueAccount.remove();
+        IssueType issueType = new IssueType();
+        issueType.setId(1L);
+        issueType.remove();
 
-        IDataSet databaseDataSet = getConnection().createDataSet(new String[]{"test_issue_tracker.UserAccounts"});
-        ITable actualTable = databaseDataSet.getTable("test_issue_tracker.UserAccounts");
-        ITable filteredActualTable = DefaultColumnFilter.excludedColumnsTable(actualTable, new String[]{"id", "hashedPassword", "salt"});
+        IDataSet databaseDataSet = getConnection().createDataSet(new String[]{"test_issue_tracker.IssueTypes"});
+        ITable actualTable = databaseDataSet.getTable("test_issue_tracker.IssueTypes");
+        ITable filteredActualTable = DefaultColumnFilter.excludedColumnsTable(actualTable, new String[]{"id"});
 
-        InputStream expectedDataSetInputStream = getDataSetAsInputStream("testDataSet/issues/AfterDeleteUserAccountExpectedDataset.xml");
+        InputStream expectedDataSetInputStream = getDataSetAsInputStream("testDataSet/issues/issueTypes/AfterDeleteIssueTypeExpectedDataset.xml");
         ReplacementDataSet expectedDataSet = new ReplacementDataSet(new FlatXmlDataSetBuilder().build(expectedDataSetInputStream));
         expectedDataSet.addReplacementObject("[null]", null);
-        ITable expectedTable = expectedDataSet.getTable("test_issue_tracker.UserAccounts");
+        ITable expectedTable = expectedDataSet.getTable("test_issue_tracker.IssueTypes");
 
         Assertion.assertEquals(expectedTable, filteredActualTable);
-    }*/
+    }
 
 
 }

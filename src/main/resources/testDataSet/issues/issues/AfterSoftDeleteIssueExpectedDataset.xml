@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+
+    <test_issue_tracker.Issues name="First issue" description="some description 1"
+                               stateId="1" priority="Medium" authorId="2" assigneeId="3" typeId="1" isSoftDeleted="true"/>
+    <test_issue_tracker.Issues id="2" name="Second issue" description="some description 2"
+                               stateId="1" priority="Hight" authorId="3" assigneeId="2" typeId="2" isSoftDeleted="false" parentId="1"/>
+
+    <test_issue_tracker.Issues id="3" name="Third issue" description="some description 3"
+                               stateId="1" priority="Hight" authorId="2" assigneeId="3" typeId="2" isSoftDeleted="false" parentId="2"/>
+
+
+</dataset>

@@ -31,6 +31,12 @@ public class UserAccount extends HavingOneIdDomainObject<UserAccount> {
         this.setAccountInfo(new AccountInfo());
     }
 
+    public UserAccount(Long id) {
+        super(id);
+        this.setProfile(new Profile());
+        this.setAccountInfo(new AccountInfo());
+    }
+
     public UserAccount(AccountInfo accountInfo, Profile profile) {
         this.accountInfo = accountInfo;
         this.profile = profile;

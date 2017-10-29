@@ -17,6 +17,6 @@ public class IssueTypesPermissions extends AuthorizingPermissions {
     public static IssueTypesPermissions INSTANCE = new IssueTypesPermissions();
 
     public IssueTypesPermissions() {
-        super("issueType");
+        super("issueTypes");
     }
 }

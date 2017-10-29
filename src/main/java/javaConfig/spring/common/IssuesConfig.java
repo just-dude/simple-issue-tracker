@@ -1,10 +1,12 @@
 package javaConfig.spring.common;
 
 import dao.common.JpaDao;
+import dao.issues.IssueStatesJpaDao;
 import domain.common.Finder;
 import domain.common.SimpleFinder;
 import domain.issues.Issue;
 import domain.issues.IssueState;
+import domain.issues.IssueStatesFinder;
 import domain.issues.IssueType;
 import domain.issues.validation.IssueStateValidatorFactory;
 import domain.issues.validation.IssueTypeValidatorFactory;
@@ -60,24 +62,24 @@ public class IssuesConfig {
 
     @Bean
     public EntityValidatorFactory<IssueType> issueTypeOnCreateValidatorFactory() {
-        return new IssueTypeValidatorFactory.OnCreate(new ValidationContext("issueType"));
+        return new IssueTypeValidatorFactory.OnCreate(new ValidationContext("issueTypes"));
     }
 
     @Bean
     public EntityValidatorFactory<IssueType> issueTypeOnUpdateValidatorFactory() {
-        return new IssueTypeValidatorFactory.OnUpdate(new ValidationContext("issueType"));
+        return new IssueTypeValidatorFactory.OnUpdate(new ValidationContext("issueTypes"));
     }
 
     // IssueState
 
     @Bean
-    public JpaDao<IssueState,Long> issueStatesDao() {
-        return new JpaDao<IssueState,Long>(entityManager,IssueState.class);
+    public IssueStatesJpaDao issueStatesDao() {
+        return new IssueStatesJpaDao(entityManager);
     }
 
     @Bean
-    public Finder<IssueState,Long> issueStatesFinder(JpaDao<IssueState,Long> issueStatesDao) {
-        return new SimpleFinder<IssueState,Long>(issueStatesDao);
+    public Finder<IssueState,Long> issueStatesFinder(IssueStatesJpaDao issueStatesDao) {
+        return new IssueStatesFinder(issueStatesDao);
     }
 
     @Bean

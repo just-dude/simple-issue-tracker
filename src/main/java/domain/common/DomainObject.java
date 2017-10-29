@@ -1,5 +1,6 @@
 package domain.common;
 
+import common.argumentAssert.Assert;
 import common.beanFactory.BeanFactoryProvider;
 import dao.common.exception.DataIntegrityViolationDaoException;
 import dao.common.exception.EntityWithSuchIdDoesNotExistsDaoException;
@@ -65,7 +66,8 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
 
     @Transactional
     @Override
-    public void remove() throws DataAccessFailedBuisnessException, EntityWithSuchIdDoesNotExistsBusinessException {
+    public void remove() throws DataAccessFailedBuisnessException, EntityWithSuchIdDoesNotExistsBusinessException, DataIntegrityViolationBusinessException {
+        Assert.notNull(getId(),getClass().getSimpleName()+".id");
         checkRemovePermission();
         try {
             doRemove();

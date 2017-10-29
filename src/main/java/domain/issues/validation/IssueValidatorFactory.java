@@ -1,5 +1,6 @@
 package domain.issues.validation;
 
+import common.beanFactory.BeanFactoryProvider;
 import domain.common.CommonValidators;
 import domain.issues.Issue;
 import smartvalidation.entityValidationRule.EntityValidationRule;
@@ -10,6 +11,8 @@ import smartvalidation.validator.entityValidator.SimpleEntityValidator;
 import smartvalidation.validator.entityValidator.ValidationContext;
 import smartvalidation.validator.сonstraintValidator.base.ConstraintValidator;
 
+import java.time.Clock;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -42,16 +45,14 @@ public class IssueValidatorFactory {
 
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".name", entity.getName(), commonNamesConstraintValidators));
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".description", entity.getDescription(),
-                        AllOf(not(isNull()),stringLength(not(greaterThan(255))))));
+                        AllOf(not(isNull()),stringLength(lessThan(256)))));
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".type", entity.getType(), not(isNull())));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".additionalAttributes", entity.getAdditionalAttributes(), not(isNull())));
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".assignee", entity.getAssignee(), not(isNull())));
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".proprity", entity.getPriority(), not(isNull())));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".state", entity.getState(), not(isNull())));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".author", entity.getAuthor(), not(isNull())));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".createdDateTime", entity.getCreatedDateTime(), not(isNull())));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".requiredResolvedDateTime", entity.getRequiredResolvedDateTime(), not(isNull())));
-
+                if(entity.getRequiredResolvedDateTime()!=null) {
+                    entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".requiredResolvedDateTime",
+                            entity.getRequiredResolvedDateTime(), CommonValidators.getMoreThanNowZonedDateTimeValidator()));
+                }
                 return entityValidationRules;
             } catch (Exception e) {
                 throw new EntityValidationException("Entity validator initialization exception have occured", e);
@@ -81,20 +82,20 @@ public class IssueValidatorFactory {
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".id", entity.getId(), not(isNull())));
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".name", entity.getName(), commonNamesConstraintValidators));
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".description", entity.getDescription(),
-                        AllOf(not(isNull()),stringLength(not(greaterThan(255))))));
+                        AllOf(not(isNull()),stringLength(lessThan(256)))));
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".type", entity.getType(), not(isNull())));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".additionalAttributes", entity.getAdditionalAttributes(), not(isNull())));
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".assignee", entity.getAssignee(), not(isNull())));
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".proprity", entity.getPriority(), not(isNull())));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".state", entity.getState(), not(isNull())));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".author", entity.getAuthor(), not(isNull())));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".createdDateTime", entity.getCreatedDateTime(), not(isNull())));
-                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".requiredResolvedDateTime", entity.getRequiredResolvedDateTime(), not(isNull())));
-
+                if(entity.getRequiredResolvedDateTime()!=null) {
+                    entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".requiredResolvedDateTime",
+                            entity.getRequiredResolvedDateTime(), CommonValidators.getMoreThanNowZonedDateTimeValidator()));
+                }
                 return entityValidationRules;
             } catch (Exception e) {
                 throw new EntityValidationException("Entity validator initialization exception have occured", e);
             }
         }
+
+
     }
 }

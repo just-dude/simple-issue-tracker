@@ -1,6 +1,9 @@
 package javaConfig.spring.dev;
 
 
+import domain.issues.authorization.IssueStatesAuthorizingRealm;
+import domain.issues.authorization.IssueTypesAuthorizingRealm;
+import domain.issues.authorization.IssuesAuthorizingRealm;
 import domain.security.SecuritySubjectUtils;
 import domain.security.authentication.UserAccountsBasedAuthenticatingRealm;
 import domain.security.authorization.DomainObjectSpecificWildcardPermissionResolver;
@@ -61,6 +64,9 @@ public class SecurityConfig {
         Map<String, Realm> realmsMap = new HashMap();
         // write realm keys in lower case!
         realmsMap.put("useraccount", new UserAccountsAuthorizingRealm());
+        realmsMap.put("issue", new IssuesAuthorizingRealm());
+        realmsMap.put("issuestate", new IssueStatesAuthorizingRealm());
+        realmsMap.put("issuetype", new IssueTypesAuthorizingRealm());
         // add new authorizing realms here!
         DomainObjectSpecificatedRealmAuthorizer domainObjectSpecificatedRealmAuthorizer = new DomainObjectSpecificatedRealmAuthorizer(realmsMap);
         domainObjectSpecificatedRealmAuthorizer.setPermissionResolver(new DomainObjectSpecificWildcardPermissionResolver());

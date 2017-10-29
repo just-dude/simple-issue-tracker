@@ -25,6 +25,14 @@ public class IssuesPermissions extends AuthorizingPermissions {
         return getFindOneByIdAttributeNameToValuePermission("assigneeId,authorId",userId);
     }
 
+    public String getGoIntoStatePermission(Long userId){
+        return domainObjectName+":goIntoState:assigneeId:"+userId;
+    }
+
+    public String getChangeRequiredResolvedDateTimePermission(Long userId){
+        return domainObjectName+":changeRequiredResolvedDateTime:authorId:"+userId;
+    }
+
     public String getFindAllByAuthorPermission(Long authorId){
         return String.format(FIND_ALL_BY_ATTRIBUTE_PERMISSION_FORMAT,domainObjectName,"AuthorId","authorId",authorId);
     }

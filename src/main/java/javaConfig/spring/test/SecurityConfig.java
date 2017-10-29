@@ -2,6 +2,9 @@ package javaConfig.spring.test;
 
 import common.beanFactory.BeanFactoryProvider;
 import domain.common.exception.BusinessException;
+import domain.issues.authorization.IssueStatesAuthorizingRealm;
+import domain.issues.authorization.IssueTypesAuthorizingRealm;
+import domain.issues.authorization.IssuesAuthorizingRealm;
 import domain.security.SecuritySubjectUtils;
 import domain.security.UserPrincipal;
 import domain.security.authentication.UserAccountsBasedAuthenticatingRealm;
@@ -72,6 +75,9 @@ public class SecurityConfig {
         Map<String, Realm> realmsMap = new HashMap();
         // write realm keys in lower case!
         realmsMap.put("useraccount", new UserAccountsAuthorizingRealm());
+        realmsMap.put("issue", new IssuesAuthorizingRealm());
+        realmsMap.put("issuestate", new IssueStatesAuthorizingRealm());
+        realmsMap.put("issuetype", new IssueTypesAuthorizingRealm());
         // add new authorizing realms here!
         DomainObjectSpecificatedRealmAuthorizer domainObjectSpecificatedRealmAuthorizer = new DomainObjectSpecificatedRealmAuthorizer(realmsMap);
         domainObjectSpecificatedRealmAuthorizer.setPermissionResolver(new DomainObjectSpecificWildcardPermissionResolver());
@@ -107,12 +113,30 @@ public class SecurityConfig {
 
             AuthenticationInfo info = null;
             try {
-                return new SimpleAuthenticationInfo(
-                    new SimplePrincipalCollection(
-                            new UserPrincipal("admin", 1L, UserGroup.Admin), realmName
-                    ),
-                    "123"
-                );
+                if(username=="admin") {
+                    return new SimpleAuthenticationInfo(
+                            new SimplePrincipalCollection(
+                                    new UserPrincipal("admin", 1L, UserGroup.Admin), realmName
+                            ),
+                            "123"
+                    );
+                } else if(username=="firstCommonUser"){
+                    return new SimpleAuthenticationInfo(
+                            new SimplePrincipalCollection(
+                                    new UserPrincipal("firstCommonUser", 2L, UserGroup.CommonUser), realmName
+                            ),
+                            "234"
+                    );
+                } else if(username=="secondCommonUser"){
+                    return new SimpleAuthenticationInfo(
+                            new SimplePrincipalCollection(
+                                    new UserPrincipal("secondCommonUser", 3L, UserGroup.CommonUser), realmName
+                            ),
+                            "234"
+                    );
+                } else {
+                    return null;
+                }
 
             } catch (BusinessException e) {
                 LOG.error("Exception has occured on getting user info", e);

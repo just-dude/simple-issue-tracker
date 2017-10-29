@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -55,7 +56,8 @@ public class AssertTest {
             fail("IllegalArgumentException not expected");
         }
         try {
-            Assert.notContainsNullElements(null);
+            List<Object> collection = null;
+            Assert.notContainsNullElements(collection);
             fail("IllegalArgumentException expected");
         } catch (IllegalArgumentException e) {
             assertEquals("Argument must be not null", e.getMessage());
