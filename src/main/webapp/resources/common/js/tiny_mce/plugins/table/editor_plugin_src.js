@@ -217,7 +217,7 @@
 				tr = dom.getNext(tr, 'tr');
 
 				if (tr) {
-					// Loop left to find real cell
+					// Loop left to finder real cell
 					for (x2 = x; x2 >= 0; x2--) {
 						cell = grid[y + r][x2].elm;
 

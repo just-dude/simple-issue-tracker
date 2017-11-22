@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-<changeSet author="Администратор (generated)" id="1509166845303-1">
+<changeSet author="Администратор (generated)" id="1509279333819-1">
 <createTable tableName="IssueStates">
 <column autoIncrement="true" name="id" type="BIGINT">
 <constraints primaryKey="true" primaryKeyName="IssueStatesPK"/>
 </column>
+<column name="isSoftDeleted" type="BIT"/>
 <column name="name" type="VARCHAR(255)"/>
 <column name="isFinishState" type="BIT"/>
 <column name="isInitialState" type="BIT"/>
 <column name="issueTypeId" type="BIGINT"/>
 </createTable>
 </changeSet>
-<changeSet author="Администратор (generated)" id="1509166845303-2">
+<changeSet author="Администратор (generated)" id="1509279333819-2">
 <createTable tableName="IssueStates_IssueStates">
 <column name="IssueState_id" type="BIGINT">
 <constraints nullable="false"/>
@@ -20,24 +21,25 @@
 </column>
 </createTable>
 </changeSet>
-<changeSet author="Администратор (generated)" id="1509166845303-3">
+<changeSet author="Администратор (generated)" id="1509279333819-3">
 <createTable tableName="IssueTypes">
 <column autoIncrement="true" name="id" type="BIGINT">
 <constraints primaryKey="true" primaryKeyName="IssueTypesPK"/>
 </column>
+<column name="isSoftDeleted" type="BIT"/>
 <column name="name" type="VARCHAR(255)"/>
 </createTable>
 </changeSet>
-<changeSet author="Администратор (generated)" id="1509166845303-4">
+<changeSet author="Администратор (generated)" id="1509279333819-4">
 <createTable tableName="Issues">
 <column autoIncrement="true" name="id" type="BIGINT">
 <constraints primaryKey="true" primaryKeyName="IssuesPK"/>
 </column>
+<column name="isSoftDeleted" type="BIT"/>
 <column name="name" type="VARCHAR(255)"/>
 <column name="additionalAttributes" type="VARCHAR(255)"/>
 <column name="createdDateTime" type="TINYBLOB"/>
 <column name="description" type="VARCHAR(255)"/>
-<column name="isSoftDeleted" type="BIT"/>
 <column name="priority" type="VARCHAR(255)"/>
 <column name="requiredResolvedDateTime" type="TINYBLOB"/>
 <column name="resolvedDateTime" type="TINYBLOB"/>
@@ -48,11 +50,12 @@
 <column name="typeId" type="BIGINT"/>
 </createTable>
 </changeSet>
-<changeSet author="Администратор (generated)" id="1509166845303-5">
+<changeSet author="Администратор (generated)" id="1509279333819-5">
 <createTable tableName="UserAccounts">
 <column autoIncrement="true" name="id" type="BIGINT">
 <constraints primaryKey="true" primaryKeyName="UserAccountsPK"/>
 </column>
+<column name="isSoftDeleted" type="BIT"/>
 <column name="hashedPassword" type="VARCHAR(255)"/>
 <column name="login" type="VARCHAR(255)"/>
 <column name="salt" type="LONGBLOB"/>
@@ -62,16 +65,16 @@
 <column name="userGroup" type="VARCHAR(255)"/>
 </createTable>
 </changeSet>
-<changeSet author="Администратор (generated)" id="1509166845303-6">
+<changeSet author="Администратор (generated)" id="1509279333819-6">
 <addUniqueConstraint columnNames="issueStatesToTransition_id" constraintName="UK_geua11jvgfyaufs7ng4ifi6aj" tableName="IssueStates_IssueStates"/>
 </changeSet>
-<changeSet author="Администратор (generated)" id="1509166845303-7">
+<changeSet author="Администратор (generated)" id="1509279333819-7">
 <addForeignKeyConstraint baseColumnNames="IssueState_id" baseTableName="IssueStates_IssueStates" constraintName="FK5pdns07e8bnhl1kg9xmf1ilix" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="IssueStates"/>
 </changeSet>
-<changeSet author="Администратор (generated)" id="1509166845303-8">
+<changeSet author="Администратор (generated)" id="1509279333819-8">
 <addForeignKeyConstraint baseColumnNames="issueStatesToTransition_id" baseTableName="IssueStates_IssueStates" constraintName="FKssit5q6wedfd032mjpv8h58c9" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="IssueStates"/>
 </changeSet>
-<changeSet author="Администратор (generated)" id="1509166845303-9">
+<changeSet author="Администратор (generated)" id="1509279333819-9">
 <addForeignKeyConstraint baseColumnNames="assigneeId" baseTableName="Issues" constraintName="id" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="UserAccounts"/>
 </changeSet>
 </databaseChangeLog>

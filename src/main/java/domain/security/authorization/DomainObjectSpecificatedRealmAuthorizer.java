@@ -117,13 +117,13 @@ public class DomainObjectSpecificatedRealmAuthorizer implements Authorizer, Perm
 
     public boolean isPermitted(PrincipalCollection principals, Permission permission) {
         LOG.debug("principals: " + principals);
-        LOG.debug("permissions: " + permission);
+        LOG.debug("permissionStringConsts: " + permission);
         assertRealmsConfigured();
         assertPermissionIsModuleSpecific(permission);
         DomainObjectSpecificPermission msp = (DomainObjectSpecificPermission) permission;
         if (getRealms().containsKey(msp.getDomainObjectSpecificName())) {
             LOG.debug("isPermitted getDomainObjectSpecificName: " + msp.getDomainObjectSpecificName());
-            LOG.debug("permissions: " + permission);
+            LOG.debug("permissionStringConsts: " + permission);
             Realm realm = getRealms().get(msp.getDomainObjectSpecificName());
             if (!(realm instanceof Authorizer)) {
                 throw new IllegalStateException("Realm specific to module is not support Authorizer interface");
@@ -170,7 +170,7 @@ public class DomainObjectSpecificatedRealmAuthorizer implements Authorizer, Perm
     /**
      * Returns <code>true</code> if any of the configured realms'
      * {@link #isPermitted(PrincipalCollection, String)} call returns <code>true</code>
-     * for <em>all</em> of the specified string permissions, <code>false</code> otherwise.
+     * for <em>all</em> of the specified string permissionStringConsts, <code>false</code> otherwise.
      */
     public boolean isPermittedAll(PrincipalCollection principals, String... permissions) {
         assertRealmsConfigured();
@@ -202,29 +202,29 @@ public class DomainObjectSpecificatedRealmAuthorizer implements Authorizer, Perm
     }
 
     /**
-     * If !{@link #isPermitted(PrincipalCollection, String) isPermitted(permissions)}, throws
+     * If !{@link #isPermitted(PrincipalCollection, String) isPermitted(permissionStringConsts)}, throws
      * an <code>UnauthorizedException</code> otherwise returns quietly.
      */
     public void checkPermission(PrincipalCollection principals, String permission) throws AuthorizationFailedException {
         assertRealmsConfigured();
         if (!isPermitted(principals, permission)) {
-            throw new UnauthorizedException("Subject does not have permissions [" + permission + "]");
+            throw new UnauthorizedException("Subject does not have permissionStringConsts [" + permission + "]");
         }
     }
 
     /**
-     * If !{@link #isPermitted(PrincipalCollection, Permission) isPermitted(permissions)}, throws
+     * If !{@link #isPermitted(PrincipalCollection, Permission) isPermitted(permissionStringConsts)}, throws
      * an <code>UnauthorizedException</code> otherwise returns quietly.
      */
     public void checkPermission(PrincipalCollection principals, Permission permission) throws AuthorizationFailedException {
         assertRealmsConfigured();
         if (!isPermitted(principals, permission)) {
-            throw new UnauthorizedException("Subject does not have permissions [" + permission + "]");
+            throw new UnauthorizedException("Subject does not have permissionStringConsts [" + permission + "]");
         }
     }
 
     /**
-     * If !{@link #isPermitted(PrincipalCollection, String...) isPermitted(permissions)},
+     * If !{@link #isPermitted(PrincipalCollection, String...) isPermitted(permissionStringConsts)},
      * throws an <code>UnauthorizedException</code> otherwise returns quietly.
      */
     public void checkPermissions(PrincipalCollection principals, String... permissions) throws AuthorizationFailedException {
@@ -237,7 +237,7 @@ public class DomainObjectSpecificatedRealmAuthorizer implements Authorizer, Perm
     }
 
     /**
-     * If !{@link #isPermitted(PrincipalCollection, Permission) isPermitted(permissions)} for
+     * If !{@link #isPermitted(PrincipalCollection, Permission) isPermitted(permissionStringConsts)} for
      * <em>all</em> the given Permissions, throws
      * an <code>UnauthorizedException</code> otherwise returns quietly.
      */

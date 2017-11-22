@@ -28,7 +28,7 @@ public class SecuritySubjectUtils {
             SecurityUtils.getSubject().login(token);
             UserAccountsFinder finder = (UserAccountsFinder) BeanFactoryProvider.getBeanFactory().getBean("userAccountsFinder");
             Long currentUserId = SecurityUtils.getSubject().getPrincipals().byType(UserPrincipal.class).iterator().next().getUserId();
-            UserAccount currentUserAccount = finder.getOne(currentUserId);
+            UserAccount currentUserAccount = finder.findOne(currentUserId);
             SecurityUtils.getSubject().getSession().setAttribute(CURRENT_USER_ACCOUNT_SESSION_KEY, currentUserAccount);
         } catch (AuthenticationException e) {
             throw new ValidationFailedException(Collections.singletonList(

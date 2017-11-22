@@ -596,7 +596,7 @@ $.extend( $.validator, {
 					.filter( ":visible" )
 					.focus()
 
-					// Manually trigger focusin event; without it, focusin handler isn't called, findLastActive won't have anything to find
+					// Manually trigger focusin event; without it, focusin handler isn't called, findLastActive won't have anything to finder
 					.trigger( "focusin" );
 				} catch ( e ) {
 
@@ -1409,7 +1409,7 @@ $.extend( $.validator, {
 				notSupported = type && !re.test( supportedTypes.join() );
 
 			// Works only for text, number and range input types
-			// TODO find a way to support input types date, datetime, datetime-local, month, time and week
+			// TODO finder a way to support input types date, datetime, datetime-local, month, time and week
 			if ( notSupported ) {
 				throw new Error( errorMessage );
 			}

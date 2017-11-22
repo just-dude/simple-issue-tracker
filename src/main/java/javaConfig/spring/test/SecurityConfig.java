@@ -1,6 +1,5 @@
 package javaConfig.spring.test;
 
-import common.beanFactory.BeanFactoryProvider;
 import domain.common.exception.BusinessException;
 import domain.issues.authorization.IssueStatesAuthorizingRealm;
 import domain.issues.authorization.IssueTypesAuthorizingRealm;
@@ -10,12 +9,9 @@ import domain.security.UserPrincipal;
 import domain.security.authentication.UserAccountsBasedAuthenticatingRealm;
 import domain.security.authorization.DomainObjectSpecificWildcardPermissionResolver;
 import domain.security.authorization.DomainObjectSpecificatedRealmAuthorizer;
-import domain.users.UserAccount;
-import domain.users.UserAccountsFinder;
 import domain.users.UserGroup;
 import domain.users.authorization.UserAccountsAuthorizingRealm;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.AuthenticatingRealm;
@@ -76,8 +72,8 @@ public class SecurityConfig {
         // write realm keys in lower case!
         realmsMap.put("useraccount", new UserAccountsAuthorizingRealm());
         realmsMap.put("issue", new IssuesAuthorizingRealm());
-        realmsMap.put("issuestate", new IssueStatesAuthorizingRealm());
         realmsMap.put("issuetype", new IssueTypesAuthorizingRealm());
+        realmsMap.put("issuestate", new IssueStatesAuthorizingRealm());
         // add new authorizing realms here!
         DomainObjectSpecificatedRealmAuthorizer domainObjectSpecificatedRealmAuthorizer = new DomainObjectSpecificatedRealmAuthorizer(realmsMap);
         domainObjectSpecificatedRealmAuthorizer.setPermissionResolver(new DomainObjectSpecificWildcardPermissionResolver());

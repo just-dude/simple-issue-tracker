@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <dataset>
+    <test_issue_tracker.UserAccounts id="2" login="firstCommonUser" hashedPassword="hashedPassword" salt="salt"
+                                     email="email2@mail.ml"
+                                     name="name" surname="surname" userGroup="CommonUser" isSoftDeleted="false" />
+    <test_issue_tracker.UserAccounts id="3" login="secondCommonUser" hashedPassword="hashedPassword" salt="salt"
+                                     email="email2@mail.ml"
+                                     name="name" surname="surname" userGroup="CommonUser" isSoftDeleted="false" />
 
-    <test_issue_tracker.IssueTypes id="1" name="firstName"/>
-    <test_issue_tracker.IssueTypes id="2" name="secondName"/>
-    <test_issue_tracker.IssueTypes id="3" name="thirdName"/>
+    <test_issue_tracker.IssueTypes id="1" name="firstIssueTypeName" isSoftDeleted="false" />
+    <test_issue_tracker.IssueTypes id="2" name="secondIssueTypeName" isSoftDeleted="false" />
+
+    <test_issue_tracker.IssueStates id="1" name="initialIssueState" isInitialState="true" isFinishState="false" issueTypeId="1" isSoftDeleted="false" />
+    <test_issue_tracker.IssueStates id="2" name="transitionIssueState" isInitialState="false" isFinishState="false" issueTypeId="1" isSoftDeleted="false" />
+    <test_issue_tracker.IssueStates id="3" name="finishIssueState" isInitialState="false" isFinishState="true" issueTypeId="1" isSoftDeleted="false" />
+
+    <test_issue_tracker.IssueStates_IssueStates IssueState_id="1" issueStatesToTransition_id="2" />
+    <test_issue_tracker.IssueStates_IssueStates IssueState_id="2" issueStatesToTransition_id="3" />
+
+    <test_issue_tracker.Issues id="1" name="First issue" description="some description 1"
+                               stateId="1" priority="Medium" authorId="2" assigneeId="3" typeId="1" isSoftDeleted="false"/>
+
 
 </dataset>

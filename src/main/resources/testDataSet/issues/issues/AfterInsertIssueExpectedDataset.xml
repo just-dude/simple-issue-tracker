@@ -3,7 +3,7 @@
 <dataset>
 
     <test_issue_tracker.Issues name="First issue" description="some description 1"
-                               stateId="1" priority="Medium" authorId="2" assigneeId="3" typeId="1" isSoftDeleted="false"/>
+                               stateId="1" priority="Medium" authorId="2" assigneeId="3" typeId="1" isSoftDeleted="false" parentId="[null]"/>
     <test_issue_tracker.Issues name="Second issue" description="some description 2"
                                stateId="1" priority="Hight" authorId="3" assigneeId="2" typeId="2" isSoftDeleted="false" parentId="1"/>
 
@@ -11,7 +11,7 @@
                                stateId="1" priority="Hight" authorId="2" assigneeId="3" typeId="2" isSoftDeleted="false" parentId="2"/>
 
     <test_issue_tracker.Issues name="New Issue" description="some new description 1"
-                               stateId="4" priority="Low" authorId="3" assigneeId="2" typeId="2" isSoftDeleted="false"/>
+                               stateId="4" priority="Low" authorId="3" assigneeId="2" typeId="2" isSoftDeleted="false" parentId="2"/>
 
 
 

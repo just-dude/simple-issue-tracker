@@ -1,6 +1,7 @@
 package controller.struts.action.authentication;
 
 import controller.struts.action.common.FormProviderHandlingExceptionsBaseAction;
+import domain.security.SecuritySubjectUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,7 +14,7 @@ public class LogoutAction extends FormProviderHandlingExceptionsBaseAction {
 
     @Override
     protected void doExecute() throws Exception {
-
+        SecuritySubjectUtils.logout();
     }
 
     @Override

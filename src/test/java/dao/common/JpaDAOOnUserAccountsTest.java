@@ -16,7 +16,6 @@ import org.junit.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -40,8 +39,8 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
         return new FlatXmlDataSetBuilder().build(getDataSetAsInputStream("testDataSet/users/UsersSetupDataset.xml"));
     }
 
-    protected JpaRepository<UserAccount, Long> getDAO() {
-        return (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDao");
+    protected Dao<UserAccount, Long> getDAO() {
+        return (Dao<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDao");
     }
 
     protected PlatformTransactionManager getTransactionManager() {
@@ -50,7 +49,7 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
 
     @Test
     public void testInsert() throws Exception {
-        JpaRepository<UserAccount, Long> jpaDAO = getDAO();
+        Dao<UserAccount, Long> jpaDAO = getDAO();
         PlatformTransactionManager tm = getTransactionManager();
         UserAccount newUserAccount = new UserAccount(new AccountInfo("newUserLogin", "hashedPass", new byte[]{})
                 , new Profile("newUserName", "newUserSurname", "email@email.ru"),
@@ -82,7 +81,7 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
 
     @Test
     public void testUpdate() throws Exception {
-        JpaRepository<UserAccount, Long> jpaDAO = getDAO();
+        Dao<UserAccount, Long> jpaDAO = getDAO();
         PlatformTransactionManager tm = getTransactionManager();
         TransactionDefinition def = new DefaultTransactionDefinition();
 
@@ -109,12 +108,12 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
 
     @Test
     public void testDeleteById() throws Exception {
-        JpaRepository<UserAccount, Long> jpaDAO = getDAO();
+        Dao<UserAccount, Long> jpaDAO = getDAO();
         PlatformTransactionManager tm = getTransactionManager();
         TransactionDefinition def = new DefaultTransactionDefinition();
 
         TransactionStatus ts = tm.getTransaction(def);
-        jpaDAO.delete(1L);
+        jpaDAO.deleteAndFlush(1L);
         jpaDAO.flush();
         tm.commit(ts);
 
@@ -122,7 +121,7 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
         ITable actualTable = databaseDataSet.getTable("test_issue_tracker.UserAccounts");
         ITable filteredActualTable = DefaultColumnFilter.excludedColumnsTable(actualTable, new String[]{"id", "hashedPassword", "salt"});
 
-        InputStream expectedDataSetInputStream = getDataSetAsInputStream("testDataSet/users/AfterDeleteUserAccountExpectedDataset.xml");
+        InputStream expectedDataSetInputStream = getDataSetAsInputStream("testDataSet/users/AfterPhysicalyDeleteUserAccountExpectedDataset.xml");
         ReplacementDataSet expectedDataSet = new ReplacementDataSet(new FlatXmlDataSetBuilder().build(expectedDataSetInputStream));
         expectedDataSet.addReplacementObject("[null]", null);
         ITable expectedTable = expectedDataSet.getTable("test_issue_tracker.UserAccounts");
@@ -133,7 +132,7 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
 
     @Test
     public void testDelete() throws Exception {
-        JpaRepository<UserAccount, Long> jpaDAO = getDAO();
+        Dao<UserAccount, Long> jpaDAO = getDAO();
         PlatformTransactionManager tm = getTransactionManager();
         TransactionDefinition def = new DefaultTransactionDefinition();
 
@@ -143,7 +142,7 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
         tm.commit(ts);
 
         ts = tm.getTransaction(def);
-        jpaDAO.delete(userAccount);
+        jpaDAO.deleteAndFlush(userAccount);
         jpaDAO.flush();
         tm.commit(ts);
 
@@ -151,7 +150,7 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
         ITable actualTable = databaseDataSet.getTable("test_issue_tracker.UserAccounts");
         ITable filteredActualTable = DefaultColumnFilter.excludedColumnsTable(actualTable, new String[]{"id", "hashedPassword", "salt"});
 
-        InputStream expectedDataSetInputStream = getDataSetAsInputStream("testDataSet/users/AfterDeleteUserAccountExpectedDataset.xml");
+        InputStream expectedDataSetInputStream = getDataSetAsInputStream("testDataSet/users/AfterPhysicalyDeleteUserAccountExpectedDataset.xml");
         ReplacementDataSet expectedDataSet = new ReplacementDataSet(new FlatXmlDataSetBuilder().build(expectedDataSetInputStream));
         expectedDataSet.addReplacementObject("[null]", null);
         ITable expectedTable = expectedDataSet.getTable("test_issue_tracker.UserAccounts");
@@ -162,7 +161,7 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
 
     @Test
     public void testDeleteAll() throws Exception {
-        JpaRepository<UserAccount, Long> jpaDAO = getDAO();
+        Dao<UserAccount, Long> jpaDAO = getDAO();
         PlatformTransactionManager tm = getTransactionManager();
         TransactionDefinition def = new DefaultTransactionDefinition();
 
@@ -179,8 +178,8 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
 
     @Test
     public void testGetOne() throws Exception {
-        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDao");
-        UserAccount account = jpaDAO.getOne(1L);
+        Dao<UserAccount, Long> jpaDAO = (Dao<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDao");
+        UserAccount account = jpaDAO.findOne(1L);
         assertEquals(1L, (long) account.getId());
         assertEquals("name", account.getProfile().getName());
         assertEquals("login1", account.getAccountInfo().getLogin());
@@ -188,14 +187,14 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
 
     @Test
     public void testCount() throws Exception {
-        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDao");
+        Dao<UserAccount, Long> jpaDAO = (Dao<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDao");
         long countOfAccounts = jpaDAO.count();
         assertEquals(3L, countOfAccounts);
     }
 
     @Test
     public void testFindAll() throws Exception {
-        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDao");
+        Dao<UserAccount, Long> jpaDAO = (Dao<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDao");
         List<UserAccount> accountsList = jpaDAO.findAll();
         assertEquals(3L, accountsList.size());
         assertEquals(1L, (long) accountsList.get(0).getId());
@@ -204,8 +203,8 @@ public class JpaDAOOnUserAccountsTest extends DBTestCase {
     }
 
     @Test
-    public void testFindAllWithPageRequest() throws Exception {
-        JpaRepository<UserAccount, Long> jpaDAO = (JpaRepository<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDao");
+    public void testFindAllWWithPageRequest() throws Exception {
+        Dao<UserAccount, Long> jpaDAO = (Dao<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsDao");
         Page<UserAccount> accountsPage = jpaDAO.findAll(new PageRequest(0, 2, Sort.Direction.DESC, "id"));
         List<UserAccount> userAccountList = accountsPage.getContent();
         assertEquals(3L, accountsPage.getTotalElements());

@@ -1,5 +1,6 @@
 package domain.issues;
 
+import com.google.common.collect.Sets;
 import common.DBTestCase;
 import common.beanFactory.BeanFactoryProvider;
 import domain.common.Finder;
@@ -8,9 +9,6 @@ import domain.common.exception.BusinessRuleViolationException;
 import domain.common.exception.ValidationFailedException;
 import domain.security.SecuritySubjectUtils;
 import domain.users.UserAccount;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.mgt.SecurityManager;
 import org.dbunit.Assertion;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
@@ -24,7 +22,6 @@ import smartvalidation.exception.ConstraintValidationException;
 import java.io.InputStream;
 import java.time.Clock;
 import java.time.ZonedDateTime;
-import java.util.List;
 
 public class IssueTest extends DBTestCase {
 
@@ -46,7 +43,7 @@ public class IssueTest extends DBTestCase {
     @Test
     public void testIsValidAndGetConstraintsViolations() throws Exception {
         Issue validIssue = new Issue("New Issue","some new description 1",new IssueType(1L),
-                new UserAccount(2L),Issue.Priority.Low,ZonedDateTime.now().plusDays(2));
+                new UserAccount(2L),Issue.Priority.Low,ZonedDateTime.now().plusDays(2),null);
         assertTrue(validIssue.isValid());
         try {
             validIssue.getConstraintsViolations();
@@ -64,20 +61,35 @@ public class IssueTest extends DBTestCase {
         SecuritySubjectUtils.login("secondCommonUser", "234");
 
         Issue issue = new Issue("New Issue","some new description 1",new IssueType(2L),
-                new UserAccount(2L),Issue.Priority.Low,ZonedDateTime.now().plusDays(2));
+                new UserAccount(2L),Issue.Priority.Low,ZonedDateTime.now().plusDays(2),new Issue(2L));
         Issue savedIssue = issue.save();
         assertNotNull(savedIssue.getId());
 
         IDataSet databaseDataSet = getConnection().createDataSet(new String[]{"test_issue_tracker.Issues"});
         ITable actualTable = databaseDataSet.getTable("test_issue_tracker.Issues");
         ITable filteredActualTable = DefaultColumnFilter.excludedColumnsTable(actualTable,new String[]{
-                "id","additionalAttributes","requiredResolvedDateTime","resolvedDateTime","createdDateTime","parentId"
+                "id","additionalAttributes","requiredResolvedDateTime","resolvedDateTime","createdDateTime"
         });
         InputStream expectedDataSetInputStream = getDataSetAsInputStream("testDataSet/issues/issues/AfterInsertIssueExpectedDataset.xml");
         ReplacementDataSet expectedDataSet = new ReplacementDataSet(new FlatXmlDataSetBuilder().build(expectedDataSetInputStream));
+        expectedDataSet.addReplacementObject("[null]",null);
         ITable expectedTable = expectedDataSet.getTable("test_issue_tracker.Issues");
 
         Assertion.assertEquals(expectedTable, filteredActualTable);
+    }
+
+    @Test
+    public void testCatchBusinessRuleViolationExceptionOnChangeAndSaveState() throws Exception {
+        SecuritySubjectUtils.login("secondCommonUser", "234");
+
+        Finder<Issue,Long> issuesFinder = (Finder<Issue,Long>)BeanFactoryProvider.getBeanFactory().getBean("issuesFinder");
+        Issue issue = issuesFinder.findOne(1L);
+        issue.setPriority(Issue.Priority.Low);
+        try {
+            issue.save();
+            fail("BusinessRuleViolationException expected. Can't change(resave) exists issue");
+        } catch(BusinessRuleViolationException e){
+        }
     }
 
     @Test
@@ -85,7 +97,7 @@ public class IssueTest extends DBTestCase {
         SecuritySubjectUtils.login("secondCommonUser", "234");
 
         Finder<Issue,Long> issuesFinder = (Finder<Issue,Long>)BeanFactoryProvider.getBeanFactory().getBean("issuesFinder");
-        Issue issue = issuesFinder.getOne(1L);
+        Issue issue = issuesFinder.findOneWithInitPaths(1L, Sets.newHashSet(Issue.STATES_TO_TRANSITION_OF_ISSUE_STATE_INIT_PATH));
         issue.goIntoState(issue.getState().getIssueStatesToTransition().get(0));
 
         IDataSet databaseDataSet = getConnection().createDataSet(new String[]{"test_issue_tracker.Issues"});
@@ -106,7 +118,7 @@ public class IssueTest extends DBTestCase {
         SecuritySubjectUtils.login("firstCommonUser", "234");
 
         Finder<Issue,Long> issuesFinder = (Finder<Issue,Long>)BeanFactoryProvider.getBeanFactory().getBean("issuesFinder");
-        Issue issue = issuesFinder.getOne(1L);
+        Issue issue = issuesFinder.findOneWithInitPaths(1L,Sets.newHashSet(Issue.STATES_TO_TRANSITION_OF_ISSUE_STATE_INIT_PATH));
         try {
             issue.goIntoState(issue.getState().getIssueStatesToTransition().get(0));
             fail("User with id=2 can't change state of this issue");
@@ -121,13 +133,13 @@ public class IssueTest extends DBTestCase {
 
 
         Issue issue = new Issue("New Issue","some new description 1",new IssueType(2L),
-                new UserAccount(2L),Issue.Priority.Low,ZonedDateTime.now(getClock()).plusDays(2));
+                new UserAccount(2L),Issue.Priority.Low,ZonedDateTime.now(getClock()).plusDays(2),null);
         Issue savedIssue = issue.save();
         ZonedDateTime newRequiredResolvedDateTime =ZonedDateTime.now(getClock()).plusDays(3);
         savedIssue.changeRequiredResolvedDateTime(newRequiredResolvedDateTime);
 
         Finder<Issue,Long> issuesFinder = (Finder<Issue,Long>)BeanFactoryProvider.getBeanFactory().getBean("issuesFinder");
-        Issue issueInDataStorage = issuesFinder.getOne(savedIssue.getId());
+        Issue issueInDataStorage = issuesFinder.findOne(savedIssue.getId());
         assertTrue(newRequiredResolvedDateTime.isEqual(issueInDataStorage.getRequiredResolvedDateTime()));
 
     }
@@ -137,7 +149,7 @@ public class IssueTest extends DBTestCase {
         SecuritySubjectUtils.login("secondCommonUser", "234");
 
         Issue issue = new Issue("New Issue","some new description 1",new IssueType(2L),
-                new UserAccount(2L),Issue.Priority.Low,ZonedDateTime.now(getClock()).plusDays(2));
+                new UserAccount(2L),Issue.Priority.Low,ZonedDateTime.now(getClock()).plusDays(2),null);
 
         Issue savedIssue = issue.save();
 
@@ -158,7 +170,7 @@ public class IssueTest extends DBTestCase {
 
 
         Issue issue = new Issue("New Issue","some new description 1",new IssueType(2L),
-                new UserAccount(2L),Issue.Priority.Low,ZonedDateTime.now(getClock()).plusDays(2));
+                new UserAccount(2L),Issue.Priority.Low,ZonedDateTime.now(getClock()).plusDays(2),null);
         Issue savedIssue = issue.save();
         ZonedDateTime newRequiredResolvedDateTime =ZonedDateTime.now(getClock()).plusDays(1);
         try {
@@ -174,7 +186,7 @@ public class IssueTest extends DBTestCase {
 
 
         Issue issue = new Issue("New Issue","some new description 1",new IssueType(2L),
-                new UserAccount(2L),Issue.Priority.Low,null);
+                new UserAccount(2L),Issue.Priority.Low,null,null);
         Issue savedIssue = issue.save();
         ZonedDateTime newRequiredResolvedDateTime =ZonedDateTime.now(getClock()).plusDays(1);
         try {
@@ -201,6 +213,19 @@ public class IssueTest extends DBTestCase {
         ITable expectedTable = expectedDataSet.getTable("test_issue_tracker.Issues");
 
         Assertion.assertEquals(expectedTable, filteredActualTable);
+    }
+
+    @Test
+    public void testGetSubIssuesList(){
+        Finder<Issue,Long> issuesFinder = (Finder<Issue,Long>)BeanFactoryProvider.getBeanFactory().getBean("issuesFinder");
+        Issue issue = issuesFinder.findOneWithInitPaths(1L,Sets.newHashSet(Issue.ALL_SUBISSUES_INIT_PATH));
+        assertEquals(1,issue.getSubIssues().size());
+        assertEquals(2L,(long)issue.getSubIssues().get(0).getId());
+        issue=issue.getSubIssues().get(0);
+        assertEquals(1,issue.getSubIssues().size());
+        assertEquals(3L,(long)issue.getSubIssues().get(0).getId());
+        issue=issue.getSubIssues().get(0);
+        assertEquals(0,issue.getSubIssues().size());
     }
 
     private Clock getClock(){

@@ -16,7 +16,7 @@ import java.io.InputStream;
 /**
  * Created by SuslovAI on 04.10.2017.
  */
-    public class UserAccountTest extends DBTestCase {
+public class UserAccountTest extends DBTestCase {
 
     public UserAccountTest() {
         super("UserAccountTest");
@@ -126,6 +126,11 @@ import java.io.InputStream;
         ITable expectedTable = expectedDataSet.getTable("test_issue_tracker.UserAccounts");
 
         Assertion.assertEquals(expectedTable, filteredActualTable);
+    }
+
+    @Test
+    public void testFindByLogin(){
+
     }
 
 

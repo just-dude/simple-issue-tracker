@@ -4,7 +4,7 @@ package controller.struts.action.common;
 
 import controller.struts.action.common.util.ActionUtils;
 import domain.common.Finder;
-import domain.common.HavingNameAndOneIdDomainObject;
+import domain.common.HavingNameAndSoftDeletedAndOneIdDomainObject;
 import domain.common.exception.*;
 import org.springframework.data.domain.Sort;
 
@@ -90,7 +90,7 @@ public abstract class FormProviderHandlingExceptionsBaseAction extends HandlingE
             List allEntities = entitiesFinder.findAll(new Sort(Sort.Direction.ASC, "name"));
             entitiesIdWithNamesMap = new LinkedHashMap(allEntities.size());
             for (Object entity : allEntities) {
-                entitiesIdWithNamesMap.put(((HavingNameAndOneIdDomainObject) entity).getId().toString(), ((HavingNameAndOneIdDomainObject) entity).getName());
+                entitiesIdWithNamesMap.put(((HavingNameAndSoftDeletedAndOneIdDomainObject) entity).getId().toString(), ((HavingNameAndSoftDeletedAndOneIdDomainObject) entity).getName());
             }
         } catch (Exception e) {
             entitiesIdWithNamesMap = new LinkedHashMap(0);

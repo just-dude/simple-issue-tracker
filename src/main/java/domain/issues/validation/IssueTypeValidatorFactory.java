@@ -41,6 +41,8 @@ public class IssueTypeValidatorFactory {
                 ConstraintValidator commonNamesConstraintValidators = CommonValidators.getSimpleNameConstraintValidator();
 
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".name", entity.getName(), commonNamesConstraintValidators));
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".issueStates", entity.getIssueStates(),not(isNull())));
+                //TODO add check issue states size in issue type
                 return entityValidationRules;
             } catch (Exception e) {
                 throw new EntityValidationException("Entity validator initialization exception have occured", e);
@@ -68,7 +70,8 @@ public class IssueTypeValidatorFactory {
 
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".id", entity.getId(), not(isNull())));
                 entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".name", entity.getName(), commonNamesConstraintValidators));
-
+                entityValidationRules.add(new EntityValidationRule(validationContext.getPropertiesPrefix() + ".issueStates", entity.getIssueStates(),not(isNull())));
+                //TODO add check issue states size in issue type
                 return entityValidationRules;
             } catch (Exception e) {
                 throw new EntityValidationException("Entity validator initialization exception have occured", e);

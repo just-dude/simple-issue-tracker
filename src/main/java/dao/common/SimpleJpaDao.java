@@ -2,12 +2,8 @@ package dao.common;
 
 
 import common.argumentAssert.Assert;
-import dao.common.exception.DataIntegrityViolationDaoException;
 import dao.common.exception.EntityWithSuchIdDoesNotExistsDaoException;
-import dao.common.exception.UnsupportedOperationDaoException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.*;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -15,7 +11,7 @@ import javax.persistence.criteria.*;
 import java.io.Serializable;
 import java.util.*;
 
-public class JpaDao<T, ID extends Serializable> implements JpaRepository<T, ID> {
+public class SimpleJpaDao<T, ID extends Serializable> implements Dao<T, ID> {
 
 
     protected EntityManager em;
@@ -23,7 +19,7 @@ public class JpaDao<T, ID extends Serializable> implements JpaRepository<T, ID> 
     protected Class<T> entityClass;
 
 
-    public JpaDao(EntityManager em, Class<T> entityClass) {
+    public SimpleJpaDao(EntityManager em, Class<T> entityClass) {
         this.em = em;
         this.entityClass = entityClass;
     }
@@ -81,41 +77,31 @@ public class JpaDao<T, ID extends Serializable> implements JpaRepository<T, ID> 
     }
 
     @Override
-    public void delete(ID id) {
+    public void deleteAndFlush(ID id) throws EntityWithSuchIdDoesNotExistsDaoException{
         Assert.notNull(id, "id");
         T entity = findOne(id);
         if (entity == null) {
             throw new EntityWithSuchIdDoesNotExistsDaoException(id);
         }
-        try {
-            em.remove(entity);
-            em.flush();
-        } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationDaoException(e);
-        } catch (Exception e) {
-            throw new DataIntegrityViolationDaoException(e);
-        }
+        em.remove(entity);
+        em.flush();
     }
 
     @Override
-    public void delete(T t) {
-        Assert.notNull(t, "Entity %s to delete must not be null", t);
+    public void deleteAndFlush(T t) {
+        Assert.notNull(t, "Entity %s to deleteAndFlush must not be null", t);
         if (!em.contains(t)) {
             t = em.merge(t);
         }
-        try {
-            em.remove(t);
-            em.flush();
-        } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationDaoException(e);
-        }
+        em.remove(t);
+        em.flush();
     }
 
     @Override
-    public void delete(Iterable<? extends T> iterable) {
+    public void deleteAndFlush(Iterable<? extends T> iterable) {
         Assert.notNull(iterable, "iterable of entities");
         for (T entity : iterable) {
-            delete(entity);
+            deleteAndFlush(entity);
         }
     }
 
@@ -129,7 +115,7 @@ public class JpaDao<T, ID extends Serializable> implements JpaRepository<T, ID> 
 
     @Override
     public void deleteInBatch(Iterable<T> iterable) {
-        delete(iterable);
+        deleteAndFlush(iterable);
     }
 
     @Override
@@ -138,7 +124,7 @@ public class JpaDao<T, ID extends Serializable> implements JpaRepository<T, ID> 
     }
 
     @Override
-    public T getOne(ID id) {
+    public T findOne(ID id) {
         return em.find(getEntityTypeClass(), id);
     }
 
@@ -173,7 +159,7 @@ public class JpaDao<T, ID extends Serializable> implements JpaRepository<T, ID> 
     @Override
     public List<T> findAll(Iterable<ID> iterable) {
         if (!(iterable instanceof Collection)) {
-            throw new IllegalArgumentException("Argument 'iterable' in 'JpaDao.findAll(Iterable<ID> iterable)' must be instanceof Collection");
+            throw new IllegalArgumentException("Argument 'iterable' in 'SimpleJpaDao.findAll(Iterable<ID> iterable)' must be instanceof Collection");
         }
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(getEntityTypeClass());
@@ -182,17 +168,6 @@ public class JpaDao<T, ID extends Serializable> implements JpaRepository<T, ID> 
         cq.where(root.in((Collection<ID>) iterable));
         TypedQuery<T> typedQuery = em.createQuery(cq);
         return typedQuery.getResultList();
-    }
-
-
-    @Override
-    public <S extends T> List<S> findAll(Example<S> example) {
-        throw new UnsupportedOperationDaoException("findAll(Example<S> example)");
-    }
-
-    @Override
-    public <S extends T> List<S> findAll(Example<S> example, Sort sort) {
-        throw new UnsupportedOperationDaoException("findAll(Example<S> example, Sort sort)");
     }
 
     @Override
@@ -221,12 +196,6 @@ public class JpaDao<T, ID extends Serializable> implements JpaRepository<T, ID> 
         return new PageImpl<T>(typedQuery.getResultList(), pageable, count());
     }
 
-
-    @Override
-    public T findOne(ID id) {
-        return em.find(getEntityTypeClass(), id);
-    }
-
     @Override
     public boolean exists(ID id) {
         return findOne(id) != null;
@@ -242,49 +211,4 @@ public class JpaDao<T, ID extends Serializable> implements JpaRepository<T, ID> 
         return typedQuery.getSingleResult();
     }
 
-
-    @Override
-    public <S extends T> S findOne(Example<S> example) {
-        throw new UnsupportedOperationDaoException("findOne(Example<S> example)");
-    }
-
-    @Override
-    public <S extends T> Page<S> findAll(Example<S> example, Pageable pageable) {
-        throw new UnsupportedOperationDaoException("findAll(Example<S> example, Pageable pageable)");
-    }
-
-
-    @Override
-    public <S extends T> long count(Example<S> example) {
-        throw new UnsupportedOperationDaoException("count(Example<S> example)");
-    }
-
-    @Override
-    public <S extends T> boolean exists(Example<S> example) {
-        throw new UnsupportedOperationDaoException("exists(Example<S> example)");
-    }
-
-    /*@Override
-    public T getOne(ID id) {
-        Field[] fields = id.getClass().getDeclaredFields();
-        Map<String, Object> fieldNamesToValuesMap = new HashMap<>();
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<T> cq = cb.createQuery(getEntityTypeClass());
-        Root<T> entity = cq.from(getEntityTypeClass());
-        cq.select(entity);
-
-        for (Field field : fields) {
-            try {
-
-                String fieldValue = BeanUtils.getProperty(id, field.getName());
-                cq.where(cb.equal(entity.get(field.getName()), fieldValue));
-            } catch (Exception e) {
-                throw new DaoException("An exception has occured on build where clause", e);
-            }
-        }
-        TypedQuery<T> q = em.createQuery(cq);
-        List<T> resultList = q.getResultList();
-
-        return resultList.get(0);
-    }*/
 }

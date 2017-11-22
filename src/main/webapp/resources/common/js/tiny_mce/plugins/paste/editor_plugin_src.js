@@ -147,7 +147,7 @@
 				// Create container to paste into
 				n = dom.add(body, 'div', {id : '_mcePaste', 'class' : 'mcePaste'}, '\uFEFF<br _mce_bogus="1">');
 
-				// If contentEditable mode we need to find out the position of the closest element
+				// If contentEditable mode we need to finder out the position of the closest element
 				if (body != ed.getDoc().body)
 					posY = dom.getPos(ed.selection.getStart(), body).y;
 				else

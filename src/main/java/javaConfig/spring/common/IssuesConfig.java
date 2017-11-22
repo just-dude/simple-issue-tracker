@@ -1,13 +1,15 @@
 package javaConfig.spring.common;
 
-import dao.common.JpaDao;
+import dao.common.Dao;
+import dao.common.SimpleJpaDao;
 import dao.issues.IssueStatesJpaDao;
+import dao.issues.IssuesJpaDao;
 import domain.common.Finder;
 import domain.common.SimpleFinder;
 import domain.issues.Issue;
 import domain.issues.IssueState;
-import domain.issues.IssueStatesFinder;
 import domain.issues.IssueType;
+import domain.issues.IssuesFinder;
 import domain.issues.validation.IssueStateValidatorFactory;
 import domain.issues.validation.IssueTypeValidatorFactory;
 import domain.issues.validation.IssueValidatorFactory;
@@ -29,13 +31,13 @@ public class IssuesConfig {
     // Issue
 
     @Bean
-    public JpaDao<Issue,Long> issuesDao() {
-        return new JpaDao<Issue,Long>(entityManager,Issue.class);
+    public IssuesJpaDao issuesDao() {
+        return new IssuesJpaDao(entityManager);
     }
 
     @Bean
-    public Finder<Issue,Long> issuesFinder(JpaDao<Issue,Long> issuesDao) {
-        return new SimpleFinder<Issue,Long>(issuesDao);
+    public Finder<Issue,Long> issuesFinder(IssuesJpaDao issuesDao) {
+        return new IssuesFinder(issuesDao);
     }
 
     @Bean
@@ -51,35 +53,35 @@ public class IssuesConfig {
     // IssueType
 
     @Bean
-    public JpaDao<IssueType,Long> issueTypesDao() {
-        return new JpaDao<IssueType,Long>(entityManager,IssueType.class);
+    public Dao<IssueType,Long> issueTypesDao() {
+        return new SimpleJpaDao<IssueType,Long>(entityManager,IssueType.class);
     }
 
     @Bean
-    public Finder<IssueType,Long> issueTypesFinder(JpaDao<IssueType,Long> issueTypesDao) {
-        return new SimpleFinder<IssueType,Long>(issueTypesDao);
+    public Finder<IssueType,Long> issueTypesFinder(Dao<IssueType,Long> issueTypesDao) {
+        return new SimpleFinder<IssueType,Long>(issueTypesDao,IssueType.class);
     }
 
     @Bean
     public EntityValidatorFactory<IssueType> issueTypeOnCreateValidatorFactory() {
-        return new IssueTypeValidatorFactory.OnCreate(new ValidationContext("issueTypes"));
+        return new IssueTypeValidatorFactory.OnCreate(new ValidationContext("issueType"));
     }
 
     @Bean
     public EntityValidatorFactory<IssueType> issueTypeOnUpdateValidatorFactory() {
-        return new IssueTypeValidatorFactory.OnUpdate(new ValidationContext("issueTypes"));
+        return new IssueTypeValidatorFactory.OnUpdate(new ValidationContext("issueType"));
     }
 
     // IssueState
 
     @Bean
-    public IssueStatesJpaDao issueStatesDao() {
+    public Dao issueStatesDao() {
         return new IssueStatesJpaDao(entityManager);
     }
 
     @Bean
-    public Finder<IssueState,Long> issueStatesFinder(IssueStatesJpaDao issueStatesDao) {
-        return new IssueStatesFinder(issueStatesDao);
+    public Finder<IssueState,Long> issueStatesFinder(Dao issueStatesDao) {
+        return new SimpleFinder<IssueState,Long>(issueStatesDao,IssueType.class);
     }
 
     @Bean

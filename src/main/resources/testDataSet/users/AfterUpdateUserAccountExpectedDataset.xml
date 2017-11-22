@@ -2,8 +2,8 @@
 
 <dataset>
     <test_issue_tracker.UserAccounts login="login1" email="email1@mail.ml" name="newName" surname="surname"
-                                     userGroup="CommonUser"/>
-    <test_issue_tracker.UserAccounts login="login2" email="email2@mail.ml" name="name" surname="surname" userGroup="Admin"/>
-    <test_issue_tracker.UserAccounts login="login3" email="email3@mail.ml" name="name" surname="surname" userGroup="CommonUser"/>
+                                     userGroup="CommonUser" isSoftDeleted="false" />
+    <test_issue_tracker.UserAccounts login="login2" email="email2@mail.ml" name="name" surname="surname" userGroup="Admin" isSoftDeleted="false" />
+    <test_issue_tracker.UserAccounts login="login3" email="email3@mail.ml" name="name" surname="surname" userGroup="CommonUser" isSoftDeleted="false" />
 
 </dataset>

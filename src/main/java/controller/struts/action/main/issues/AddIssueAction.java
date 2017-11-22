@@ -3,6 +3,7 @@ package controller.struts.action.main.issues;
 import controller.struts.action.common.FormProviderHandlingExceptionsBaseAction;
 import domain.common.Finder;
 import domain.issues.Issue;
+import domain.issues.IssueType;
 import domain.users.UserAccount;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,8 +31,7 @@ public class AddIssueAction extends FormProviderHandlingExceptionsBaseAction {
 
     @Override
     protected void doInput() throws Exception {
-        issue = new Issue(null, "issue name", "description", "some: attribute\nsome2: attribute", null, Issue.Priority.Low,
-                null, new UserAccount(3L, null, null, null), null, null, null,
+        issue = new Issue("issue name", "description", new IssueType(1L),new UserAccount(3L), Issue.Priority.Low,
                 ZonedDateTime.now(ZoneId.of("Asia/Yakutsk")), null);
     }
 
@@ -41,8 +41,8 @@ public class AddIssueAction extends FormProviderHandlingExceptionsBaseAction {
             Finder<UserAccount, Long> userAccountsFinder = (Finder<UserAccount, Long>) getBeanFactory().getBean("userAccountsFinder");
             List<UserAccount> allUserAccounts = userAccountsFinder.findAll();
             userAccountIdWithNamesMap = new LinkedHashMap(allUserAccounts.size());
-            Collections.sort(allUserAccounts, (UserAccount ug1, UserAccount ug2) -> {
-                return ug1.getProfile().getFullName().compareTo(ug2.getProfile().getFullName());
+            Collections.sort(allUserAccounts, (UserAccount ua1, UserAccount ua2) -> {
+                return ua1.getProfile().getFullName().compareTo(ua2.getProfile().getFullName());
             });
             for (UserAccount userAccount : allUserAccounts) {
                 userAccountIdWithNamesMap.put(userAccount.getId().toString(), userAccount.getProfile().getFullName());

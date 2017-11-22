@@ -3,13 +3,13 @@ package domain.security.authorization;
 /**
  * Created by Администратор on 24.10.2017.
  */
-public class AuthorizingPermissions {
+public class PermissionStringConstants {
 
     private static final String FIND_ONE_BY_ID_PERMISSION_FORMAT = "%s:findOneById:%s:%s";
 
     protected String domainObjectName;
     
-    public AuthorizingPermissions(String domainObjectName){
+    public PermissionStringConstants(String domainObjectName){
         this.domainObjectName=domainObjectName;
     }
 

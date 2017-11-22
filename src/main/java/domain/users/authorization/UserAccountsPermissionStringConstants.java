@@ -5,16 +5,16 @@
  */
 package domain.users.authorization;
 
-import domain.security.authorization.AuthorizingPermissions;
+import domain.security.authorization.PermissionStringConstants;
 
 /**
  * @author SuslovAI
  */
-public class UserAccountsPermissions extends AuthorizingPermissions {
+public class UserAccountsPermissionStringConstants extends PermissionStringConstants {
 
-    public static UserAccountsPermissions INSTANCE = new UserAccountsPermissions();
+    public static UserAccountsPermissionStringConstants INSTANCE = new UserAccountsPermissionStringConstants();
 
-    public UserAccountsPermissions() {
+    public UserAccountsPermissionStringConstants() {
         super("userAccount");
     }
 

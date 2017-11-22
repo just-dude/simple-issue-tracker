@@ -2,9 +2,19 @@
 
 <dataset>
 
-    <test_issue_tracker.IssueTypes name="firstName"/>
-    <test_issue_tracker.IssueTypes name="secondName"/>
-    <test_issue_tracker.IssueTypes name="thirdName"/>
-    <test_issue_tracker.IssueTypes name="newIssueTypeName"/>
+
+    <test_issue_tracker.IssueTypes name="firstIssueTypeName" isSoftDeleted="false" />
+    <test_issue_tracker.IssueTypes name="secondIssueTypeName" isSoftDeleted="false" />
+    <test_issue_tracker.IssueTypes name="newIssueTypeName" isSoftDeleted="false" />
+
+    <test_issue_tracker.IssueStates name="initialIssueState" isInitialState="true" isFinishState="false" issueTypeId="1" isSoftDeleted="false" />
+    <test_issue_tracker.IssueStates name="transitionIssueState" isInitialState="false" isFinishState="false" issueTypeId="1" isSoftDeleted="false" />
+    <test_issue_tracker.IssueStates name="finishIssueState" isInitialState="false" isFinishState="true" issueTypeId="1" isSoftDeleted="false" />
+
+    <test_issue_tracker.IssueStates name="newInitialState" isInitialState="true" isFinishState="false" issueTypeId="[newIssueTypeId]" isSoftDeleted="false" />
+    <test_issue_tracker.IssueStates name="newFirstTransitionState" isInitialState="false" isFinishState="false" issueTypeId="[newIssueTypeId]" isSoftDeleted="false" />
+    <test_issue_tracker.IssueStates name="newSecondTransitionState" isInitialState="false" isFinishState="false" issueTypeId="[newIssueTypeId]" isSoftDeleted="false" />
+    <test_issue_tracker.IssueStates name="newFinishState" isInitialState="false" isFinishState="true" issueTypeId="[newIssueTypeId]" isSoftDeleted="false" />
+
 
 </dataset>

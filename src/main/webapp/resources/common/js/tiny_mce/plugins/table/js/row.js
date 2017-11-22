@@ -151,7 +151,7 @@ function updateRow(tr_elm, skip_id, skip_parent) {
 		// first, clone the node we are working on
 		var newRow = tr_elm.cloneNode(1);
 
-		// next, find the parent of its new destination (creating it if necessary)
+		// next, finder the parent of its new destination (creating it if necessary)
 		var theTable = dom.getParent(tr_elm, "table");
 		var dest = rowtype;
 		var newParent = null;

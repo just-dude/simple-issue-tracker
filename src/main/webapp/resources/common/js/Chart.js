@@ -7,7 +7,7 @@
  * Released under the MIT license
  * https://github.com/chartjs/Chart.js/blob/master/LICENSE.md
  */
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Chart = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Chart = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot finder module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 
 },{}],2:[function(require,module,exports){
 /* MIT license */
@@ -6228,11 +6228,11 @@ module.exports = function(Chart) {
 
 			/**
 			 * Returns items at the same index. If the options.intersect parameter is true, we only return items if we intersect something
-			 * If the options.intersect mode is false, we find the nearest item and return the items at the same index as that item
+			 * If the options.intersect mode is false, we finder the nearest item and return the items at the same index as that item
 			 * @function Chart.Interaction.modes.index
 			 * @since v2.4.0
 			 * @param chart {chart} the chart we are returning items from
-			 * @param e {Event} the event we are find things at
+			 * @param e {Event} the event we are finder things at
 			 * @param options {IInteractionOptions} options to use during interaction
 			 * @return {Chart.Element[]} Array of elements that are under the point. If none are found, an empty array is returned
 			 */
@@ -6240,10 +6240,10 @@ module.exports = function(Chart) {
 
 			/**
 			 * Returns items in the same dataset. If the options.intersect parameter is true, we only return items if we intersect something
-			 * If the options.intersect is false, we find the nearest item and return the items in that dataset
+			 * If the options.intersect is false, we finder the nearest item and return the items in that dataset
 			 * @function Chart.Interaction.modes.dataset
 			 * @param chart {chart} the chart we are returning items from
-			 * @param e {Event} the event we are find things at
+			 * @param e {Event} the event we are finder things at
 			 * @param options {IInteractionOptions} options to use during interaction
 			 * @return {Chart.Element[]} Array of elements that are under the point. If none are found, an empty array is returned
 			 */
@@ -6271,7 +6271,7 @@ module.exports = function(Chart) {
 			 * of the event
 			 * @function Chart.Interaction.modes.intersect
 			 * @param chart {chart} the chart we are returning items from
-			 * @param e {Event} the event we are find things at
+			 * @param e {Event} the event we are finder things at
 			 * @return {Chart.Element[]} Array of elements that are under the point. If none are found, an empty array is returned
 			 */
 			point: function(chart, e) {
@@ -6283,7 +6283,7 @@ module.exports = function(Chart) {
 			 * nearest mode returns the element closest to the point
 			 * @function Chart.Interaction.modes.intersect
 			 * @param chart {chart} the chart we are returning items from
-			 * @param e {Event} the event we are find things at
+			 * @param e {Event} the event we are finder things at
 			 * @param options {IInteractionOptions} options to use
 			 * @return {Chart.Element[]} Array of elements that are under the point. If none are found, an empty array is returned
 			 */
@@ -6315,7 +6315,7 @@ module.exports = function(Chart) {
 			 * x mode returns the elements that hit-test at the current x coordinate
 			 * @function Chart.Interaction.modes.x
 			 * @param chart {chart} the chart we are returning items from
-			 * @param e {Event} the event we are find things at
+			 * @param e {Event} the event we are finder things at
 			 * @param options {IInteractionOptions} options to use
 			 * @return {Chart.Element[]} Array of elements that are under the point. If none are found, an empty array is returned
 			 */
@@ -6346,7 +6346,7 @@ module.exports = function(Chart) {
 			 * y mode returns the elements that hit-test at the current y coordinate
 			 * @function Chart.Interaction.modes.y
 			 * @param chart {chart} the chart we are returning items from
-			 * @param e {Event} the event we are find things at
+			 * @param e {Event} the event we are finder things at
 			 * @param options {IInteractionOptions} options to use
 			 * @return {Chart.Element[]} Array of elements that are under the point. If none are found, an empty array is returned
 			 */
@@ -6542,7 +6542,7 @@ module.exports = function(Chart) {
 			// |                  B2 (Full Width)                   |
 			// |----------------------------------------------------|
 			//
-			// What we do to find the best sizing, we do the following
+			// What we do to finder the best sizing, we do the following
 			// 1. Determine the minimum size of the chart area.
 			// 2. Split the remaining width equally between each vertical axis
 			// 3. Split the remaining height equally between each horizontal axis
@@ -10811,7 +10811,7 @@ module.exports = function(Chart) {
 			 * We average the left and right distances to get the maximum shape radius that can fit in the box
 			 * along with labels.
 			 *
-			 * Once we have that, we can find the centre point for the chart, by taking the x text protrusion
+			 * Once we have that, we can finder the centre point for the chart, by taking the x text protrusion
 			 * on each side, removing that from the size, halving it and adding the left x protrusion width.
 			 *
 			 * This will mean we have a shape fitted to the canvas, as large as it can be with the labels

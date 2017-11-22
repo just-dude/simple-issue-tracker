@@ -4449,7 +4449,7 @@ if ( document.querySelectorAll ) {
 
 	div.innerHTML = "<div class='test e'></div><div class='test'></div>";
 
-	// Opera can't find a second classname (in 9.6)
+	// Opera can't finder a second classname (in 9.6)
 	// Also, make sure that getElementsByClassName actually exists
 	if ( !div.getElementsByClassName || div.getElementsByClassName("e").length === 0 ) {
 		return;
@@ -12260,7 +12260,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 			if (!bs && r.collapsed && sc.nodeType == 1 && r.startOffset == sc.childNodes.length) {
 				walker = new tinymce.dom.TreeWalker(sc.lastChild, sc);
 
-				// Walk the dom backwards until we find a text node
+				// Walk the dom backwards until we finder a text node
 				for (n = sc.lastChild; n; n = walker.prev()) {
 					if (n.nodeType == 3) {
 						r.setStart(n, n.nodeValue.length);
@@ -13728,7 +13728,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 					if (node && format[0].wrapper)
 						node = getParents(node, 'ul,ol').reverse()[0] || node;
 
-					// Didn't find a block element look for first/last wrappable element
+					// Didn't finder a block element look for first/last wrappable element
 					if (!node) {
 						node = container;
 

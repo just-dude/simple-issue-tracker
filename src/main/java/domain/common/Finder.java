@@ -7,12 +7,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 
 
-public interface Finder<T, ID extends Serializable> {
+public interface Finder<T extends DomainObject, ID extends Serializable> {
 
-    T getOne(ID id) throws EntityWithSuchIdDoesNotExistsBusinessException, DataAccessFailedBuisnessException;
+    T findOne(ID id) throws EntityWithSuchIdDoesNotExistsBusinessException, DataAccessFailedBuisnessException;
+
+    T findOneWithInitPaths(ID id, HashSet<String> initPaths) throws EntityWithSuchIdDoesNotExistsBusinessException, DataAccessFailedBuisnessException;
 
     List<T> findAll(Iterable<ID> ids) throws DataAccessFailedBuisnessException;
 

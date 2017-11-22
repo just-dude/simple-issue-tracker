@@ -2,7 +2,12 @@
 
 <dataset>
 
-    <test_issue_tracker.IssueTypes name="secondName"/>
-    <test_issue_tracker.IssueTypes name="thirdName"/>
+    <test_issue_tracker.IssueTypes id="1" name="firstIssueTypeName" isSoftDeleted="true" />
+    <test_issue_tracker.IssueTypes id="2" name="secondIssueTypeName" isSoftDeleted="false" />
+
+    <test_issue_tracker.IssueStates id="1" name="initialIssueState" isInitialState="true" isFinishState="false" issueTypeId="1" isSoftDeleted="true" />
+    <test_issue_tracker.IssueStates id="2" name="transitionIssueState" isInitialState="false" isFinishState="false" issueTypeId="1" isSoftDeleted="true" />
+    <test_issue_tracker.IssueStates id="3" name="finishIssueState" isInitialState="false" isFinishState="true" issueTypeId="1" isSoftDeleted="true" />
+
 
 </dataset>

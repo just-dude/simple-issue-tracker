@@ -2,13 +2,13 @@ package domain.common;
 
 import common.argumentAssert.Assert;
 import common.beanFactory.BeanFactoryProvider;
-import dao.common.exception.DataIntegrityViolationDaoException;
+import dao.common.Dao;
 import dao.common.exception.EntityWithSuchIdDoesNotExistsDaoException;
 import domain.common.exception.*;
 import domain.security.SecuritySubjectUtils;
-import domain.security.authorization.AuthorizingPermissions;
+import domain.security.authorization.PermissionStringConstants;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 import smartvalidation.constraintViolation.ConstraintViolation;
 import smartvalidation.exception.EntityValidationException;
@@ -16,17 +16,18 @@ import smartvalidation.validator.entityValidator.EntityValidator;
 import smartvalidation.validator.entityValidator.EntityValidatorFactory;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 
-public abstract class DomainObject<T, ID extends Serializable> implements Serializable, Validatable, SavableAndRemovable<T> {
+public abstract class DomainObject<T extends DomainObject, ID extends Serializable> implements Serializable, Validatable, SavableAndRemovable<T> {
 
     protected EntityValidatorFactory evf;
     protected EntityValidator currentValidator;
 
-    protected JpaRepository<T, ID> dao;
+    protected Dao<T, ID> dao;
     protected Finder<T, ID> finder;
 
-    protected AuthorizingPermissions permissions = new AuthorizingPermissions(this.getClass().getSimpleName().toLowerCase());
+    protected PermissionStringConstants permissionStringConsts = new PermissionStringConstants(this.getClass().getSimpleName().toLowerCase());
 
     @Override
     public boolean isValid() throws BusinessException {
@@ -73,16 +74,14 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
             doRemove();
         } catch (EntityWithSuchIdDoesNotExistsDaoException e) {
             throw new EntityWithSuchIdDoesNotExistsBusinessException(e.getId());
-        } catch (DataIntegrityViolationDaoException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationBusinessException(e);
         } catch (Exception e) {
             throw new DataAccessFailedBuisnessException("An error has occured on remove entity", e, this.getClass().getName() + ".remove", this);
         }
     }
 
-    public void doRemove(){
-        getDAO().delete(getId());
-    }
+    protected abstract void doRemove();
 
 
 
@@ -100,7 +99,7 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
     }
 
     protected <S extends T> S doSave() {
-        return (S) getDAO().saveAndFlush((T) this);
+        return (S) getDao().saveAndFlush((T) this);
     }
 
 
@@ -119,16 +118,25 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
 
     protected abstract void ifUpdateNotExistsEntityThrowException() throws EntityWithSuchIdDoesNotExistsBusinessException;
 
-    protected abstract ID getId();
+    public abstract ID getId();
 
     protected abstract boolean isNew();
 
     protected void checkSavePermission(){
-        SecuritySubjectUtils.checkPermission(permissions.getSavePermission());
+        SecuritySubjectUtils.checkPermission(permissionStringConsts.getSavePermission());
     }
 
     protected void checkRemovePermission(){
-        SecuritySubjectUtils.checkPermission(permissions.getRemovePermission());
+        SecuritySubjectUtils.checkPermission(permissionStringConsts.getRemovePermission());
+    }
+
+    public final void initializePaths(HashSet<String> pathsForInitialization){
+        Assert.notNull(pathsForInitialization);
+        Assert.notEmpty(pathsForInitialization);
+        doInitializePaths(pathsForInitialization);
+    }
+
+    protected void doInitializePaths(HashSet<String> pathsForInitialization){
     }
 
     protected EntityValidatorFactory<T> getEntityValidatorFactory() {
@@ -141,9 +149,9 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
         return evf;
     }
 
-    protected JpaRepository<T, ID> getDAO() {
+    protected Dao<T, ID> getDao() {
         if (dao == null) {
-            dao = (JpaRepository<T, ID>) BeanFactoryProvider.getBeanFactory().getBean(getDaoName());
+            dao = (Dao<T, ID>) BeanFactoryProvider.getBeanFactory().getBean(getDaoName());
             if (dao == null) {
                 throw new BusinessException("DAO for [" + this.getClass().getSimpleName() + "] entity with name [" + getDaoName() + "] not define in spring context");
             }
@@ -160,4 +168,5 @@ public abstract class DomainObject<T, ID extends Serializable> implements Serial
         }
         return finder;
     }
+
 }

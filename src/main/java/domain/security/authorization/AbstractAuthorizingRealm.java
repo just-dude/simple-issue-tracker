@@ -41,7 +41,7 @@ public abstract class AbstractAuthorizingRealm extends AuthorizingRealm {
         LOG.debug(String.format("Current user role is %s ", currentUserRole.getName()));
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(new HashSet(Arrays.asList(currentUserRole.getName())));
         info.addObjectPermissions(currentUserRole.getPermissions());
-        LOG.debug(String.format("SimpleAuthorizationInfo: roles %s, permissions %s; by principals: %s ", info.getRoles(), info.getObjectPermissions(), pc.asList()));
+        LOG.debug(String.format("SimpleAuthorizationInfo: roles %s, permissionStringConsts %s; by principals: %s ", info.getRoles(), info.getObjectPermissions(), pc.asList()));
         return info;
     }
 

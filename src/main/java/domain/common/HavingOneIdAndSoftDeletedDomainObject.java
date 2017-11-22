@@ -9,16 +9,16 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class HavingOneIdDomainObject<T> extends DomainObject<T, Long> {
+public abstract class HavingOneIdAndSoftDeletedDomainObject<T extends HavingOneIdAndSoftDeletedDomainObject> extends HavingSoftDeletedDomainObject<T, Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    public HavingOneIdDomainObject() {
+    public HavingOneIdAndSoftDeletedDomainObject() {
     }
 
-    public HavingOneIdDomainObject(Long id) {
+    public HavingOneIdAndSoftDeletedDomainObject(Long id) {
         this.id = id;
     }
 
@@ -36,7 +36,7 @@ public abstract class HavingOneIdDomainObject<T> extends DomainObject<T, Long> {
     @Override
     protected void ifUpdateNotExistsEntityThrowException() throws EntityWithSuchIdDoesNotExistsBusinessException, BusinessException {
         try {
-            if (!isNew() && !getDAO().exists(id)) {
+            if (!isNew() && !getDao().exists(id)) {
                 throw new EntityWithSuchIdDoesNotExistsBusinessException(id);
             }
         } catch (EntityWithSuchIdDoesNotExistsBusinessException e) {

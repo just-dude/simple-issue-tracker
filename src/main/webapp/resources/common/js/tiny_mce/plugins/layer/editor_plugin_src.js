@@ -110,7 +110,7 @@
 			if (d < 0) {
 				// Move back
 
-				// Try find a lower one
+				// Try finder a lower one
 				for (i=0; i<z.length; i++) {
 					if (z[i] < z[ci]) {
 						fi = i;
@@ -128,7 +128,7 @@
 			} else {
 				// Move forward
 
-				// Try find a higher one
+				// Try finder a higher one
 				for (i=0; i<z.length; i++) {
 					if (z[i] > z[ci]) {
 						fi = i;

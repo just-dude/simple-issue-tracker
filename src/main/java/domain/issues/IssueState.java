@@ -1,21 +1,21 @@
 package domain.issues;
 
-import domain.common.HavingNameAndOneIdDomainObject;
-import domain.common.exception.DataAccessFailedBuisnessException;
-import domain.common.exception.DataIntegrityViolationBusinessException;
-import domain.common.exception.EntityWithSuchIdDoesNotExistsBusinessException;
+import domain.common.HavingNameAndSoftDeletedAndOneIdDomainObject;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 
 @Entity
 @Table(name = "IssueStates")
-public class IssueState extends HavingNameAndOneIdDomainObject<IssueState> {
+public class IssueState extends HavingNameAndSoftDeletedAndOneIdDomainObject<IssueState> {
+
+    public static String ISSUE_STATES_TO_TRANSITION_INIT_PATH="issueStatesToTransition";
 
     private Boolean isInitialState = false;
     private Boolean isFinishState = false;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     private List<IssueState> issueStatesToTransition;
 
     @ManyToOne
@@ -74,6 +74,13 @@ public class IssueState extends HavingNameAndOneIdDomainObject<IssueState> {
     }
 
     @Override
+    protected void doInitializePaths(HashSet<String> pathsForInitialization) {
+        if(pathsForInitialization.contains(ISSUE_STATES_TO_TRANSITION_INIT_PATH)){
+            getIssueStatesToTransition().size();
+        }
+    }
+
+    @Override
     public String toString() {
         return "IssueState{" +
                 "id="+id+
@@ -81,7 +88,7 @@ public class IssueState extends HavingNameAndOneIdDomainObject<IssueState> {
                 ", isInitialState=" + isInitialState +
                 ", isFinishState=" + isFinishState +
                 ", issueStatesToTransition=" + issueStatesToTransition +
-                ", issueType=" + issueType +
+                ", issueType.id=" + issueType.getId() +
                 '}';
     }
 }

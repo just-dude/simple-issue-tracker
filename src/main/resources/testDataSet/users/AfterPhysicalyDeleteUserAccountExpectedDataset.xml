@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+
+    <test_issue_tracker.UserAccounts login="login2" email="email2@mail.ml" name="name" surname="surname" userGroup="Admin" isSoftDeleted="false" />
+    <test_issue_tracker.UserAccounts login="login3" email="email3@mail.ml" name="name" surname="surname" userGroup="CommonUser" isSoftDeleted="false" />
+
+</dataset>

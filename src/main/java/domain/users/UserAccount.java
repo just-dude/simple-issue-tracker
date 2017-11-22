@@ -1,6 +1,7 @@
 package domain.users;
 
-import domain.common.HavingOneIdDomainObject;
+import domain.common.HavingOneIdAndSoftDeletedDomainObject;
+import domain.common.HavingSoftDeletedDomainObject;
 import domain.common.exception.BusinessException;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Sha256Hash;
@@ -14,7 +15,7 @@ import javax.persistence.*;
  */
 @Entity(name = "UserAccount")
 @Table(name = "UserAccounts")
-public class UserAccount extends HavingOneIdDomainObject<UserAccount> {
+public class UserAccount extends HavingOneIdAndSoftDeletedDomainObject<UserAccount> {
 
 
     @Embedded
@@ -109,7 +110,7 @@ public class UserAccount extends HavingOneIdDomainObject<UserAccount> {
                 this.getAccountInfo().setSalt(salt.getBytes());
                 this.getAccountInfo().setHashedPassword(hashedPasswordBase64);
             } else {
-                UserAccount entityInStorage = getFinder().getOne(getId());
+                UserAccount entityInStorage = getFinder().findOne(getId());
                 this.setAccountInfo(entityInStorage.getAccountInfo());
             }
             return doSave();

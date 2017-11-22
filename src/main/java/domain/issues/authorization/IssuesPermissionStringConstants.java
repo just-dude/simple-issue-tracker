@@ -5,18 +5,18 @@
  */
 package domain.issues.authorization;
 
-import domain.security.authorization.AuthorizingPermissions;
+import domain.security.authorization.PermissionStringConstants;
 
 /**
  * @author SuslovAI
  */
-public class IssuesPermissions extends AuthorizingPermissions {
+public class IssuesPermissionStringConstants extends PermissionStringConstants {
 
     private static final String FIND_ALL_BY_ATTRIBUTE_PERMISSION_FORMAT = "%s:findAllById%s:%s:%s";
 
-    public static IssuesPermissions INSTANCE = new IssuesPermissions();
+    public static IssuesPermissionStringConstants INSTANCE = new IssuesPermissionStringConstants();
 
-    public IssuesPermissions() {
+    public IssuesPermissionStringConstants() {
         super("issue");
     }
 

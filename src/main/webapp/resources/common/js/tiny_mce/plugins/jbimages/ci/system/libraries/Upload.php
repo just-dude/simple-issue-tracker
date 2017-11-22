@@ -716,7 +716,7 @@ class CI_Upload {
 	/**
 	 * Validate Upload Path
 	 *
-	 * Verifies that it is a valid upload path with proper permissions.
+	 * Verifies that it is a valid upload path with proper permissionStringConsts.
 	 *
 	 *
 	 * @return	bool

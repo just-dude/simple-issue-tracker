@@ -1,68 +1,71 @@
 package domain.issues;
 
+import com.google.common.collect.Sets;
 import common.argumentAssert.Assert;
 import common.beanFactory.BeanFactoryProvider;
-import domain.common.HavingNameAndOneIdDomainObject;
+import domain.common.HavingNameAndSoftDeletedAndOneIdDomainObject;
 import domain.common.exception.BusinessRuleViolationException;
 import domain.common.exception.DataAccessFailedBuisnessException;
 import domain.common.exception.EntityWithSuchIdDoesNotExistsBusinessException;
 import domain.common.exception.ValidationFailedException;
-import domain.issues.authorization.IssuesPermissions;
+import domain.issues.authorization.IssuesPermissionStringConstants;
 import domain.security.SecuritySubjectUtils;
 import domain.users.UserAccount;
 import org.springframework.transaction.annotation.Transactional;
 import smartvalidation.constraintDescription.ConstraintDescription;
-import smartvalidation.constraintViolation.ConstraintViolation;
 import smartvalidation.constraintViolation.PropertyConstraintViolation;
 
 import javax.persistence.*;
 import java.time.Clock;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "Issues")
-public class Issue extends HavingNameAndOneIdDomainObject<Issue> {
+public class Issue extends HavingNameAndSoftDeletedAndOneIdDomainObject<Issue> {
+
+    public static String CURRENT_SUBISSUES_INIT_PATH="subIssues";
+    public static String ALL_SUBISSUES_INIT_PATH="subIssues.all";
+    public static String STATES_TO_TRANSITION_OF_ISSUE_STATE_INIT_PATH ="state.statesToTransition";
+
 
     public static enum Priority {
         Low, Medium, Hight
     }
 
-    private String description;
-    private String additionalAttributes;
+    protected String description;
+    protected String additionalAttributes;
     //@OneToMany
-    //private List<File> attachments;
+    //protected List<File> attachments;
     @OneToOne
     @JoinColumn(name = "stateId", foreignKey = @ForeignKey(name = "id"))
-    private IssueState state;
+    protected IssueState state;
 
     @Enumerated(EnumType.STRING)
-    private Priority priority;
+    protected Priority priority;
 
     @OneToOne
     @JoinColumn(name = "authorId", foreignKey = @ForeignKey(name = "id"))
-    private UserAccount author;
+    protected UserAccount author;
 
     @OneToOne
     @JoinColumn(name = "assigneeId", foreignKey = @ForeignKey(name = "id"))
-    private UserAccount assignee;
+    protected UserAccount assignee;
 
     @OneToOne
     @JoinColumn(name = "parentId", foreignKey = @ForeignKey(name = "id"))
-    private Issue parent;
+    protected Issue parent;
 
     @OneToMany(mappedBy = "parent")
-    private List<Issue> subIssues;
+    protected List<Issue> subIssues;
 
     @OneToOne
     @JoinColumn(name = "typeId", foreignKey = @ForeignKey(name = "id"))
-    private IssueType type;
+    protected IssueType type;
 
-    private ZonedDateTime createdDateTime;
-    private ZonedDateTime requiredResolvedDateTime;
-    private ZonedDateTime resolvedDateTime;
-    private Boolean isSoftDeleted;
+    protected ZonedDateTime createdDateTime;
+    protected ZonedDateTime requiredResolvedDateTime;
+    protected ZonedDateTime resolvedDateTime;
 
     public Issue() {
     }
@@ -73,7 +76,7 @@ public class Issue extends HavingNameAndOneIdDomainObject<Issue> {
 
     // Use this constructor to create new issue
     public Issue(String name, String description, IssueType type, UserAccount assignee, Priority priority,
-                 ZonedDateTime requiredResolvedDateTime) {
+                 ZonedDateTime requiredResolvedDateTime,Issue parent) {
         super(null, name);
         this.description = description;
         this.type = type;
@@ -86,9 +89,12 @@ public class Issue extends HavingNameAndOneIdDomainObject<Issue> {
         this.state = null;
         this.createdDateTime = null;
         this.resolvedDateTime = null;
+        this.parent=parent;
     }
 
-    public Issue(Long id, String name, String description, String additionalAttributes, IssueState state, Priority priority, UserAccount author, UserAccount assignee, List<Issue> subIssues, IssueType type, ZonedDateTime createdDateTime, ZonedDateTime requiredResolvedDateTime, ZonedDateTime resolvedDateTime) {
+    public Issue(Long id, String name, String description, String additionalAttributes, IssueState state, Priority priority,
+                 UserAccount author, UserAccount assignee, List<Issue> subIssues, IssueType type, ZonedDateTime createdDateTime,
+                 ZonedDateTime requiredResolvedDateTime, ZonedDateTime resolvedDateTime,Issue parent) {
         super(id, name);
         this.description = description;
         this.additionalAttributes = additionalAttributes;
@@ -101,6 +107,7 @@ public class Issue extends HavingNameAndOneIdDomainObject<Issue> {
         this.createdDateTime = createdDateTime;
         this.requiredResolvedDateTime = requiredResolvedDateTime;
         this.resolvedDateTime = resolvedDateTime;
+        this.parent=parent;
     }
 
     public String getDescription() {
@@ -191,16 +198,17 @@ public class Issue extends HavingNameAndOneIdDomainObject<Issue> {
         this.resolvedDateTime = resolvedDateTime;
     }
 
-    protected void setSoftDeleted() {
-        this.isSoftDeleted = true;
+    public Issue getParent() {
+        return parent;
     }
-    protected void unsetSoftDeleted() {
-        this.isSoftDeleted = false;
+
+    public void setParent(Issue parent) {
+        this.parent = parent;
     }
 
     @Transactional
     public <S extends Issue> S changeRequiredResolvedDateTime(ZonedDateTime newDateTime){
-        Issue currentIssue =  getFinder().getOne(getId());
+        Issue currentIssue =  getFinder().findOne(getId());
         checkChangeRequiredResolvedDateTimePermission(currentIssue.getAuthor().getId());
         if(currentIssue.getRequiredResolvedDateTime()==null){
             throw new BusinessRuleViolationException("Issue haven't required resolved datetime. Can't change required resolved datetime");
@@ -217,17 +225,25 @@ public class Issue extends HavingNameAndOneIdDomainObject<Issue> {
             );
         }
         currentIssue.setRequiredResolvedDateTime(newDateTime);
-        return currentIssue.doSave();
+        try {
+            return currentIssue.doSave();
+        } catch (Exception e) {
+            throw new DataAccessFailedBuisnessException("An error has occured on save entity", e, this.getClass().getName() + ".save", this);
+        }
     }
 
     @Transactional
     public <S extends Issue> S goIntoState(IssueState issueStateToTransition)throws DataAccessFailedBuisnessException,ValidationFailedException {
         Assert.notNull(issueStateToTransition,"issueStateToTransition");
-        Issue currentIssue =  getFinder().getOne(getId());
+        Issue currentIssue =  getFinder().findOne(getId());
         checkGoIntoStatePermission(currentIssue.getAssignee().getId());
         if(hasIssueStateInIssueStatesToTransitionList(issueStateToTransition,currentIssue.getState().getIssueStatesToTransition())){
             currentIssue.setState(issueStateToTransition);
-            return currentIssue.doSave();
+            try {
+                return currentIssue.doSave();
+            } catch (Exception e) {
+                throw new DataAccessFailedBuisnessException("An error has occured on save entity", e, this.getClass().getName() + ".save", this);
+            }
         } else{
             throw new ValidationFailedException(Arrays.asList(
                     new PropertyConstraintViolation(
@@ -242,11 +258,11 @@ public class Issue extends HavingNameAndOneIdDomainObject<Issue> {
     }
 
     protected void checkGoIntoStatePermission(Long assigneeeId){
-        SecuritySubjectUtils.checkPermission(IssuesPermissions.INSTANCE.getGoIntoStatePermission(assigneeeId));
+        SecuritySubjectUtils.checkPermission(IssuesPermissionStringConstants.INSTANCE.getGoIntoStatePermission(assigneeeId));
     }
 
     protected void checkChangeRequiredResolvedDateTimePermission(Long authorId){
-        SecuritySubjectUtils.checkPermission(IssuesPermissions.INSTANCE.getChangeRequiredResolvedDateTimePermission(authorId));
+        SecuritySubjectUtils.checkPermission(IssuesPermissionStringConstants.INSTANCE.getChangeRequiredResolvedDateTimePermission(authorId));
     }
 
     protected boolean hasIssueStateInIssueStatesToTransitionList(IssueState issueStateToFinding,List<IssueState> issueStatesList){
@@ -264,15 +280,12 @@ public class Issue extends HavingNameAndOneIdDomainObject<Issue> {
         Assert.notNull(getType(),"issue.type");
         Assert.notNull(getType().getId(),"issue.type.id");
         if(!isNew()){
-            throw new UnsupportedOperationException("Can't change(resave) exists issue");
+            throw new BusinessRuleViolationException("Can't change(resave) exists issue");
         }
         setCreatedDateTime(ZonedDateTime.now(getClock()));
         unsetSoftDeleted();
         setAuthor(SecuritySubjectUtils.getCurrentUserAccount());
-
-        IssueStatesFinder issueStatesFinder = (IssueStatesFinder) BeanFactoryProvider.getBeanFactory().getBean("issueStatesFinder");
-        IssueState initialState=issueStatesFinder.findInitialIssueStateByIssueType(type.getId());
-        setState(initialState);
+        setState(getType().getInitialIssueState());
         return super.save();
     }
 
@@ -280,27 +293,35 @@ public class Issue extends HavingNameAndOneIdDomainObject<Issue> {
         return (Clock) BeanFactoryProvider.getBeanFactory().getBean("clock");
     }
 
-    @Transactional
     @Override
-    public void remove() throws DataAccessFailedBuisnessException, EntityWithSuchIdDoesNotExistsBusinessException {
+    public void doRemove() throws DataAccessFailedBuisnessException, EntityWithSuchIdDoesNotExistsBusinessException {
         Assert.notNull(getId(),"issue.id");
         checkRemovePermission();
-        Issue entityInStorage = getFinder().getOne(getId());
+        Issue entityInStorage = getFinder().findOne(getId());
         entityInStorage.setSoftDeleted();
         for(Issue issue:entityInStorage.getSubIssues()){
             issue.remove();
         }
-        entityInStorage.doSave();
     }
 
-    protected void initSubIssues(){
-        if(getSubIssues()==null){
-            return;
+    @Override
+    protected void doInitializePaths(HashSet<String> pathsForInitialization) {
+        if(pathsForInitialization.contains(CURRENT_SUBISSUES_INIT_PATH) || pathsForInitialization.contains(ALL_SUBISSUES_INIT_PATH)){
+            getSubIssues().size();
         }
-        for(Issue issue:getSubIssues()){
-            issue.initSubIssues();
+        if(pathsForInitialization.contains(ALL_SUBISSUES_INIT_PATH)) {
+            if (getSubIssues() == null) {
+                return;
+            }
+            for (Issue issue : getSubIssues()) {
+                issue.initializePaths(Sets.newHashSet(ALL_SUBISSUES_INIT_PATH));
+            }
+        }
+        if(pathsForInitialization.contains(STATES_TO_TRANSITION_OF_ISSUE_STATE_INIT_PATH)){
+            getState().getIssueStatesToTransition().size();
         }
     }
+
     @Override
     public String toString() {
         return "Issue{" +
@@ -311,6 +332,7 @@ public class Issue extends HavingNameAndOneIdDomainObject<Issue> {
                 ", state=" + state +
                 ", priority=" + priority +
                 ", author=" + author +
+                ", assignee=" + assignee +
                 ", assignee=" + assignee +
                 ", parent=" + parent +
                 ", subIssues=" + subIssues +

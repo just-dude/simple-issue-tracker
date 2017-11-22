@@ -26,7 +26,7 @@ public class EditUserAccountAction extends FormProviderHandlingExceptionsBaseAct
     @Override
     protected void doInput() throws Exception {
         Finder<UserAccount, Long> userAccountsFinder = (Finder<UserAccount, Long>) BeanFactoryProvider.getBeanFactory().getBean("userAccountsFinder");
-        userAccount = userAccountsFinder.getOne(userAccountId);
+        userAccount = userAccountsFinder.findOne(userAccountId);
     }
 
     @Override

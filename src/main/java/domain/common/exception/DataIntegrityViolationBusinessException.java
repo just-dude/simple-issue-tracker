@@ -11,6 +11,10 @@ public class DataIntegrityViolationBusinessException extends DataAccessFailedBui
         super(MESSAGE);
     }
 
+    public DataIntegrityViolationBusinessException(String messsage) {
+        super(messsage);
+    }
+
     public DataIntegrityViolationBusinessException(Throwable cause) {
         super(MESSAGE, cause);
     }

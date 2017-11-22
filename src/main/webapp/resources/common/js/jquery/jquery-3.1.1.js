@@ -773,7 +773,7 @@ function Sizzle( selector, context, results, seed ) {
 		return results;
 	}
 
-	// Try to shortcut find operations (as opposed to filters) in HTML documents
+	// Try to shortcut finder operations (as opposed to filters) in HTML documents
 	if ( !seed ) {
 
 		if ( ( context ? context.ownerDocument || context : preferredDoc ) !== document ) {
@@ -1172,7 +1172,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 		return !document.getElementsByName || !document.getElementsByName( expando ).length;
 	});
 
-	// ID filter and find
+	// ID filter and finder
 	if ( support.getById ) {
 		Expr.filter["ID"] = function( id ) {
 			var attrId = id.replace( runescape, funescape );
@@ -1197,7 +1197,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 		};
 
 		// Support: IE 6 - 7 only
-		// getElementById is not reliable as a find shortcut
+		// getElementById is not reliable as a finder shortcut
 		Expr.find["ID"] = function( id, context ) {
 			if ( typeof context.getElementById !== "undefined" && documentIsHTML ) {
 				var node, i, elems,
@@ -3031,7 +3031,7 @@ var rootjQuery,
 				return ( context || root ).find( selector );
 
 			// HANDLE: $(expr, context)
-			// (which is just equivalent to: $(context).find(expr)
+			// (which is just equivalent to: $(context).finder(expr)
 			} else {
 				return this.constructor( context ).find( selector );
 			}
@@ -4991,7 +4991,7 @@ jQuery.event = {
 			jQuery.find.matchesSelector( documentElement, selector );
 		}
 
-		// Make sure that the handler has a unique ID, used to find/remove it later
+		// Make sure that the handler has a unique ID, used to finder/remove it later
 		if ( !handler.guid ) {
 			handler.guid = jQuery.guid++;
 		}

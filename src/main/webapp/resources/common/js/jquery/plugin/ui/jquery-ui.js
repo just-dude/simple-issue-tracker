@@ -163,7 +163,7 @@ $.widget = function( name, base, prototype ) {
 		widgetFullName: fullName
 	} );
 
-	// If this widget is being redefined then we need to find all widgets that
+	// If this widget is being redefined then we need to finder all widgets that
 	// are inheriting from it and redefine all of them so that they inherit from
 	// the new version of this widget. We're essentially trying to replace one
 	// level in the prototype chain.
@@ -1374,7 +1374,7 @@ var focusable = $.ui.focusable;
 
 // Support: IE8 Only
 // IE8 does not support the form attribute and when it is supplied. It overwrites the form prop
-// with a string, so we need to find the proper form.
+// with a string, so we need to finder the proper form.
 var form = $.fn.form = function() {
 	return typeof this[ 0 ].form === "string" ? this.closest( "form" ) : $( this[ 0 ].form );
 };
@@ -3638,7 +3638,7 @@ $.ui.ddmanager = {
 
 			if ( this.options.greedy ) {
 
-				// find droppable parents with same scope
+				// finder droppable parents with same scope
 				scope = this.options.scope;
 				parent = this.element.parents( ":data(ui-droppable)" ).filter( function() {
 					return $( this ).droppable( "instance" ).options.scope === scope;
@@ -6187,7 +6187,7 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 			}
 		} else {
 
-			// When entering a new container, we will find the item with the least distance and
+			// When entering a new container, we will finder the item with the least distance and
 			// append our item near it
 			dist = 10000;
 			itemWithLeastDistance = null;
@@ -10301,7 +10301,7 @@ $.extend( Datepicker.prototype, {
 	 */
 	_showDatepicker: function( input ) {
 		input = input.target || input;
-		if ( input.nodeName.toLowerCase() !== "input" ) { // find from button/image trigger
+		if ( input.nodeName.toLowerCase() !== "input" ) { // finder from button/image trigger
 			input = $( "input", input.parentNode )[ 0 ];
 		}
 
@@ -11592,7 +11592,7 @@ $.extend( Datepicker.prototype, {
 /*
  * Bind hover events for datepicker elements.
  * Done via delegate so the binding only occurs once in the lifetime of the parent div.
- * Global datepicker_instActive, set by _updateDatepicker allows the handlers to find their way back to the active picker.
+ * Global datepicker_instActive, set by _updateDatepicker allows the handlers to finder their way back to the active picker.
  */
 function datepicker_bindHover( dpDiv ) {
 	var selector = "button, .ui-datepicker-prev, .ui-datepicker-next, .ui-datepicker-calendar td a";
@@ -14512,7 +14512,7 @@ $.widget( "ui.spinner", {
 			options = this.options;
 
 		// Make sure we're at a valid step
-		// - find out where we are relative to the base (min or 0)
+		// - finder out where we are relative to the base (min or 0)
 		base = options.min !== null ? options.min : 0;
 		aboveMin = value - base;
 
@@ -15191,7 +15191,7 @@ $.widget( "ui.tabs", {
 		}
 	},
 
-	// Allow overriding how to find the list for rare usage scenarios (#7715)
+	// Allow overriding how to finder the list for rare usage scenarios (#7715)
 	_getList: function() {
 		return this.tablist || this.element.find( "ol, ul" ).eq( 0 );
 	},
