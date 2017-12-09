@@ -2,6 +2,7 @@ package javaConfig.spring.common;
 
 import dao.common.Dao;
 import dao.common.SimpleJpaDao;
+import dao.common.SoftDeletedModedJpaDao;
 import dao.issues.IssueStatesJpaDao;
 import dao.issues.IssuesJpaDao;
 import domain.common.Finder;
@@ -36,8 +37,18 @@ public class IssuesConfig {
     }
 
     @Bean
+    public IssuesJpaDao issuesWithoutSoftDeletedDao() {
+        return new IssuesJpaDao(entityManager, SoftDeletedModedJpaDao.FindMode.WithoutSoftDeleted);
+    }
+
+    @Bean
     public Finder<Issue,Long> issuesFinder(IssuesJpaDao issuesDao) {
         return new IssuesFinder(issuesDao);
+    }
+
+    @Bean
+    public Finder<Issue,Long> issuesWithoutSoftDeletedFinder(IssuesJpaDao issuesWithoutSoftDeletedDao) {
+        return new IssuesFinder(issuesWithoutSoftDeletedDao);
     }
 
     @Bean
@@ -54,12 +65,22 @@ public class IssuesConfig {
 
     @Bean
     public Dao<IssueType,Long> issueTypesDao() {
-        return new SimpleJpaDao<IssueType,Long>(entityManager,IssueType.class);
+        return new SoftDeletedModedJpaDao<IssueType,Long>(entityManager,IssueType.class);
+    }
+
+    @Bean
+    public Dao<IssueType,Long> issueTypesWithoutSoftDeletedDao() {
+        return new SoftDeletedModedJpaDao<IssueType,Long>(entityManager,IssueType.class, SoftDeletedModedJpaDao.FindMode.WithoutSoftDeleted);
     }
 
     @Bean
     public Finder<IssueType,Long> issueTypesFinder(Dao<IssueType,Long> issueTypesDao) {
         return new SimpleFinder<IssueType,Long>(issueTypesDao,IssueType.class);
+    }
+
+    @Bean
+    public Finder<IssueType,Long> issueTypesWithoutSoftDeletedFinder(Dao<IssueType,Long> issueTypesWithoutSoftDeletedDao) {
+        return new SimpleFinder<IssueType,Long>(issueTypesWithoutSoftDeletedDao,IssueType.class);
     }
 
     @Bean
@@ -75,13 +96,23 @@ public class IssuesConfig {
     // IssueState
 
     @Bean
-    public Dao issueStatesDao() {
+    public Dao<IssueState,Long> issueStatesDao() {
         return new IssueStatesJpaDao(entityManager);
+    }
+
+    @Bean
+    public Dao<IssueState,Long> issueStatesWithoutSoftDeletedDao() {
+        return new IssueStatesJpaDao(entityManager, SoftDeletedModedJpaDao.FindMode.WithoutSoftDeleted);
     }
 
     @Bean
     public Finder<IssueState,Long> issueStatesFinder(Dao issueStatesDao) {
         return new SimpleFinder<IssueState,Long>(issueStatesDao,IssueType.class);
+    }
+
+    @Bean
+    public Finder<IssueState,Long> issueStatesWithoutSoftDeletedFinder(Dao issueStatesWithoutSoftDeletedDao) {
+        return new SimpleFinder<IssueState,Long>(issueStatesWithoutSoftDeletedDao,IssueType.class);
     }
 
     @Bean

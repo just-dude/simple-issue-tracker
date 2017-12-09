@@ -49,6 +49,7 @@ public class PersistenceConfig {
         emf.setPackagesToScan("domain.*");
         emf.setJpaVendorAdapter(va);
 
+
         return emf;
     }
 
@@ -61,7 +62,9 @@ public class PersistenceConfig {
 
     @Bean()
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
-        return new JpaTransactionManager(emf);
+        JpaTransactionManager jtm= new JpaTransactionManager(emf);
+        jtm.setGlobalRollbackOnParticipationFailure(false);
+        return jtm;
         //return AnnotationTransactionAspect.aspectOf();
     }
 

@@ -1,29 +1,29 @@
-package controller.struts.action.main.issues;
+package controller.struts.action.main.issues.issueTypes;
 
-import com.google.common.collect.Sets;
-import common.beanFactory.BeanFactoryProvider;
 import controller.struts.action.common.FormProviderHandlingExceptionsBaseAction;
-import domain.common.Finder;
 import domain.issues.IssueState;
 import domain.issues.IssueType;
-import domain.issues.IssuesFinder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by SuslovAI on 06.10.2017.
  */
-public class EditIssueTypeAction extends FormProviderHandlingExceptionsBaseAction {
+public class AddIssueTypeAction extends FormProviderHandlingExceptionsBaseAction {
 
-    protected static final Logger LOG = LogManager.getLogger(EditIssueTypeAction.class);
+    protected static final Logger LOG = LogManager.getLogger(AddIssueTypeAction.class);
 
-    private Long issueTypeId;
-    private IssueType issueType = new IssueType();
+    protected IssueType issueType = new IssueType();
+    protected Map<Integer,List<Integer>> issueStateIndexToTransferIssueStateIndexesListMap;
+
+    protected String initialStateName;
+    protected String transitionsStatesNames;
+    protected String standartFinishStatesNames;
+    protected String nonStandartFinishStatesNames;
+
+
     private List<IssueState> issueStates;
 
 
@@ -34,7 +34,9 @@ public class EditIssueTypeAction extends FormProviderHandlingExceptionsBaseActio
         issueType = new IssueType();
     }
 
+    protected void buildIssueStatesListAndIndexesToTransferMapFromInputStrings(){
 
+    }
 
     protected Map<Integer,List<Integer>> getIssueStateIndexToTransferIssueStateIndexesListMap(int issueStatesSize){
         Map<Integer,List<Integer>> map = new HashMap<>();
@@ -47,12 +49,7 @@ public class EditIssueTypeAction extends FormProviderHandlingExceptionsBaseActio
 
     @Override
     protected void doInput() throws Exception {
-        issueType = getIssueTypesFinder().findOneWithInitPaths(issueTypeId, Sets.newHashSet(IssueType.ISSUE_STATES_INIT_PATH));
-        setIssueStates(issueType.getIssueStates());
-    }
-
-    protected Finder<IssueType,Long> getIssueTypesFinder(){
-        return (Finder<IssueType,Long>) BeanFactoryProvider.getBeanFactory().getBean("issueTypesFinder");
+        issueType = new IssueType("New issueType type");
     }
 
 

@@ -8,13 +8,18 @@ import domain.common.exception.*;
 import domain.security.SecuritySubjectUtils;
 import domain.security.authorization.PermissionStringConstants;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.HibernateException;
+import org.hibernate.TransactionException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.transaction.annotation.Transactional;
 import smartvalidation.constraintViolation.ConstraintViolation;
 import smartvalidation.exception.EntityValidationException;
 import smartvalidation.validator.entityValidator.EntityValidator;
 import smartvalidation.validator.entityValidator.EntityValidatorFactory;
 
+import javax.persistence.PersistenceException;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
@@ -76,12 +81,16 @@ public abstract class DomainObject<T extends DomainObject, ID extends Serializab
             throw new EntityWithSuchIdDoesNotExistsBusinessException(e.getId());
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationBusinessException(e);
+        } catch (BusinessException e) {
+            throw e;
         } catch (Exception e) {
             throw new DataAccessFailedBuisnessException("An error has occured on remove entity", e, this.getClass().getName() + ".remove", this);
         }
     }
 
-    protected abstract void doRemove();
+    protected void doRemove(){
+        getDao().deleteAndFlush(getId());
+    }
 
 
 

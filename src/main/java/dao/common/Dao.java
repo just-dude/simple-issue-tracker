@@ -33,6 +33,8 @@ public interface Dao<T, ID extends Serializable> {
 
     void deleteAllInBatch();
 
+    void clearPersistenceContext();
+
     T findOne(ID id);
 
     List<T> findAll();

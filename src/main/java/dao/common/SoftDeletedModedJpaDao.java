@@ -43,7 +43,7 @@ public class SoftDeletedModedJpaDao<T extends HavingSoftDeletedDomainObject, ID 
 
     public SoftDeletedModedJpaDao(EntityManager em, Class<T> entityClass) {
         super(em, entityClass);
-        this.findMode = FindMode.WithoutSoftDeleted;
+        this.findMode = FindMode.WithSoftDeleted;
     }
 
     @Override
@@ -64,7 +64,9 @@ public class SoftDeletedModedJpaDao<T extends HavingSoftDeletedDomainObject, ID 
         cq.select(root);
         List<Predicate> andPredicatesList = new ArrayList<>();
         applyFindAllMode(andPredicatesList,root,cb);
-        cq.where(andPredicatesList.get(0));
+        if(andPredicatesList.size()>0) {
+            cq.where(andPredicatesList.get(0));
+        }
         TypedQuery<T> typedQuery = em.createQuery(cq);
         return typedQuery.getResultList();
     }
@@ -77,7 +79,9 @@ public class SoftDeletedModedJpaDao<T extends HavingSoftDeletedDomainObject, ID 
         cq.select(root);
         List<Predicate> andPredicatesList = new ArrayList<>();
         applyFindAllMode(andPredicatesList,root,cb);
-        cq.where(andPredicatesList.get(0));
+        if(andPredicatesList.size()>0) {
+            cq.where(andPredicatesList.get(0));
+        }
         sort.forEach(order -> {
             if (order.isAscending()) {
                 cq.orderBy(cb.asc(root.get(order.getProperty())));
@@ -118,7 +122,9 @@ public class SoftDeletedModedJpaDao<T extends HavingSoftDeletedDomainObject, ID 
         cq.select(root);
         List<Predicate> andPredicatesList = new ArrayList<>();
         applyFindAllMode(andPredicatesList,root,cb);
-        cq.where(andPredicatesList.get(0));
+        if(andPredicatesList.size()>0) {
+            cq.where(andPredicatesList.get(0));
+        }
         if (pageable.getSort() != null) {
             pageable.getSort().forEach(order -> {
                 Iterator<String> propertyPartsIterator = Arrays.asList(order.getProperty().split("\\.")).iterator();
@@ -152,7 +158,9 @@ public class SoftDeletedModedJpaDao<T extends HavingSoftDeletedDomainObject, ID 
         cq.select(cb.count(root));
         List<Predicate> andPredicatesList = new ArrayList<>();
         applyFindAllMode(andPredicatesList,root,cb);
-        cq.where(andPredicatesList.get(0));
+        if(andPredicatesList.size()>0) {
+            cq.where(andPredicatesList.get(0));
+        }
         TypedQuery<Long> typedQuery = em.createQuery(cq);
         return typedQuery.getSingleResult();
     }

@@ -1,5 +1,6 @@
 package javaConfig.spring.common;
 
+import dao.common.SoftDeletedModedJpaDao;
 import dao.users.UserAccountsJpaDao;
 import domain.users.UserAccount;
 import domain.users.UserAccountsFinder;
@@ -26,8 +27,18 @@ public class UsersConfig {
     }
 
     @Bean
+    public UserAccountsJpaDao userAccountsWithoutSoftDeletedDao() {
+        return new UserAccountsJpaDao(entityManager, SoftDeletedModedJpaDao.FindMode.WithoutSoftDeleted);
+    }
+
+    @Bean
     public UserAccountsFinder userAccountsFinder(UserAccountsJpaDao userAccountsDao) {
         return new UserAccountsFinder(userAccountsDao);
+    }
+
+    @Bean
+    public UserAccountsFinder userAccountsWithoutSoftDeletedFinder(UserAccountsJpaDao userAccountsWithoutSoftDeletedDao) {
+        return new UserAccountsFinder(userAccountsWithoutSoftDeletedDao);
     }
 
     @Bean

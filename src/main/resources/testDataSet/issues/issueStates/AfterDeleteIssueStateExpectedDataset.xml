@@ -6,11 +6,7 @@
     <test_issue_tracker.IssueTypes id="2" name="secondIssueTypeName" isSoftDeleted="false" />
 
     <test_issue_tracker.IssueStates id="1" name="initialIssueState" isInitialState="true" isFinishState="false" issueTypeId="1" isSoftDeleted="false" />
-    <test_issue_tracker.IssueStates id="2" name="transitionIssueState" isInitialState="false" isFinishState="false" issueTypeId="1" isSoftDeleted="true" />
     <test_issue_tracker.IssueStates id="3" name="finishIssueState" isInitialState="false" isFinishState="true" issueTypeId="1" isSoftDeleted="false" />
-
-    <test_issue_tracker.IssueStates_IssueStates IssueState_id="1" issueStatesToTransition_id="2" />
-    <test_issue_tracker.IssueStates_IssueStates IssueState_id="2" issueStatesToTransition_id="3" />
 
 
 </dataset>

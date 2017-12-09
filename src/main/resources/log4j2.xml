@@ -37,6 +37,12 @@
         <Logger name="org.apache.shiro" level="DEBUG" additivity="false">
             <AppenderRef ref="STDOUT"/>
         </Logger>
+        <Logger name="org.springframework.transaction" level="TRACE" additivity="false">
+            <AppenderRef ref="STDOUT"/>
+        </Logger>
+        <!--<Logger name="org.hibernate" level="TRACE" additivity="false">
+            <AppenderRef ref="STDOUT"/>
+        </Logger>-->
         <Root level="${logEventsLevel}">
             <AppenderRef ref="STDOUT"/>
             <AppenderRef ref="ApplicationLog"/>

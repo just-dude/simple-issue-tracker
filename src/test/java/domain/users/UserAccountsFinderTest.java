@@ -28,10 +28,8 @@ public class UserAccountsFinderTest extends DBTestCase {
     @Test
     public void findByLogin() throws Exception {
         UserAccount userAccount = getFinder().findByLogin("login1");
-        assertNull(userAccount);
-        userAccount = getFinder().findByLogin("login2");
         assertNotNull(userAccount);
-        assertEquals(2L,(long)userAccount.getId());
+        assertEquals(1L,(long)userAccount.getId());
     }
 
 }

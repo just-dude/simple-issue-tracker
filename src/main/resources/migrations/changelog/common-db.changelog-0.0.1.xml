@@ -48,7 +48,9 @@
             <column name="assigneeId" type="BIGINT"/>
             <column name="authorId" type="BIGINT"/>
             <column name="parentId" type="BIGINT"/>
-            <column name="stateId" type="BIGINT"/>
+            <column name="stateId" type="BIGINT" >
+                <constraints nullable="false"/>
+            </column>
             <column name="typeId" type="BIGINT"/>
             <column name="isSoftDeleted" type="BIT"/>
         </createTable>
@@ -79,6 +81,18 @@
         <addForeignKeyConstraint baseColumnNames="issueStatesToTransition_id" baseTableName="IssueStates_IssueStates" constraintName="FKbxmk0giotmqdu73hdwe19tb6j" deferrable="false" deleteCascade="true" onDelete="CASCADE"  initiallyDeferred="false" referencedColumnNames="id" referencedTableName="IssueStates"/>
     </changeSet>
     <changeSet author="SuslovAI (generated)" id="1509008522459-9">
-        <addForeignKeyConstraint baseColumnNames="assigneeId" baseTableName="Issues" constraintName="id" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="UserAccounts"/>
+        <addForeignKeyConstraint baseColumnNames="assigneeId" baseTableName="Issues" constraintName="IssueAssigneeToUserFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="UserAccounts"/>
+    </changeSet>
+    <changeSet author="SuslovAI (generated)" id="1509008522459-10">
+        <addForeignKeyConstraint baseColumnNames="authorId" baseTableName="Issues" constraintName="IssueAuthorToUserFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="UserAccounts"/>
+    </changeSet>
+    <changeSet author="SuslovAI (generated)" id="1509008522459-11">
+        <addForeignKeyConstraint baseColumnNames="typeId" baseTableName="Issues" constraintName="IssueToIssueTypesFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" deleteCascade="false" onDelete="RESTRICT" referencedTableName="IssueTypes"/>
+    </changeSet>
+    <changeSet author="SuslovAI (generated)" id="1509008522459-12">
+        <addForeignKeyConstraint baseColumnNames="stateId" baseTableName="Issues" constraintName="IssueToIssueStateFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" deleteCascade="false" onDelete="RESTRICT" referencedTableName="IssueStates"/>
+    </changeSet>
+    <changeSet author="SuslovAI (generated)" id="1509008522459-13">
+        <addForeignKeyConstraint baseColumnNames="issueTypeId" baseTableName="IssueStates" constraintName="IssueStateToIssueTypeFK" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" deleteCascade="false" onDelete="RESTRICT" referencedTableName="IssueTypes"/>
     </changeSet>
 </databaseChangeLog>

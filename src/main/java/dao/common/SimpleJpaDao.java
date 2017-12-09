@@ -3,12 +3,20 @@ package dao.common;
 
 import common.argumentAssert.Assert;
 import dao.common.exception.EntityWithSuchIdDoesNotExistsDaoException;
+import org.hibernate.HibernateException;
+import org.hibernate.TransactionException;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.*;
+import org.springframework.orm.jpa.JpaSystemException;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.io.Serializable;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
 public class SimpleJpaDao<T, ID extends Serializable> implements Dao<T, ID> {
@@ -83,8 +91,22 @@ public class SimpleJpaDao<T, ID extends Serializable> implements Dao<T, ID> {
         if (entity == null) {
             throw new EntityWithSuchIdDoesNotExistsDaoException(id);
         }
-        em.remove(entity);
-        em.flush();
+        try {
+            em.remove(entity);
+            em.flush();
+        } catch(JpaSystemException e){
+            Throwable te=null;
+            if(e.getCause()!=null) {
+                te=e.getCause();
+                if(te.getCause()!=null){
+                    te=te.getCause();
+                    if (te.getCause() instanceof SQLIntegrityConstraintViolationException) {
+                        throw new DataIntegrityViolationException("Can't delete entity beacause other entities has relationship to it", e);
+                    }
+                }
+            }
+            throw e;
+        }
     }
 
     @Override
@@ -121,6 +143,11 @@ public class SimpleJpaDao<T, ID extends Serializable> implements Dao<T, ID> {
     @Override
     public void deleteAllInBatch() {
         deleteAll();
+    }
+
+    @Override
+    public void clearPersistenceContext() {
+        em.clear();
     }
 
     @Override

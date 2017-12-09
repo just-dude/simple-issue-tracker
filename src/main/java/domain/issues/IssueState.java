@@ -87,7 +87,7 @@ public class IssueState extends HavingNameAndSoftDeletedAndOneIdDomainObject<Iss
                 ", name="+name+
                 ", isInitialState=" + isInitialState +
                 ", isFinishState=" + isFinishState +
-                ", issueStatesToTransition=" + issueStatesToTransition +
+                //", issueStatesToTransition=" + issueStatesToTransition +
                 ", issueType.id=" + issueType.getId() +
                 '}';
     }

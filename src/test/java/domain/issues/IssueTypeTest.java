@@ -152,40 +152,6 @@ public class IssueTypeTest extends DBTestCase {
         }
     }
 
-    @Test
-    public void updateTypeWithStatesInUsing() throws Exception {
-        IssueType issueType=new IssueType(1L,"updatedIssueTypeName",null);
-        issueType.addIssueState(
-                new IssueState(null, "initialIssueState", true, false, null,
-                        null
-                ));
-        issueType.addIssueState(
-                new IssueState(2L, "newSecondTransitionState", false, false, null,
-                        null
-                ));
-        issueType.addIssueState(
-                new IssueState(null, "newFinishState", false, true, null,null
-                ));
-        Map<Integer, List<Integer>> issueStateIndexToTransferIssueStateIndexesListMap = new HashMap<>();
-        issueStateIndexToTransferIssueStateIndexesListMap.put(0, Arrays.asList(1));
-        issueStateIndexToTransferIssueStateIndexesListMap.put(1, Arrays.asList(2));
-
-        try {
-            issueType.save(issueStateIndexToTransferIssueStateIndexesListMap);
-            fail("Update issue type with delete issuestates in using is not allowed");
-        } catch (DataIntegrityViolationBusinessException e){
-        }
-
-        IDataSet databaseDataSet = getConnection().createDataSet(
-                new String[]{"test_issue_tracker.IssueTypes"});
-        ITable actualTable = databaseDataSet.getTable("test_issue_tracker.IssueTypes");
-        InputStream expectedDataSetInputStream = getDataSetAsInputStream("testDataSet/issues/issueTypes/IssueTypesSetupDataset.xml");
-        ReplacementDataSet expectedDataSet = new ReplacementDataSet(new FlatXmlDataSetBuilder().build(expectedDataSetInputStream));
-        ITable expectedTable = expectedDataSet.getTable("test_issue_tracker.IssueTypes");
-
-        Assertion.assertEquals(expectedTable, actualTable);
-
-    }
 
     @Test
     public void remove() throws Exception {
@@ -203,10 +169,10 @@ public class IssueTypeTest extends DBTestCase {
 
         Assertion.assertEquals(expectedTable, actualTable);
 
-        expectedTable = expectedDataSet.getTable("test_issue_tracker.IssueStates");
         actualTable = databaseDataSet.getTable("test_issue_tracker.IssueStates");
+        expectedTable = expectedDataSet.getTable("test_issue_tracker.IssueStates");
 
-        Assertion.assertEquals(expectedTable, actualTable);
+        Assertion.assertEquals(expectedTable,actualTable);
     }
 
 

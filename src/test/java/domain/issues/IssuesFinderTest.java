@@ -33,9 +33,10 @@ public class IssuesFinderTest extends DBTestCase{
     @Test
     public void findIssuesByAuthor() throws Exception {
         List<Issue> issuesList = getFinder().findIssuesByAuthor(2L);
-        assertEquals(2,issuesList.size());
+        assertEquals(3,issuesList.size());
         assertEquals(1L,(long)issuesList.get(0).getId());
         assertEquals(3L,(long)issuesList.get(1).getId());
+        assertEquals(4L,(long)issuesList.get(2).getId());
         issuesList = getFinder().findIssuesByAuthor(3L);
         assertEquals(1,(long)issuesList.size());
         assertEquals(2L,(long)issuesList.get(0).getId());
@@ -44,9 +45,10 @@ public class IssuesFinderTest extends DBTestCase{
     @Test
     public void findIssuesByAssignee() throws Exception {
         List<Issue> issuesList = getFinder().findIssuesByAssignee(3L);
-        assertEquals(2,issuesList.size());
+        assertEquals(3,issuesList.size());
         assertEquals(1L,(long)issuesList.get(0).getId());
         assertEquals(3L,(long)issuesList.get(1).getId());
+        assertEquals(4L,(long)issuesList.get(2).getId());
         issuesList = getFinder().findIssuesByAssignee(2L);
         assertEquals(1,(long)issuesList.size());
         assertEquals(2L,(long)issuesList.get(0).getId());

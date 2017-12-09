@@ -3,10 +3,16 @@ package domain.issues;
 import com.google.common.collect.Sets;
 import common.argumentAssert.Assert;
 import common.beanFactory.BeanFactoryProvider;
+import dao.common.exception.DaoException;
 import domain.common.HavingNameAndSoftDeletedAndOneIdDomainObject;
 import domain.common.HavingOneIdAndSoftDeletedDomainObject;
 import domain.common.exception.*;
 import org.apache.commons.collections.ListUtils;
+import org.hibernate.HibernateException;
+import org.hibernate.TransactionException;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
@@ -123,12 +129,10 @@ public class IssueType extends HavingNameAndSoftDeletedAndOneIdDomainObject<Issu
         }
         List<IssueState> issueStatesForRemove = currentIssueType.getIssueStates();
         issueStatesForRemove=getLeftOutersection(issueStatesForRemove,getIssueStates());
-        IssuesFinder issuesFinder = (IssuesFinder)BeanFactoryProvider.getBeanFactory().getBean("issuesFinder");
-        if(issuesFinder.findIssuesInOneOfIssueStates(issueStatesForRemove).size()>0){
-            throw new DataIntegrityViolationBusinessException("Data integrity violation has occured. Can't edit issue type because issues states reference to one of issue states that not include in edited issue type.");
-        }
         for(IssueState issueState:issueStatesForRemove){
-            issueState.remove();
+            if(!issueState.isSoftDeleted()) {
+                issueState.softRemove();
+            }
         }
     }
 
@@ -149,17 +153,23 @@ public class IssueType extends HavingNameAndSoftDeletedAndOneIdDomainObject<Issu
         return result;
     }
 
-    @Transactional
     @Override
-    public void remove() throws DataAccessFailedBuisnessException, EntityWithSuchIdDoesNotExistsBusinessException, DataIntegrityViolationBusinessException {
-        Assert.notNull(getId(),"issueType.id");
-        IssueType issueType = getFinder().findOne(getId());
-        for(IssueState issueState: issueType.issueStates){
-            issueState.remove();
+    public void doHardRemove() throws DataAccessFailedBuisnessException, EntityWithSuchIdDoesNotExistsBusinessException, DataIntegrityViolationBusinessException {
+        IssueType issueType = getFinder().findOneWithInitPaths(getId(),Sets.newHashSet(IssueType.ISSUE_STATES_INIT_PATH));
+        super.doHardRemove();
+        for(IssueState issueState: issueType.getIssueStates()){
+            issueState.hardRemove();
         }
-        super.remove();
     }
 
+    @Override
+    protected void doSoftRemove() {
+        super.doSoftRemove();
+        IssueType issueType = getFinder().findOneWithInitPaths(getId(),Sets.newHashSet(IssueType.ISSUE_STATES_INIT_PATH));
+        for(IssueState issueState: issueType.getIssueStates()){
+            issueState.softRemove();
+        }
+    }
 
     @Override
     public void doInitializePaths(HashSet<String> pathsForInitialization) {

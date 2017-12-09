@@ -52,7 +52,7 @@ public class IssueStateTest extends DBTestCase {
         issueState.setId(2L);
         issueState.remove();
 
-        IDataSet databaseDataSet = getConnection().createDataSet(new String[]{"test_issue_tracker.IssueStates","test_issue_tracker.IssueStates_IssueStates"});
+        IDataSet databaseDataSet = getConnection().createDataSet(new String[]{"test_issue_tracker.IssueStates"});
         ITable actualTable = databaseDataSet.getTable("test_issue_tracker.IssueStates");
 
         InputStream expectedDataSetInputStream = getDataSetAsInputStream("testDataSet/issues/issueStates/AfterDeleteIssueStateExpectedDataset.xml");
@@ -60,9 +60,6 @@ public class IssueStateTest extends DBTestCase {
         expectedDataSet.addReplacementObject("[null]", null);
         ITable expectedTable = expectedDataSet.getTable("test_issue_tracker.IssueStates");
 
-        Assertion.assertEquals(expectedTable, actualTable);
-        actualTable = databaseDataSet.getTable("test_issue_tracker.IssueStates_IssueStates");
-        expectedTable = expectedDataSet.getTable("test_issue_tracker.IssueStates_IssueStates");
         Assertion.assertEquals(expectedTable, actualTable);
     }
 
