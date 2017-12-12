@@ -29,6 +29,12 @@ public class IssueState extends HavingNameAndSoftDeletedAndOneIdDomainObject<Iss
         super(id,null);
     }
 
+    public IssueState(String name, Boolean isInitialState, Boolean isFinishState) {
+        super(null, name);
+        this.isInitialState = isInitialState;
+        this.isFinishState = isFinishState;
+    }
+
     public IssueState(Long id, String name, Boolean isInitialState, Boolean isFinishState, List<IssueState> issueStatesToTransition, IssueType issueType) {
         super(id, name);
         this.isInitialState = isInitialState;

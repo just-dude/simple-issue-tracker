@@ -12,7 +12,6 @@ import smartvalidation.validator.сonstraintValidator.base.ConstraintValidator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import static smartvalidation.validator.сonstraintValidator.ConstraintValidators.*;
 
@@ -57,8 +56,8 @@ public class IssueStatesFieldsValidatorFactory implements EntityValidatorFactory
 
             entityValidationRules.add(
                     new EntityValidationRule(validationContext.getPropertiesPrefix() + ".standartFinishStatesNames",
-                            entity.getStandartFinishStatesNames(), AllOf(not(isNull()),not(blankString()))));
-            String[] standartFinishStatesNames = StringUtils.split(entity.getStandartFinishStatesNames(),delimeter);
+                            entity.getStandartFinishStateName(), AllOf(not(isNull()),not(blankString()))));
+            String[] standartFinishStatesNames = StringUtils.split(entity.getStandartFinishStateName(),delimeter);
             for(int i=0;i<standartFinishStatesNames.length;i++){
                 entityValidationRules.add(
                         new EntityValidationRule(validationContext.getPropertiesPrefix() + ".standartFinishStatesNames["+i+"]",

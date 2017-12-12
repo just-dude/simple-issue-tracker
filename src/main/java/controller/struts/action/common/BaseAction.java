@@ -17,7 +17,7 @@ public abstract class BaseAction extends com.opensymphony.xwork2.ActionSupport i
             if (cv instanceof PropertyConstraintViolation) {
                 PropertyConstraintViolation pcv = (PropertyConstraintViolation) cv;
                 this.addFieldError(pcv.getPropertyPath(),
-                        getText(
+                        getText( //TODO subConstraintDescriptions
                                 pcv.getConstraintDescription().getConstraintFullName(),
                                 pcv.getConstraintDescription().getConstraintFullName(),
                                 pcv.getConstraintDescription().getConstraintParameters()

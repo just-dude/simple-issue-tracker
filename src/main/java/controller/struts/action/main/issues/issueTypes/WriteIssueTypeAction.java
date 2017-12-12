@@ -4,6 +4,7 @@ import controller.struts.action.common.FormProviderHandlingExceptionsBaseAction;
 import domain.common.exception.ValidationFailedException;
 import domain.issues.IssueState;
 import domain.issues.IssueType;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import smartvalidation.validator.entityValidator.EntityValidator;
@@ -19,6 +20,8 @@ public class WriteIssueTypeAction extends FormProviderHandlingExceptionsBaseActi
 
 
     protected static final Logger LOG = LogManager.getLogger(WriteIssueTypeAction.class);
+
+    protected static final String separator = ",";
 
     protected IssueType issueType = new IssueType();
     protected Map<Integer,List<Integer>> issueStateIndexToTransferIssueStateIndexesListMap;
@@ -39,8 +42,36 @@ public class WriteIssueTypeAction extends FormProviderHandlingExceptionsBaseActi
         issueType = new IssueType();
     }
 
-    protected void buildIssueStatesListAndIndexesTransferMapFromInputStrings(){
-
+    protected void buildIssueStatesListAndTransferIndexesMapFromInputStrings(){
+        issueStates= new ArrayList<>();
+        issueStates.add(new IssueState(issueStatesFields.getInitialStateName(),true,false));
+        if(issueStatesFields.getTransitionsStatesNames()!=null && issueStatesFields.getTransitionsStatesNames().trim()!=""){
+            String[] transitionsStatesNames=StringUtils.split(issueStatesFields.getTransitionsStatesNames(),separator);
+            for(String transitionStateName : transitionsStatesNames){
+                issueStates.add(new IssueState(transitionStateName,false,false));
+            }
+        }
+        issueStates.add(new IssueState(issueStatesFields.getStandartFinishStateName(),false,true));
+        issueStateIndexToTransferIssueStateIndexesListMap = new HashMap<>();
+        for(int i=0;i<issueStates.size()-2;i++){
+            issueStateIndexToTransferIssueStateIndexesListMap.put(i, Arrays.asList(i+1));
+            //issueStateIndexToTransferIssueStateIndexesListMap.put(i, Arrays.asList(issueStates.size()-1));
+        }
+        int nonStandartFinishStatesNamesSize=0;
+        if(issueStatesFields.getNonStandartFinishStatesNames()!=null && issueStatesFields.getNonStandartFinishStatesNames().trim()!=""){
+            String[] nonStandartFinishStatesNames=StringUtils.split(issueStatesFields.getNonStandartFinishStatesNames(),separator);
+            nonStandartFinishStatesNamesSize=nonStandartFinishStatesNames.length;
+            for(String nonStandartFinishStateName : nonStandartFinishStatesNames){
+                issueStates.add(new IssueState(nonStandartFinishStateName,false,true));
+            }
+        }
+        if(nonStandartFinishStatesNamesSize>0) {
+            for (int i = 0; i < issueStates.size() - 2 - nonStandartFinishStatesNamesSize; i++) {
+                for (int j = 0; j < nonStandartFinishStatesNamesSize; j++){
+                    issueStateIndexToTransferIssueStateIndexesListMap.put(i, Arrays.asList(issueStates.size()-1));
+                }
+            }
+        }
     }
 
     protected Map<Integer,List<Integer>> getIssueStateIndexToTransferIssueStateIndexesListMap(int issueStatesSize){
@@ -75,16 +106,16 @@ public class WriteIssueTypeAction extends FormProviderHandlingExceptionsBaseActi
     public static class IssueStatesFields{
         private String initialStateName;
         private String transitionsStatesNames;
-        private String standartFinishStatesNames;
+        private String standartFinishStateName;
         private String nonStandartFinishStatesNames;
 
         public IssueStatesFields() {
         }
 
-        public IssueStatesFields(String initialStateName, String transitionsStatesNames, String standartFinishStatesNames, String nonStandartFinishStatesNames) {
+        public IssueStatesFields(String initialStateName, String transitionsStatesNames, String standartFinishStateName, String nonStandartFinishStatesNames) {
             this.initialStateName = initialStateName;
             this.transitionsStatesNames = transitionsStatesNames;
-            this.standartFinishStatesNames = standartFinishStatesNames;
+            this.standartFinishStateName = standartFinishStateName;
             this.nonStandartFinishStatesNames = nonStandartFinishStatesNames;
         }
 
@@ -104,12 +135,12 @@ public class WriteIssueTypeAction extends FormProviderHandlingExceptionsBaseActi
             this.transitionsStatesNames = transitionsStatesNames;
         }
 
-        public String getStandartFinishStatesNames() {
-            return standartFinishStatesNames;
+        public String getStandartFinishStateName() {
+            return standartFinishStateName;
         }
 
-        public void setStandartFinishStatesNames(String standartFinishStatesNames) {
-            this.standartFinishStatesNames = standartFinishStatesNames;
+        public void setStandartFinishStateName(String standartFinishStateName) {
+            this.standartFinishStateName = standartFinishStateName;
         }
 
         public String getNonStandartFinishStatesNames() {
